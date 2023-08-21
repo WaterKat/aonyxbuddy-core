@@ -21,3 +21,5 @@
 #npm
 /**/dist
 /**/build
+/**/lib
+/**/node_modules
