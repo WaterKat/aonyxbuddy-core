@@ -1,0 +1,15 @@
+{
+  "name": "@aonyxlimited/vtpcclient",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.2"
+  },
+  "dependencies": {
+    "@nodegui/nodegui": "^0.61.2"
+  }
+}
