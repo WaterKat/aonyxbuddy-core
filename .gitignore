@@ -1,6 +1,7 @@
 #reverse gitignore
 /**/*
 !/**/
+!/libraries
 
 #git
 !/**/*.gitignore

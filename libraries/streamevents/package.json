@@ -1,0 +1,15 @@
+{
+  "name": "@aonyxbuddy/streamevents",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "echo This is a library."
+  },
+  "author": "WaterKat",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}

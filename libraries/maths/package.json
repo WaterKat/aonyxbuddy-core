@@ -1,0 +1,16 @@
+{
+  "name": "@aonyxbuddy/maths",
+  "version": "1.0.0",
+  "description": "a math package",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "echo This is a library."
+  },
+  "author": "WaterKat",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}

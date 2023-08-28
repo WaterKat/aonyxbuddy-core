@@ -1,0 +1,20 @@
+{
+  "name": "@aonyxbuddy/websockets",
+  "version": "1.0.0",
+  "description": "a websockets package",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "echo This is a library."
+  },
+  "author": "WaterKat",
+  "license": "ISC",
+  "dependencies": {
+    "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.5",
+    "typescript": "^5.2.2"
+  }
+}
