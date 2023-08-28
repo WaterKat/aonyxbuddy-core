@@ -1,4 +1,4 @@
-import { IClientConfig } from './iclient-pc-config';
+import { IClientConfig } from './iclient-pc-config.js';
 //import { StreamEvents } from '../external';
 
 export const ClientConfigExample: IClientConfig = {

@@ -1,4 +1,4 @@
-import { StreamCharacters, StreamEvents } from '../external';
+import { StreamCharacters, StreamEvents } from '../external.js';
 
 export interface IClientConfig {
     id : string;

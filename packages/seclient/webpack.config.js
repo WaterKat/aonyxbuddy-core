@@ -1,28 +1,24 @@
-const path = require("path");
+const path = require('path');
 
 module.exports = {
-  entry: "./src/index.ts",
-  mode: 'development',
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        use: "ts-loader",
-        exclude: /node_modules/,
-      },
-    ],
-  },
-  resolve: {
-    extensions: [".tsx", ".ts", ".js"],
-    fallback: {
-      "url": require.resolve("url/")
+    entry: './src/index.ts',
+    module: {
+        rules: [
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
+        ],
     },
-    alias: {
-      '@aonyxbuddy/streamevents': path.resolve(__dirname, '../streamevents')
-    }
-  },
-  output: {
-    filename: "index.js",
-    path: path.resolve(__dirname, "dist"),
-  },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
+        alias: {
+            '@aonyxbuddy': path.resolve(__dirname, '../../libraries')
+        },
+    },
+    output: {
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'dist'),
+    },
 };

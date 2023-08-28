@@ -1,13 +1,12 @@
 {
   "extends" : "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "rootDir": "src",
-    
-    "composite": false,
-    "declaration": false,
-    "declarationMap": false,
-    "target": "es5",
-    "jsx": "react",
-  }
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es2015",
+    "allowJs": true,
+    "lib": ["ES2015","DOM"]
+  },
+  "files": ["src/index.ts"]
 }

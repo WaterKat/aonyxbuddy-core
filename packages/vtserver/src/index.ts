@@ -1,4 +1,4 @@
-import { default as Express, Router } from 'express';
+import { default as Express } from 'express';
 import * as HTTP from 'http';
 
 import * as WebSockets from '@aonyxbuddy/websockets';
@@ -9,7 +9,7 @@ function main() {
 
     const deliveryStation = new WebSockets.Server.WebSocketDeliveryStation(server);
 
-    const route = new WebSockets.Server.WebSocketDeliverer('/ws');
+    const route = new WebSockets.Server.WebSocketDeliverer('/api');
     deliveryStation.addRoute(route);
 
     const seserver = new WebSockets.Server.NodeWebSocketServer({
@@ -25,7 +25,7 @@ function main() {
         }
     });
 
-    const port = 3000;
+    const port = process.argv[2];
     server.listen(port, () => {
         console.log(`Listening on port ${port}`)
     });

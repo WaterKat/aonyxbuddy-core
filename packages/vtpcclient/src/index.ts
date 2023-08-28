@@ -4,7 +4,7 @@ import { Subscription } from "@aonyxbuddy/subscriptions";
 import * as StreamCharacters from '@aonyxbuddy/streamcharacters';
 import * as Tools from '@aonyxbuddy/tools';
 
-import { ClientConfigExample } from "./config/iclient-config-fariaorion.test";
+import { ClientConfigExample } from './config/iclient-config-fariaorion.test.js';
 
 const url = "wss://api.aonyxlimited.com/ws/streamelements";
 
