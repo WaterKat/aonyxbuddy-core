@@ -1,1 +1,1 @@
-export * from './command-permission-postprocessor';
+export * from './command-permission-postprocessor.js';

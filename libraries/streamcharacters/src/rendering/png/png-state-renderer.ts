@@ -1,10 +1,10 @@
 import { parseGIF, decompressFrames } from 'gifuct-js'
 
-import { AnimationStateManager, IAsyncInitializable } from '../../external';
+import { AnimationStateManager, IAsyncInitializable } from '../../external.js';
 
-import * as PNGConfig from './ipng-config';
+import * as PNGConfig from './ipng-config.js';
 
-import { IRenderer, IRendererInputs } from '../irenderer';
+import { IRenderer, IRendererInputs } from '../irenderer.js';
 
 export type PNGImageData = {
     delay: number;

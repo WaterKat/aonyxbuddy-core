@@ -1,1 +1,1 @@
-export * from './stream-character';
+export * from './stream-character.js';

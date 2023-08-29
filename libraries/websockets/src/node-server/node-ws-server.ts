@@ -1,6 +1,6 @@
 import { default as WebSocket /*, Server  as WSServer */ } from 'ws';
 import * as Subscriptions from '@aonyxbuddy/subscriptions';
-import * as Deliveries from '../deliveries/index';
+import * as Deliveries from '../deliveries/index.js';
 
 // import { IWSAuthData, IWSPacketData } from '../shared';
 

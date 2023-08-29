@@ -1,5 +1,5 @@
 //import { ITextToSpeechOptions } from "./ioptions";
-import { ITextToSpeech } from './itext-to-speech';
+import { ITextToSpeech } from './itext-to-speech.js';
 //import { Config, ConfigComponents } from "../config";
 
 export interface IStreamElementsTTSOptions {

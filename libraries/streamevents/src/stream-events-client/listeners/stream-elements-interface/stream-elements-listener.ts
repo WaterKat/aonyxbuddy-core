@@ -1,8 +1,8 @@
 //import { Tools, StreamEvents } from "../../../../aonyx-packages/lib";
 import { Subscription } from '@aonyxbuddy/subscriptions';
-import { StreamEvent } from '../../../stream-events/index';
+import { StreamEvent } from '../../../stream-events/index.js';
 
-import { TranslateStreamElementsEventToAonyxEvent } from './stream-elements-event-translator';
+import { TranslateStreamElementsEventToAonyxEvent } from './stream-elements-event-translator.js';
 
 export class StreamElementsEventListener {
     eventSubscription = new Subscription<StreamEvent>();

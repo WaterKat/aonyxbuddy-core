@@ -1,5 +1,5 @@
-import { StreamEvent } from '../stream-events/index';
-import * as StreamEventParserConfigs from './istream-event-parser-config';
+import { StreamEvent } from '../stream-events/index.js';
+import * as StreamEventParserConfigs from './istream-event-parser-config.js';
 
 export class StreamEventParser {
     options: StreamEventParserConfigs.IStreamEventParserConfig;

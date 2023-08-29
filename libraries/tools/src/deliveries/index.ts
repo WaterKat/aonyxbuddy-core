@@ -1,1 +1,1 @@
-export * from './ideliveries';
+export * as Deliveries from './ideliveries.js';

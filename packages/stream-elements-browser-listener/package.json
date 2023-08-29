@@ -1,5 +1,5 @@
 {
-  "name": "@aonyxbuddy/seclient",
+  "name": "@aonyxbuddy/stream-elements-browser-listener",
   "private": true,
   "version": "1.0.0",
   "main": "./dist/index.js",

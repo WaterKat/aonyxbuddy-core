@@ -1,5 +1,5 @@
-import { StreamEvent, StreamEventComponent } from '../../../stream-events/index';
-import * as SETypes from './types';
+import { StreamEvent, StreamEventComponent } from '../../../stream-events/index.js';
+import * as SETypes from './types.js';
 
 export function TranslateStreamElementsEventToAonyxEvent(_event: any): StreamEvent | undefined {
     function messageFromString(_message: string): StreamEventComponent.Message {

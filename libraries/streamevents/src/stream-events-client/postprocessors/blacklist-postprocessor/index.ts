@@ -1,1 +1,1 @@
-export * from './blacklist-postprocessor';
+export * from './blacklist-postprocessor.js';

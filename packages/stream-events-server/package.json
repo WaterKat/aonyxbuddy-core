@@ -1,5 +1,5 @@
 {
-  "name": "@aonyxbuddy/vtserver",
+  "name": "@aonyxbuddy/stream-events-server",
   "version": "1.0.0",
   "main": "./dist/bundle.js",
   "type": "module",

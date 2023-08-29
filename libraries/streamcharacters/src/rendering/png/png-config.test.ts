@@ -1,4 +1,4 @@
-import * as PNGConfig from './ipng-config';
+import * as PNGConfig from './ipng-config.js';
 
 export const PNGConfigExample: PNGConfig.IPNGConfig = {
     size: {

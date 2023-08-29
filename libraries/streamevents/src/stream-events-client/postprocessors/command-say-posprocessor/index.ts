@@ -1,1 +1,1 @@
-export * from './command-say-postprocessor';
+export * from './command-say-postprocessor.js';

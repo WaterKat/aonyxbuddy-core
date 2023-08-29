@@ -2,7 +2,7 @@ import {default as WS, WebSocketServer} from 'ws';
 import * as HTTP from 'http';
 import * as URL from 'url';
 
-import * as Deliveries from '../deliveries/index';
+import * as Deliveries from '../deliveries/index.js';
 
 export class WebSocketDeliveryStation
   implements Deliveries.IDeliveryStation<WS>

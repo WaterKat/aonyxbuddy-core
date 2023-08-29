@@ -1,2 +1,2 @@
-export * from './ws-server-routing';
-export * from './node-ws-server';
+export * from './ws-server-routing.js';
+export * from './node-ws-server.js';

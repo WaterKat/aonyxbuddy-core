@@ -1,1 +1,1 @@
-export * from './ws-event-listener';
+export * from './ws-event-listener.js';

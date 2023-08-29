@@ -1,2 +1,2 @@
-export * from './initializable';
-export * from './class-initializer';
+export * from './initializable.js';
+export * from './class-initializer.js';

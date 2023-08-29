@@ -1,6 +1,6 @@
 import { Subscription } from "@aonyxbuddy/subscriptions";
 
-import { StreamEvent } from '../../../stream-events/stream-event';
+import { StreamEvent } from '../../../stream-events/stream-event.js';
 
 export class WebSocketStreamEventListener {
     static ReconnectTimeoutInSeconds = 3;

@@ -1,5 +1,5 @@
-import { StreamEvent } from '../stream-events/index';
-import { IEventListener, IEventManager, IEventPostProcessor } from './ievent-handlers';
+import { StreamEvent } from '../stream-events/index.js';
+import { IEventListener, IEventManager, IEventPostProcessor } from './ievent-handlers.js';
 import { Subscription } from "@aonyxbuddy/subscriptions";
 
 export class EventManager implements IEventManager {

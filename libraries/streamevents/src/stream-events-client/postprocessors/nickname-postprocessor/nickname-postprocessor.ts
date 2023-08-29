@@ -1,6 +1,6 @@
-import { StreamEvent } from '../../../stream-events/stream-event';
-import { IEventPostProcessor } from '../../ievent-handlers';
-import { INicknamePostProcessorOptions } from './inickname-post-processor-options';
+import { StreamEvent } from '../../../stream-events/stream-event.js';
+import { IEventPostProcessor } from '../../ievent-handlers.js';
+import { INicknamePostProcessorOptions } from './inickname-post-processor-options.js';
 
 export class NicknamePostProcessor implements IEventPostProcessor {
     options : INicknamePostProcessorOptions = {};

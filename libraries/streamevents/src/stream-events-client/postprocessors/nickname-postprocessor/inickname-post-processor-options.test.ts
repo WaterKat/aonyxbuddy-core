@@ -1,4 +1,4 @@
-import { INicknamePostProcessorOptions } from './inickname-post-processor-options';
+import { INicknamePostProcessorOptions } from './inickname-post-processor-options.js';
 
 export const NicknamePostProcessorOptionsExample: INicknamePostProcessorOptions = { 
     'waterkattv': ['papa', 'waterkat', 'the cat', 'the gremlin in the corner of the room'] ,

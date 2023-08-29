@@ -1,1 +1,1 @@
-export * from './ideliveries';
+export * from './ideliveries.js';

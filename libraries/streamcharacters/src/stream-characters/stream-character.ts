@@ -1,6 +1,6 @@
-import { IAsyncInitializable } from '../external';
-import { IRenderer, IRendererInputs, RendererGenericStates } from '../rendering/irenderer';
-import { ITextToSpeech } from '../text-to-speech/itext-to-speech';
+import { IAsyncInitializable } from '../external.js';
+import { IRenderer, IRendererInputs, RendererGenericStates } from '../rendering/irenderer.js';
+import { ITextToSpeech } from '../text-to-speech/itext-to-speech.js';
 
 export interface IStreamCharacterOptions {
     renderer: IRenderer;

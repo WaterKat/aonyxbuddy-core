@@ -1,11 +1,11 @@
-import { StreamEvent, StreamEventComponent }  from '../../stream-events/index';
-import { IEventPostProcessor } from '../ievent-handlers';
+import { StreamEvent, StreamEventComponent }  from '../../stream-events/index.js';
+import { IEventPostProcessor } from '../ievent-handlers.js';
 
-import messageMiddleware from './message-middleware';
+import messageMiddleware from './message-middleware.js';
 
-export default (function (_replacement: string = '', _enableLogging = false): IEventPostProcessor {
+export default (function (_replacement: string = ''): IEventPostProcessor {
 
-   const messageProcessor = messageMiddleware(_enableLogging);
+   const messageProcessor = messageMiddleware();
 
     const EmojiRegex : RegExp = /([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g
 

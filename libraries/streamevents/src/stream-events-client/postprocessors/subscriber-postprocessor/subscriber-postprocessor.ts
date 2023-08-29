@@ -1,6 +1,6 @@
 import { Subscription } from "@aonyxbuddy/subscriptions";
-import { StreamEvent } from '../../../stream-events/stream-event';
-import { IEventListener, IEventPostProcessor } from '../../ievent-handlers';
+import { StreamEvent } from '../../../stream-events/stream-event.js';
+import { IEventListener, IEventPostProcessor } from '../../ievent-handlers.js';
 
 export class SubscriberPostProcessor implements IEventPostProcessor, IEventListener {
     eventSubscription: Subscription<StreamEvent> = new Subscription<StreamEvent>();

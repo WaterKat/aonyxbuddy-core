@@ -1,8 +1,10 @@
+import * as StreamEventComponent from './stream-event-components.js';
+export * as StreamEventComponent from './stream-event-components.js';
+
 export type StreamEventTypeID = 
 'follow' | 'subscriber' | 
 'gift-single' | 'gift-bulk-sent' | 'gift-bulk-received' | 
 'raid' | 'cheer' | 'chat' | 'command' | 'redeem';
-
 
 export type StreamEvent = {
     type : string; 
@@ -68,25 +70,3 @@ export type StreamEvent = {
     custom_id : string;
     custom_args : string[];
 })
-
-
-export namespace StreamEventComponent {
-    export type Permissions = {
-        chatter: boolean,
-        follower: boolean,
-        subscriber: boolean,
-        vip: boolean,
-        moderator: boolean,
-        streamer: boolean,
-    };
-
-    export type Emote = {
-        type: string,
-        name: string
-    }
-
-    export type Message = {
-        text: string;
-        emotes: Array<Emote>
-    }
-}

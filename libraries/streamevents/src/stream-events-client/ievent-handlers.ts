@@ -1,5 +1,5 @@
 import { Subscription } from "@aonyxbuddy/subscriptions";
-import { StreamEvent } from '../stream-events/stream-event';
+import { StreamEvent } from '../stream-events/stream-event.js';
 
 export interface IEventListener {
     eventSubscription: Subscription<StreamEvent>;

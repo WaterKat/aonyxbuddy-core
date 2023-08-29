@@ -1,4 +1,6 @@
-import { StreamEventTypeID } from '../stream-events/stream-event';
+import * as IStreamEventParserComponents from './Istream-event-parser-components.js';
+export * as IStreamEventParserComponents from './Istream-event-parser-components.js';
+
 
 export type UserType =
     'bot' | 'chatter' |
@@ -19,19 +21,3 @@ export interface IStreamEventParserConfig {
     responses: IStreamEventParserComponents.IResponses
 }
 
-export namespace IStreamEventParserComponents{
-    export type Response = {
-        [key in StreamEventTypeID]: string[]
-    } & {
-        [key: string]: string[]
-    }
-
-    export interface IResponses {
-        voice : Response,
-        chat : Response
-    }
-
-    export interface IVariableReplacements {
-        [key : string] : string
-    }
-}

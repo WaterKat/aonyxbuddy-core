@@ -1,5 +1,5 @@
 {
-  "name": "@aonyxlimited/vtpcclient",
+  "name": "@aonyxlimited/pc-client",
   "private": true,
   "version": "0.0.0",
   "main": "./dist/index.js",

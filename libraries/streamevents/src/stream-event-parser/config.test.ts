@@ -1,4 +1,4 @@
-import * as StreamEventParserConfigs from './istream-event-parser-config';
+import * as StreamEventParserConfigs from './istream-event-parser-config.js';
 
 export const StreamEventParserConfigExample: StreamEventParserConfigs.IStreamEventParserConfig = {
     responses: {

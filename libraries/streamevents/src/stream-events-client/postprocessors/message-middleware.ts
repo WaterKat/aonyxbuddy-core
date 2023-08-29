@@ -1,6 +1,6 @@
-import { StreamEvent, StreamEventComponent } from '../../stream-events/index';
+import { StreamEvent, StreamEventComponent } from '../../stream-events/index.js';
 
-export default (function (_enableLogging = false) {
+export default (function () {
     function process(_originalEvent: StreamEvent, filter: (_text: StreamEventComponent.Message) => StreamEventComponent.Message): StreamEvent {
 
         if (_originalEvent.message){

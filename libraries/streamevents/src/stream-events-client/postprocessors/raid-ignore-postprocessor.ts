@@ -1,5 +1,5 @@
-import { StreamEvent } from '../../stream-events/stream-event';
-import { IEventPostProcessor } from '../ievent-handlers';
+import { StreamEvent } from '../../stream-events/stream-event.js';
+import { IEventPostProcessor } from '../ievent-handlers.js';
 
 export class RaidIgnorePostProcessor implements IEventPostProcessor {
     private timeoutInSeconds: number = 30;

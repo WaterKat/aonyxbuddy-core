@@ -1,5 +1,5 @@
 import { Subscription, SubscriptionType } from "@aonyxbuddy/subscriptions";
-import { IDictionary } from '../dictionaries/index';
+import { IDictionary } from '../dictionaries/index.js';
 
 export interface IAnimationState {
     id: string;
@@ -94,7 +94,7 @@ export class AnimationStateManager {
         //        const requests = this.transitionRequests.length;
         if (this.transitionRequests.length > 0) {
             const animationPromise = this.GetDirectedTransition(this.transitionRequests[0], currentStateID).catch(e => console.error(e));
-            const awaitedAnimationPromise: IAnimationState | void = await animationPromise;
+            const awaitedAnimationPromise: IAnimationState | void | null = await animationPromise;
             if (awaitedAnimationPromise) {
                 nextAnimation = awaitedAnimationPromise;
             }

@@ -1,5 +1,5 @@
-import { StreamEvent } from '../../../stream-events/stream-event';
-import { IEventPostProcessor } from '../../ievent-handlers';
+import { StreamEvent } from '../../../stream-events/stream-event.js';
+import { IEventPostProcessor } from '../../ievent-handlers.js';
 
 export class BlackListPostProcessor implements IEventPostProcessor {
     private blacklistedAccounts: string[] = new Array<string>();

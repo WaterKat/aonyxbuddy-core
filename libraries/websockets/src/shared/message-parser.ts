@@ -1,4 +1,4 @@
-import { IWSAuthData, IWSPacketData, IWSResponse, IWSType } from './types';
+import { IWSAuthData, IWSPacketData, IWSResponse, IWSType } from './types.js';
 
 export function ParseStringToWSType(packetString: string): IWSType {
   const errorPacket: IWSPacketData = {

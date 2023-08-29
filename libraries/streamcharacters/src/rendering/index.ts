@@ -1,2 +1,2 @@
-export * as PNG from './png/index';
-export * as VTuber from './vtuber/index';
+export * as PNG from './png/index.js';
+export * as VTuber from './vtuber/index.js';

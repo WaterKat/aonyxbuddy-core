@@ -1,1 +1,1 @@
-export * from './subscriber-postprocessor';
+export * from './subscriber-postprocessor.js';

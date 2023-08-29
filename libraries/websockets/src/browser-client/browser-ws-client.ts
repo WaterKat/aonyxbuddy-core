@@ -1,7 +1,7 @@
 import {
   IWSAuthData, 
   /*, IWSPacketData, IWSType, ParseStringToWSType */
-} from '../shared/index';
+} from '../shared/index.js';
 
 import * as Subscriptions from '@aonyxbuddy/subscriptions';
 

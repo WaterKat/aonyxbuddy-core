@@ -1,1 +1,1 @@
-export * from './idictionary';
+export * from './idictionary.js';

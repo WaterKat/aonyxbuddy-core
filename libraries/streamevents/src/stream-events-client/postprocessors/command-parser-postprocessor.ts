@@ -1,5 +1,5 @@
-import { StreamEvent }  from '../../stream-events/index';
-import { IEventPostProcessor } from '../ievent-handlers';
+import { StreamEvent }  from '../../stream-events/index.js';
+import { IEventPostProcessor } from '../ievent-handlers.js';
 
 export default (function (_useRequestField = true, _enableLogging = false): IEventPostProcessor {
     const useRequestField: boolean = _useRequestField;

@@ -1,1 +1,1 @@
-export * from './vtuber-state-renderer';
+export * from './vtuber-state-renderer.js';

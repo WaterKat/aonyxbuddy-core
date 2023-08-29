@@ -1,1 +1,1 @@
-export * from './browser-ws-client';
+export * from './browser-ws-client.js';

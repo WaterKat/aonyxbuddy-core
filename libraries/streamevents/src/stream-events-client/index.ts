@@ -1,5 +1,5 @@
-export * from './event-manager';
-export * from './listeners/index';
-export * as PostProcessors from './postprocessors/index';
+export * from './event-manager.js';
+export * from './listeners/index.js';
+export * as PostProcessors from './postprocessors/index.js';
 
-export * from './ievent-handlers';
+export * from './ievent-handlers.js';

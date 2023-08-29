@@ -1,7 +1,7 @@
-import { AnimationStateManager, IAsyncInitializable } from '../../external';
+import { AnimationStateManager, IAsyncInitializable } from '../../external.js';
 
-import * as FrankTTS from '../../config/index';
-import { IRenderer, IRendererInputs } from '../irenderer';
+import * as FrankTTS from '../../config/index.js';
+import { IRenderer, IRendererInputs } from '../irenderer.js';
 
 interface IVtuberConfig extends FrankTTS.ConfigComponents.VTube { }
 
@@ -38,6 +38,7 @@ export class VTuberRenderer implements IAsyncInitializable, IRenderer {
     }
 
     async RequestAndAwaitState(_targetID: string): Promise<void> {
+        _targetID; //temp
         await new Promise<void>(resolve => setTimeout(resolve, 1000));
     }
 }

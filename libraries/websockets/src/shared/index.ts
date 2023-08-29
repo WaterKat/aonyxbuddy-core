@@ -1,2 +1,2 @@
-export * from './types';
-export * from './message-parser';
+export * from './types.js';
+export * from './message-parser.js';

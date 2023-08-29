@@ -1,4 +1,4 @@
-import { IAsyncInitializable } from './initializable';
+import { IAsyncInitializable } from './initializable.js';
 
 export class AsyncClassInitializer{
     public static async create<T extends IAsyncInitializable, TOptions>(type : new (options : TOptions) => T, options : TOptions) : Promise<T | undefined> {

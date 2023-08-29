@@ -1,5 +1,5 @@
 import { parseGIF, decompressFrames } from 'gifuct-js'
-import { PNGImageData } from './types';
+import { PNGImageData } from './types.js';
 
 export async function GetImageBitmap(_input: string | string[], _fps: number): Promise<PNGImageData[]> {
     let processedInput = _input;
