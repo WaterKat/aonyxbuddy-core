@@ -1,4 +1,5 @@
-import { StreamCharacters, StreamEvents } from '../external';
+import * as StreamCharacters from '@aonyxbuddy/streamcharacters';
+import * as StreamEvents  from '@aonyxbuddy/streamevents';
 
 export interface IClientConfig {
     id : string;

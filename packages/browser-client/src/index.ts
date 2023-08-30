@@ -1,9 +1,9 @@
-import { StreamCharacters, StreamEvents } from "./external";
-//import * as StreamCharacters from 'aonyx-limited-stream-characters';
+import * as StreamCharacters from '@aonyxbuddy/streamcharacters';
+import * as StreamEvents  from '@aonyxbuddy/streamevents';
+import * as Tools  from '@aonyxbuddy/tools';
 
-import { Tools } from "./external";
-
-import { ClientConfigExample } from "./config/iclient-config-waterkattv.test";
+//import { ClientConfigExample } from './config/iclient-config-waterkattv.test.js';
+import { ClientConfigExample } from './config/iclient-config-fariaorion.test.js';
 
 //import * as config from '../../firebase-tool/src/waterkat-config';
 

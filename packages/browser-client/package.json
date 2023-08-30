@@ -2,17 +2,21 @@
   "name": "@aonyxbuddy/browser-client",
   "private": true,
   "version": "1.0.0",
-  "main" : "./dist/index.js",
-  "types" : "./dist/index.d.ts",
-  "type" : "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
   "scripts": {
-    "build": "npx webpack --config webpack.config.cjs"
+    "lint": "eslint . --fix",
+    "build": "webpack",
+    "build:tsc": "tsc --build --force"
   },
   "devDependencies": {
     "link": "^1.5.1",
-    "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "tsconfig-paths-webpack-plugin": "^4.1.0",
+    "typescript": "^5.0.2"
   },
   "dependencies": {
+    "gifuct-js": "^2.1.2",
+    "webpack": "^5.88.2"
   }
 }

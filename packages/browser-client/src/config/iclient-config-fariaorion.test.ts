@@ -1,4 +1,4 @@
-import { IClientConfig } from './iclient-config';
+import { IClientConfig } from './iclient-config.js';
 //import { StreamEvents } from '../external';
 
 export const ClientConfigExample: IClientConfig = {
@@ -239,7 +239,7 @@ export const ClientConfigExample: IClientConfig = {
         'fenrirdesigns': ['fenrir'],
         'cupidjpeg' : ['cupid', 'cutie', 'sexy beast']
     },
-    tts: { voice: 'Kimberly'},
+    tts: { voice: 'Brian'},
     responses: {
         responses: {
             chat: {
@@ -271,23 +271,23 @@ export const ClientConfigExample: IClientConfig = {
                     "Prepare for a cosmic odyssey, ${nickname}! Explore the universe in games!"
                 ],
                 subscriber: [
-                    "Thanks ${nickname} for ${subscriber.length} stellar months of support!",
-                    "Celestial cheers, ${nickname}! Join us for ${subscriber.length} months of cosmic exploration!",
-                    "Shoutout to ${nickname}! ${subscriber.length} months in our Orion Constellation! Your subscription powers our cosmic journey.",
-                    "Appreciate your subscription, ${nickname}! ${subscriber.length} months of cosmic commitment!",
-                    "Welcome, ${nickname}! Explore the cosmos with us for ${subscriber.length} months!",
-                    "Cosmic gratitude, ${nickname}! ${subscriber.length} stellar months of support!",
+                    "Thanks ${nickname} for ${subscriber.length} stellar month${subscriber.plural} of support!",
+                    "Celestial cheers, ${nickname}! Join us for ${subscriber.length} month${subscriber.plural} of cosmic exploration!",
+                    "Shoutout to ${nickname}! ${subscriber.length} month${subscriber.plural} in our Orion Constellation! Your subscription powers our cosmic journey.",
+                    "Appreciate your subscription, ${nickname}! ${subscriber.length} month${subscriber.plural} of cosmic commitment!",
+                    "Welcome, ${nickname}! Explore the cosmos with us for ${subscriber.length} month${subscriber.plural}!",
+                    "Cosmic gratitude, ${nickname}! ${subscriber.length} stellar month${subscriber.plural} of support!",
                     "Celestial greetings, ${nickname}! A ${subscriber.length}-month subscription shining like a supernova.",
-                    "Stellar salute, ${nickname}! ${subscriber.length} months of loyal star bean support!",
+                    "Stellar salute, ${nickname}! ${subscriber.length} month${subscriber.plural} of loyal star bean support!",
                     "Celestial blessings, ${nickname}! Keep the cosmic energy flowing with your ${subscriber.length}-month subscription.",
                     "Thanks ${nickname} for the ${subscriber.length}-month cosmic subscription! Your commitment fuels us.",
                     "Welcome back, ${nickname}! ${subscriber.length}-month subscription adding celestial sparkles!",
-                    "Thanks ${nickname} for ${subscriber.length} stellar months! Your support ignites us.",
+                    "Thanks ${nickname} for ${subscriber.length} stellar month${subscriber.plural}! Your support ignites us.",
                     "Celestial applause, ${nickname}! ${subscriber.length}-month subscription guiding us.",
                     "Thanks ${nickname} for the ${subscriber.length}-month interstellar subscription! Your support fuels us.",
-                    "Celestial waves to ${nickname}! ${subscriber.length} months as a star bean in the Orion constellation!",
+                    "Celestial waves to ${nickname}! ${subscriber.length} month${subscriber.plural} as a star bean in the Orion constellation!",
                     "Cosmic shoutout, ${nickname}! ${subscriber.length}-month subscription lighting up our stream.",
-                    "Thanks ${nickname} for being a stellar star bean! ${subscriber.length} months of support!",
+                    "Thanks ${nickname} for being a stellar star bean! ${subscriber.length} month${subscriber.plural} of support!",
                     "Celestial high fives, ${nickname}! ${subscriber.length}-month subscription fueling our cosmic adventures!",
                 ],
                 "gift-single": [
@@ -320,14 +320,14 @@ export const ClientConfigExample: IClientConfig = {
                 ],
                 "gift-bulk-received": [],
                 raid: [
-                    "Meteor shower alert! ${nickname} is bringing ${raid.count} raiders for a cosmic adventure!",
-                    "Incoming meteor shower! Thanks ${nickname} for bringing ${raid.count} raiders!",
+                    "Meteor shower alert! ${nickname} is bringing ${raid.count} raider${raid.plural} for a cosmic adventure!",
+                    "Incoming meteor shower! Thanks ${nickname} for bringing ${raid.count} raider${raid.plural}!",
                     "Cosmic raiders on the radar! Welcome ${nickname} and your community of ${raid.count}!",
-                    "Brace for impact! ${nickname} brings ${raid.count} raiders to storm our cosmic sanctuary!",
+                    "Brace for impact! ${nickname} brings ${raid.count} raider${raid.plural} to storm our cosmic sanctuary!",
                     "Cosmic raid unleashed! Thanks ${nickname} for bringing your community of ${raid.count}!",
-                    "Welcome raiders! ${nickname} brings ${raid.count} raiders like a meteor shower!",
-                    "Incoming meteor shower! Thanks ${nickname} for bringing ${raid.count} raiders!",
-                    "Attention star beans! ${nickname} and ${raid.count} raiders are incoming!"
+                    "Welcome raiders! ${nickname} brings ${raid.count} raider${raid.plural} like a meteor shower!",
+                    "Incoming meteor shower! Thanks ${nickname} for bringing ${raid.count} raider${raid.plural}!",
+                    "Attention star beans! ${nickname} and ${raid.count} raider${raid.plural} are incoming!"
                 ],
                 cheer: [],
                 chat: [],

@@ -1,13 +1,13 @@
 {
   "extends" : "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "dist-ts",
     "rootDir": "src",
     
     "composite": false,
     "declaration": false,
     "declarationMap": false,
-    "target": "es5",
-    "jsx": "react",
+    
+    "lib": ["DOM","DOM.Iterable"]
   }
 }

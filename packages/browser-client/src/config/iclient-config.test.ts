@@ -1,5 +1,6 @@
-import { IClientConfig } from './iclient-config';
-import { StreamCharacters, StreamEvents } from '../external';
+import { IClientConfig } from './iclient-config.js';
+import * as StreamCharacters from '@aonyxbuddy/streamcharacters';
+import * as StreamEvents  from '@aonyxbuddy/streamevents';
 
 export const ClientConfigExample: IClientConfig = {
     id : 'franktts',

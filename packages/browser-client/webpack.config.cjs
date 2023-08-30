@@ -1,32 +1,48 @@
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
-  entry: "./src/index.ts",
-  mode: 'development',
+  mode: 'production',
   target: 'web',
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        use: "ts-loader",
-        exclude: /node_modules/,
-      },
-    ],
-  },
-  resolve: {
-    extensions: [".tsx", ".ts", ".js"],
-    fallback: {
-      "url": require.resolve("url/")
-    },
-    alias: {
-        '@aonyxbuddy/streamevents': path.resolve(__dirname, '../streamevents'),
-        '@aonyxbuddy/subscriptions': path.resolve(__dirname, '../subscriptions'),
-        '@aonyxbuddy/tools': path.resolve(__dirname, '../tools'),
-        '@aonyxbuddy/websockets': path.resolve(__dirname, '../websockets')
-    }
-  },
+
+  entry: "./src/index.ts",
   output: {
-    filename: "index.js",
+    filename: "app.js",
     path: path.resolve(__dirname, "dist"),
   },
+
+  module: {
+    "rules": [
+      {
+        "test": /\.([cm]?ts|tsx)$/,
+        "exclude": /node_modules/,
+        "use": {
+          "loader": "ts-loader",
+          "options": {
+            "projectReferences": true
+          }
+        }
+      }
+    ]
+  },
+
+  resolve: {
+    extensions: [".tsx", ".ts", ".mjs", ".js"]
+  },
+
+  plugins: [
+    new webpack.NormalModuleReplacementPlugin(/.*/, function (resource) {
+      const lowerCaseRequest = resource.request.toLowerCase();
+
+      if (
+        !lowerCaseRequest.includes("node_modules") &&
+        lowerCaseRequest.endsWith(".js") &&
+        lowerCaseRequest[0] === "." &&
+        resource.context.startsWith(path.resolve(__dirname)) &&
+        !resource.context.toLowerCase().includes("node_modules")
+      ) {
+        resource.request = resource.request.substr(0, resource.request.length - 3) + ".ts";
+        resource.request
+      }
+    })]
 };
