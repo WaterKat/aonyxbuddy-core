@@ -4,6 +4,7 @@
 
 !/libraries
 !/packages
+!/proxy
 
 #git
 !/**/*.gitignore
