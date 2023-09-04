@@ -26,3 +26,6 @@
 /**/build
 /**/lib
 /**/node_modules
+/**/www
+
+.env

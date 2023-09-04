@@ -219,11 +219,11 @@ export const ClientConfigExample: IClientConfig = {
         }
     },
     nicknames: {
-        'waterkattv': ['papa', 'waterkat', 'the cat', 'the gremlin in the corner of the room'],
+        'waterkattv': ['papa', 'waterkat', 'the cat'],
         'fariaorion': ['deez', 'onion', 'faria', 'foreo mik flurry', 'faris', 'foreo', 'froggia', 'fawi', 'fori', 'fawwia', 'ferrari'],
         'alexr118': ['alex'],
         'tundraflame': ['tundra'],
-        'w01f_k': ['woof woof', 'bark bark', 'wolf', 'wolf owo'],
+        'w01f_k': ['woof woof', 'bark bark', 'wolf', 'wolf owo', 'cheater'],
         'squishylope': ['squishy'],
         'theherooftime69': ['the hero of time sixty nine', 'the roof of time', 'roof', 'hero'],
         'fawia_support_raccoon': ['racc', 'rack attack', 'cutie rack'],
@@ -235,7 +235,7 @@ export const ClientConfigExample: IClientConfig = {
         'vtuber_malcolm': ['malcom', 'vtuber malcolm'],
         'amethystcrownx': ['amethyst'],
         'carlos90975': ['carlos', 'kiss a homie'],
-        'bluebekaw': ['blue bekaw', 'bekaw', 'poot'],
+        'bluebekaw': ['blue bekaw', 'bekaw'],
         'fenrirdesigns': ['fenrir'],
         'cupidjpeg' : ['cupid', 'cutie', 'sexy beast']
     },

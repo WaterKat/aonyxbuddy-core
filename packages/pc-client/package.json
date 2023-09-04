@@ -6,7 +6,8 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "npx webpack",
+    "lint" : "eslint .",
+    "build": "webpack",
     "start": "node ./dist/index.js"
   },
   "devDependencies": {

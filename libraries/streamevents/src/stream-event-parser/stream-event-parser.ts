@@ -32,10 +32,13 @@ export class StreamEventParser {
         return {
             'nickname': event.nickname || event.username,
             'subscriber.length' : event.subscriber_length?.toString() || '',
+            'subscriber.plural' : ((event.subscriber_length ?? 0) > 1) ? 's' : '',
             'gift.receiver': event.gift_receiver || '',
             'gift.count': event.gift_count?.toString() || '',
             'raid.count': event.raid_count?.toString() || '',
+            'raid.plural': ((event.raid_count ?? 0) > 1) ? 's' : '',
             'cheer.amount': event.cheer_amount?.toString() || '',
+            'cheer.plural': ((event.cheer_amount ?? 0) > 1) ? 's' : '',
             'message.text' : event.message?.text || '',
         };
     }

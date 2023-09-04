@@ -1,0 +1,17 @@
+{
+  "name": "@aonyxbuddy/app-client",
+  "private": true,
+  "version": "1.0.0",
+  "main": "./dist/app.js",
+  "types": "./dist/app.d.ts",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint . --fix",
+    "build": "tsc --build --force"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.2"
+  },
+  "dependencies": {
+  }
+}
