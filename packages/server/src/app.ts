@@ -2,13 +2,14 @@ import * as express from 'express';
 import bodyParser from 'body-parser';
 
 import config from './config.js';
-import * as users from './users.js';
+import * as users from './users/index.js';
 
 const app = express.default();
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const usersRouter = express.Router();
-users.LinkRouter(usersRouter);
+users.Login.LinkRouter(usersRouter);
+users.CreateUser.LinkRouter(usersRouter);
 app.use('/users', usersRouter);
 
 app.listen(config.port, () => {

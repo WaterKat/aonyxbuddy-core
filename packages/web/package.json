@@ -1,0 +1,31 @@
+{
+  "name": "@aonyxlimited/web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "clean": "rimraf dist/",
+    "copy-files": "copyfiles -u 1 src/**/*.html src/**/*.css dist/",
+    "build": "npm run clean && tsc --build --force && npm run copy-files",
+    "dev:web": "live-server ./dist --watch --open",
+    "dev:tsc": "tsc --build --watch",
+    "dev:cpy": "copy-and-watch --watch src/**/*.{html,css,json} src/**/{fonts,img,css}/* dist/",
+    "dev": "concurrently --kill-others \"npm run dev:web\" \"npm run dev:tsc\" \"npm run dev:cpy\""
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/express": "^4.17.17",
+    "concurrently": "^8.2.1",
+    "copy-and-watch": "^0.1.6",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-require-extensions": "^0.1.3",
+    "live-server": "^1.2.2",
+    "typescript": "^5.0.2"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.18.2",
+    "url": "^0.11.1"
+  }
+}

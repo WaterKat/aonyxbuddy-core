@@ -4,7 +4,6 @@
 
 !/libraries
 !/packages
-!/proxy
 
 #git
 !/**/*.gitignore
@@ -30,3 +29,8 @@
 /**/www
 
 .env
+
+#share config but not nginx config
+!/proxy
+!/proxy/**/*.*
+/proxy/nginx/**/*.*

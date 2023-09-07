@@ -3,34 +3,24 @@ import pg from 'pg';
 interface IConfig {
     name: string,
     port: number,
-    db: pg.ClientConfig
-}
-
-const port = process.env.APP_PORT;
-let processedPort : number = 3000;
-if (typeof port !== 'undefined'){
-    if (!isNaN(+port)){
-        processedPort = +port;
-    }
-}
-
-const dbPort = process.env.SERVER_DB_PORT;
-let processedDBPort : number = 5432;
-if (typeof dbPort !== 'undefined'){
-    if (!isNaN(+dbPort)){
-        processedDBPort = +dbPort;
+    db: pg.ClientConfig,
+    auth: {
+        jwt_secret: string
     }
 }
 
 const config : IConfig= {
-    name: process.env.APP_NAME || 'App',
-    port: processedPort,
+    name: process.env.APP_NAME as string,
+    port: +(process.env.APP_PORT as string),
     db: {
-        user: process.env.SERVER_DB_USER,
-        host: process.env.SERVER_DB_HOST,
-        database: process.env.SERVER_DB_NAME,
-        password: process.env.SERVER_DB_PASSWORD,
-        port: processedDBPort
+        user: process.env.SERVER_DB_USER as string,
+        host: process.env.SERVER_DB_HOST as string,
+        database: process.env.SERVER_DB_NAME as string,
+        password: process.env.SERVER_DB_PASSWORD as string,
+        port: +(process.env.SERVER_DB_PORT as string)
+    },
+    auth: {
+        jwt_secret: process.env.JWT_SECRET as string
     }
 }
 
