@@ -1,13 +1,14 @@
 {
-  "extends" : "../../tsconfig.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "dist-ts",
     "rootDir": "src",
-    
     "composite": false,
     "declaration": false,
     "declarationMap": false,
-    
-    "lib": ["DOM","DOM.Iterable"]
+    "lib": [
+      "DOM",
+      "DOM.Iterable"
+    ]
   }
 }

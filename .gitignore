@@ -30,7 +30,8 @@
 
 #####IGNORE DIRECTORIES#####
 
-#npm
+#npm/bun
+!/**/package.json
 /**/node_modules
 
 #build ignore
