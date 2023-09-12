@@ -1,36 +1,39 @@
 #reverse gitignore
 /**/*
-!/**/
-
-!/libraries
-!/packages
 
 #git
 !/**/*.gitignore
+!LICENSE.md
+!README.md
 
-#config
-!/**/*.md
-!/**/*.json
+#environmental variables
+/**/*.env
+!/**/example.env
 
-#js/ts
-!/**/*.js
-!/**/*.jsx
-!/**/*.cjs
+#docker
+!docker.compose.dev.yml
+!docker.compose.yml
+!/**/dockerfile
 
+#tsc
+!/**/tsconfig.json
 !/**/*.ts
 !/**/*.tsx
 !/**/*.cts
 
+#eslint
+!/**/*.eslintrc.json
+!/**/*.eslintrc
+
+#nginx
+!/**/*.nginx
+
+#####IGNORE DIRECTORIES#####
+
 #npm
+/**/node_modules
+
+#build ignore
+/**/lib
 /**/dist
 /**/build
-/**/lib
-/**/node_modules
-/**/www
-
-.env
-
-#share config but not nginx config
-!/proxy
-!/proxy/**/*.*
-/proxy/nginx/**/*.*
