@@ -4,9 +4,5 @@
   "workspaces": [
     "packages/*",
     "libraries/*"
-  ],
-  "scripts" : {
-    "build:all" : "./build",
-    "push" : "./push"
-  }
+  ]
 }
