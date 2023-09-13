@@ -1,0 +1,13 @@
+{
+    "name": "@aonyxbuddy/stream-elements",
+    "private": true,
+    "version": "0.0.0",
+    "main": "./src/index.ts",
+    "devDependencies": {
+        "bun-types": "latest",
+        "typescript": "^5.2.2"
+    },
+    "dependencies": {
+        "@aonyxbuddy/stream-events": "^0.0.0"
+    }
+}

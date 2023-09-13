@@ -1,5 +1,5 @@
 #reverse gitignore
-/**/*
+/**/*.*
 
 #git
 !/**/*.gitignore
@@ -32,6 +32,7 @@
 
 #npm/bun
 !/**/package.json
+!/**/bun.lockb
 /**/node_modules
 
 #build ignore
