@@ -35,6 +35,5 @@
 /**/node_modules
 
 #build ignore
-/**/lib
 /**/dist
 /**/build

@@ -5,7 +5,6 @@
     "packages/*",
     "libraries/*"
   ],
-  "module": "index.ts",
   "type": "module",
   "devDependencies": {
     "bun-types": "latest"
