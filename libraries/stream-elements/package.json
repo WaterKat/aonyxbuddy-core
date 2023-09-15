@@ -1,13 +1,13 @@
 {
-    "name": "@aonyxbuddy/stream-elements",
-    "private": true,
-    "version": "0.0.0",
-    "main": "./src/index.ts",
-    "devDependencies": {
-        "bun-types": "latest",
-        "typescript": "^5.2.2"
-    },
-    "dependencies": {
-        "@aonyxbuddy/stream-events": "^0.0.0"
-    }
+  "name": "@aonyxbuddy/stream-elements",
+  "private": true,
+  "version": "0.0.0",
+  "main": "./src/index.ts",
+  "devDependencies": {
+    "bun-types": "^1.0.1",
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "build": "bun build ./src/index.ts --outfile=\"./dist/index.js\""
+  }
 }

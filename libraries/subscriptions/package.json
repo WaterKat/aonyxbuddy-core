@@ -1,16 +1,10 @@
 {
   "name": "@aonyxbuddy/subscriptions",
-  "version": "1.0.0",
-  "description": "a subscription package",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "private" : true,
+  "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "lint" : "eslint .",
-    "build": "tsc --build --force"
-  },
-  "author": "WaterKat",
-  "license": "ISC",
+  "description": "a subscription package",
+  "main": "./src/index.ts",
   "devDependencies": {
     "typescript": "^5.2.2"
   }

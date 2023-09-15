@@ -1,8 +1,8 @@
 {
     "name": "@aonyxbuddy/database",
-    "version": "1.0.0",
+    "private" : true,
+    "version": "0.0.0",
     "main": "./dist/index.ts",
-    "types": "./dist/index.d.ts",
     "type": "module",
     "scripts": {
         "lint" : "eslint .",

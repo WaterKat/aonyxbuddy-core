@@ -1,16 +1,12 @@
 {
   "name": "@aonyxbuddy/maths",
-  "version": "1.0.0",
-  "description": "a math package",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "private": true,
+  "version": "0.0.0",
   "type": "module",
+  "description": "a math package",
+  "main": "./dist/index.ts",
   "scripts": {
-    "lint" : "eslint .",
-    "build": "tsc --build --force"
   },
-  "author": "WaterKat",
-  "license": "ISC",
   "devDependencies": {
     "typescript": "^5.2.2"
   }

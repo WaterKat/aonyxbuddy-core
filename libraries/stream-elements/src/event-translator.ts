@@ -1,8 +1,10 @@
-import { StreamEvent, StreamEventComponent } from '../../../stream-events/index.js';
+import { StreamEvent } from '@aonyxbuddy/stream-events';
+import * as StreamEventComponent from '@aonyxbuddy/stream-events';
+
 import * as SETypes from './types.js';
 
 export default function TranslateStreamElementsEventToAonyxEvent(_event: any): StreamEvent | undefined {
-    function messageFromString(_message: string): StreamEventComponent.Message {
+    function messageFromString(_message: string): StreamEventComponent.ChatMessage {
         return {
             text: _message ?? '',
             emotes: []

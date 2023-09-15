@@ -2,14 +2,6 @@
   "name": "aonyxbuddy",
   "private": true,
   "workspaces": [
-    "packages/*",
     "libraries/*"
-  ],
-  "type": "module",
-  "devDependencies": {
-    "bun-types": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  }
+  ]
 }
