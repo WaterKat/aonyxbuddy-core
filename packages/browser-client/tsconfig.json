@@ -1,11 +1,10 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist-ts",
-    "rootDir": "src",
     "composite": false,
     "declaration": false,
     "declarationMap": false,
+    "types": ["bun-types"],
     "lib": [
       "DOM",
       "DOM.Iterable"

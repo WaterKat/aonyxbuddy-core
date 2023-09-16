@@ -1,9 +1,10 @@
 import { IClientConfig } from './iclient-config.js';
-import * as StreamCharacters from '@aonyxbuddy/streamcharacters';
-import * as StreamEvents  from '@aonyxbuddy/streamevents';
+import * as StreamCharacters from '@aonyxbuddy/stream-characters';
+import * as StreamEvents  from '@aonyxbuddy/stream-events';
 
 export const ClientConfigExample: IClientConfig = {
     id : 'franktts',
+    name: 'frank',
     png: { config: StreamCharacters.PNG.Tests.PNGConfigExample },
     nicknames: StreamEvents.Clients.PostProcessors.Nickname.Tests.NicknamePostProcessorOptionsExample,
     tts: { voice: 'Amy' },
@@ -114,3 +115,5 @@ export const ClientConfigExample: IClientConfig = {
         }
     }
 }
+
+export default ClientConfigExample;

@@ -2,6 +2,7 @@
   "name": "aonyxbuddy",
   "private": true,
   "workspaces": [
-    "libraries/*"
+    "libraries/*",
+    "packages/*"
   ]
 }

@@ -3,6 +3,7 @@ import { IClientConfig } from './iclient-config.js';
 
 export const ClientConfigExample: IClientConfig = {
     id: 'waterkattv',
+    name: 'aonyxbuddy',
     botBlacklist: [
         'nightbot',
         'streamelements',

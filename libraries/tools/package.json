@@ -1,16 +1,10 @@
 {
   "name": "@aonyxbuddy/tools",
-  "version": "1.0.0",
+  "private": true,
+  "version": "0.0.0",
   "description": "",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
   "type": "module",
-  "scripts": {
-    "lint" : "eslint .",
-    "build": "tsc --build --force"
-  },
-  "author": "WaterKat",
-  "license": "ISC",
   "devDependencies": {
     "typescript": "^5.2.2"
   }

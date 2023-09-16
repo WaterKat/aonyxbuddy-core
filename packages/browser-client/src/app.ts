@@ -1,11 +1,8 @@
-import * as StreamCharacters from '@aonyxbuddy/streamcharacters';
-import * as StreamEvents  from '@aonyxbuddy/streamevents';
-import * as Tools  from '@aonyxbuddy/tools';
+import * as StreamCharacters from '@aonyxbuddy/stream-characters';
+import * as StreamEvents from '@aonyxbuddy/stream-events';
+import * as Tools from '@aonyxbuddy/tools';
 
-//import { ClientConfigExample } from './config/iclient-config-waterkattv.test.js';
-import { ClientConfigExample } from './config/iclient-config-fariaorion.test.js';
-
-//import * as config from '../../firebase-tool/src/waterkat-config';
+import config from './config/config.js';
 
 async function GetEventClient(
   blockedText: string[],
@@ -107,10 +104,10 @@ async function GetCharacter(
     );
 
   const streamCharacterOptions: StreamCharacters.StreamCharacters.IStreamCharacterOptions =
-    {
-      renderer: renderer,
-      tts: tts,
-    };
+  {
+    renderer: renderer,
+    tts: tts,
+  };
 
   const character = await Tools.AsyncClassInitializer.create(
     StreamCharacters.StreamCharacters.StreamCharacter,
@@ -123,16 +120,16 @@ async function GetCharacter(
 }
 
 async function main() {
-  const helloWorldMessage = "Hey buddy old pal, I'm frank vee two";
+  const helloWorldMessage = `My name is ${config.name}. Glad to meet you!`;
 
   const character = await GetCharacter(
-    ClientConfigExample.png,
-    ClientConfigExample.tts
+    config.png,
+    config.tts
   );
   const eventClient = await GetEventClient(
-    ClientConfigExample.badWords,
-    ClientConfigExample.botBlacklist,
-    ClientConfigExample.nicknames
+    config.badWords,
+    config.botBlacklist,
+    config.nicknames
   );
 
   eventClient.eventSubscription.subscribe((event) => {
@@ -147,7 +144,7 @@ async function main() {
   console.log("Frank client-browser has been initiated");
   await character.Speak(helloWorldMessage);
 
-  const eventParserOptions = ClientConfigExample.responses;
+  const eventParserOptions = config.responses;
   const eventParser = new StreamEvents.Parsers.StreamEventParser(
     eventParserOptions
   );

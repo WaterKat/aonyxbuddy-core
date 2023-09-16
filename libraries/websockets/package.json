@@ -3,11 +3,8 @@
   "private" : true,
   "version": "0.0.0",
   "description": "a websockets package",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
   "type": "module",
-  "scripts": {
-  },
   "devDependencies": {
     "typescript": "^5.2.2"
   }
