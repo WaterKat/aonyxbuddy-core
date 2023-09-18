@@ -3,6 +3,7 @@ import * as StreamEvents from '@aonyxbuddy/stream-events';
 import * as Tools from '@aonyxbuddy/tools';
 
 import config from './config/config.js';
+import log from './log.js';
 
 async function GetEventClient(
   blockedText: string[],
@@ -120,12 +121,13 @@ async function GetCharacter(
 }
 
 async function main() {
-  const helloWorldMessage = `My name is ${config.name}. Glad to meet you!`;
+  const helloWorldMessage = `My name is ${config.name}. Glad to meet you, ${config.id}!`;
 
   const character = await GetCharacter(
     config.png,
     config.tts
   );
+
   const eventClient = await GetEventClient(
     config.badWords,
     config.botBlacklist,
@@ -133,7 +135,7 @@ async function main() {
   );
 
   eventClient.eventSubscription.subscribe((event) => {
-    console.log(event);
+    log('info', event);
   });
 
   if (!character || !eventClient) {
@@ -141,7 +143,7 @@ async function main() {
     throw "error on init";
   }
 
-  console.log("Frank client-browser has been initiated");
+  log('info', "Frank client-browser has been initiated");
   await character.Speak(helloWorldMessage);
 
   const eventParserOptions = config.responses;
@@ -158,7 +160,7 @@ async function main() {
     if (event.type === "command") {
       if (event.command_identifier === "!" && event.command_group === "frank") {
         if (event.command_request === "skip") {
-          console.log("skip requested");
+          log('info', "skip requested");
           character.Interrupt();
         }
       }

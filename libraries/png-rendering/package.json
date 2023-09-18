@@ -1,0 +1,14 @@
+{
+  "name": "@aonyxbuddy/png-rendering",
+  "private": true,
+  "version": "0.0.0",
+  "main": "./src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "bun-types": "latest"
+  },
+  "dependencies": {
+    "gifuct-js": "^2.1.2"
+  }
+}

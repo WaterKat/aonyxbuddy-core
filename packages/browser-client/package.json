@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint .",
     "build:tsc": "tsc --build",
-    "build" : " bun build ./src/app.ts --minify --splitting --outfile=./dist/app.js"
+    "build" : "bun build ./src/app.ts --minify --splitting --outfile=./dist/app.js",
+    "build:dev" : " bun build ./src/app.ts --watch --minify --splitting --outfile=./dist/app.js"
   },
   "devDependencies": {
     "typescript": "^5.0.2",
