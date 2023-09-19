@@ -60,5 +60,3 @@ export async function GetGIFFromURL(url: string): Promise<Types.ISpriteData | Er
         bitmap: imageBitmaps
     }
 }
-
-export default GetGIFFromURL;
