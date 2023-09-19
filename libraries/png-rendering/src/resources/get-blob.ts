@@ -1,8 +1,4 @@
-import { Types } from '../index.js';
-
-const FPS : number = 60;
-
-function BlobFromBase64(data: string): Blob | Error {
+export function GetBlobFromBase64(data: string): Blob | Error {
     try {
         const dataType: string = data.substring(
             data.indexOf(':') + 1,
@@ -23,18 +19,10 @@ function BlobFromBase64(data: string): Blob | Error {
     }
 }
 
-export async function ParseBase64(urls: string[], defaultFPS: number): Promise<Types.ISpriteData | Error> {
-    const spriteData : Types.ISpriteData = {
-        delay: new Array<number>(urls.length).fill(defaultFPS / FPS),
-        bitmap: new Array<ImageBitmap>(urls.length)
-    };
-    const promises = [];
-    for (let i = 0; i < urls.length){
-        promises.push(async function() {
-            
-        });
+export async function GetBlobFromURL(url: string) : Promise<Blob | Error> {
+    try {
+        return (await fetch(url)).blob();
+    } catch (e) {
+        return e as Error;
     }
-    return new Error();
 }
-
-export default ParseBase64;

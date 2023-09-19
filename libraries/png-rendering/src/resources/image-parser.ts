@@ -1,6 +1,5 @@
 import GetGIFFromURL from "./get-gif-from-url.js";
-import ParseBase64 from './get-image-from-base64.js';
-import ParseImage from './get-image-from-url.js';
+import ParseImage from './get-image.js';
 import { Types } from '../index.js';
 
 async function ImageReferenceParser(reference: string | string[], defaultFPS): Promise<Types.ISpriteData | Error> {
