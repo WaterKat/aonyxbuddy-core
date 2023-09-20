@@ -1,10 +1,11 @@
 import { Types } from '../index.js';
 
-const FPS: number = 60;
+//const DefaultScreenFPS: number = 60;
+const MSPerSecond: number = 1000;
 
-export async function GetImage(uris: string[], defaultFPS: number): Promise<Types.ISpriteData | Error> {
+export async function GetImage(uris: string[], desiredFPS: number): Promise<Types.ISpriteData | Error> {
     const spriteData: Types.ISpriteData = {
-        delay: new Array<number>(uris.length).fill(defaultFPS / FPS),
+        delay: new Array<number>(uris.length).fill( MSPerSecond / desiredFPS),
         bitmap: new Array<ImageBitmap>(uris.length)
     };
 

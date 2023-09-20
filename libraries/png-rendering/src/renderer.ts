@@ -9,7 +9,8 @@ export async function GetRenderer(config: Types.IPNGConfig) {
     if (rendererCanvas instanceof Error) return rendererCanvas;
     return {
         canvas: rendererCanvas,
-        renderSprite: (state: string, frame: number, callback?: () => {}) => {
+        sprites: sprites,
+        renderSprite: (state: string, frame: number, callback?: () => void) => {
             canvas.DrawFrameOnCanvas(rendererCanvas, sprites, state, frame, callback);
         }
     }

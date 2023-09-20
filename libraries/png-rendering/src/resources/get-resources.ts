@@ -6,7 +6,7 @@ export async function GetResources(spriteReferences: Types.SpriteReferences, def
     const sprites: Types.IAnimationData = { idle: { delay: [], bitmap: [] }, talking: { delay: [], bitmap: [] } };
 
     const keys: string[] = Object.keys(spriteReferences);
-    for (const key in keys) {
+    for (const key of keys) {
         if (typeof spriteReferences[key] === 'string') {
             const spriteData = await GetGIFFromURL(spriteReferences[key] as string);
             if (spriteData instanceof Error) return spriteData as Error;

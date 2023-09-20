@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "main": "./src/index.ts",
   "type": "module",
+  "scripts": {
+    "build:dev" : "echo \"<script>\" > ./dist/index.html;  bun build ./src/renderer.test.ts --splitting --outfile=./dist/test.js; cat ./dist/test.js >> ./dist/index.html; echo \"</script>\" >> ./dist/index.html"
+  },
   "devDependencies": {
     "typescript": "^5.2.2",
     "bun-types": "latest"

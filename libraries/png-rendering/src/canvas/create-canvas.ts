@@ -5,6 +5,9 @@ export function CreateCanvas(width: number, height: number, parent?: HTMLElement
         canvas.height = height;
         canvas.style.width = `${width}px`;
         canvas.style.height = `${height}px`;
+        canvas.style.margin = `0 0`;
+        canvas.style.padding = `0 0`;
+
         parent ? parent.appendChild(canvas) : document.body.appendChild(canvas);
         return canvas;
     }
