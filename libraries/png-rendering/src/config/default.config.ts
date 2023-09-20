@@ -1,6 +1,6 @@
-import * as PNGConfig from './ipng-config.js';
+import { Types } from '../index.js';
 
-export const PNGConfigExample: PNGConfig.IPNGConfig = {
+const config : Types.IPNGConfig = {
     size: {
         x: 256,
         y: 256
@@ -28,3 +28,5 @@ export const PNGConfigExample: PNGConfig.IPNGConfig = {
         ]
     }
 }
+
+export default config
