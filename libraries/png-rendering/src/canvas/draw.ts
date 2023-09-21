@@ -26,13 +26,15 @@ export function DrawFrameOnCanvas(canvas: HTMLCanvasElement, sprites: Types.IAni
     const imageRatio = image.width / image.height;
 
     if (canvasRatio > imageRatio) {
-        //TODO
+        sizeX = canvas.height * imageRatio;
+        //sizeY = canvas.height;
+    } else {
+        //sizeX = canvas.width;
+        sizeY = canvas.width / imageRatio;
     }
 
-    const ratio = image.width > image.height ? [1, image.height / image.width] : [image.width / image.height, 1];
-    const canvasRatio = canvas.width / canvas.height;
-
-    cache[canvas.id].drawImage(image, 0, 0, canvas.width * ratio, canvas.height / ratio);
+    cache[canvas.id].imageSmoothingEnabled = canvas.style.imageRendering === 'smooth';
+    cache[canvas.id].drawImage(image, 0, 0, sizeX, sizeY);
 
     if (!callback) return;
 

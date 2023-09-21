@@ -55,7 +55,7 @@ export function GetBlobFromBase64(data: string): Blob | Error {
         const byteChars: string = atob(dataBase64);
         const byteNumbers = new Array(byteChars.length);
         for (let i = 0; i < byteChars.length; i++) {
-            byteNumbers[i] = byteChars.charAt(i);
+            byteNumbers[i] = byteChars.charCodeAt(i);
         }
         const byteArray = new Uint8Array(byteNumbers);
         return new Blob([byteArray], { type: dataType });

@@ -1,16 +1,14 @@
 import { Types } from '../index.js';
 
-const config : Types.IPNGConfig = {
-    size: {
-        x: 256,
-        y: 256
+const config: Types.ISpriteRendererConfig = {
+    canvas: {
+        size: {
+            x: 256,
+            y: 256
+        },
+        antialiasing: false
     },
-    smoothed : true,
     defaultFPS: 10,
-    transitions: {
-        idle: [['talking*', undefined, 0]],
-        talking: [['idle*', undefined, 0]]
-    },
     sprites: {
         idle: [
             'https://resources.aonyxlimited.com/DebugImages/idle/0.png',

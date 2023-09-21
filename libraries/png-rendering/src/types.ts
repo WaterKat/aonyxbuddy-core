@@ -1,21 +1,18 @@
-export type IPNGConfig = {
-    size: Vector2;
-    smoothed: boolean;
-    defaultFPS: number;
-    transitions: {
-        [key : string] : Array<[string, string?, number?]>;
-    }
-    sprites: SpriteReferences;
+export interface ISpriteRendererConfig {
+    canvas: ICanvasConfig,
+    defaultFPS: number,
+    sprites: SpriteReferences
 }
 
-export type Vector2 = {
-    x: number,
-    y: number
+export interface ICanvasConfig {
+    size: {
+        x: number,
+        y: number
+    },
+    antialiasing: boolean
 }
 
 export interface SpriteReferences {
-    idle : string | string[],
-    talking : string | string[],
     [key: string] : string | string[]
 }
 
@@ -25,7 +22,5 @@ export interface ISpriteData {
 }
 
 export interface IAnimationData {
-    idle : ISpriteData,
-    talking : ISpriteData,
     [key: string] : ISpriteData
 }

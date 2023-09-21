@@ -3,7 +3,7 @@ import { GetImage } from './get-image.ts';
 import { GetGIFFromURL } from './get-gif-from-url.ts';
 
 export async function GetResources(spriteReferences: Types.SpriteReferences, defaultFPS: number): Promise<Types.IAnimationData | Error> {
-    const sprites: Types.IAnimationData = { idle: { delay: [], bitmap: [] }, talking: { delay: [], bitmap: [] } };
+    const sprites: Types.IAnimationData = {};
 
     const keys: string[] = Object.keys(spriteReferences);
     for (const key of keys) {

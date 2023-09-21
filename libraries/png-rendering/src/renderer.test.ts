@@ -1,6 +1,11 @@
 import * as index from './index.js';
-import config from './config/default.config.js';
+import config from './config/offline.config.js';
+
+
+
 async function main() {
+    document.body.style.background = 'DarkSeaGreen';
+
     const renderer = await index.default(config)
     if (renderer instanceof Error) throw (renderer);
 
@@ -18,4 +23,4 @@ async function main() {
     anim();
 }
 
-main();
+window.onload = main;

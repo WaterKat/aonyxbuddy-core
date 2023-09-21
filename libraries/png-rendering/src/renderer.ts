@@ -2,10 +2,10 @@ import { Types } from './index.js';
 import * as resources  from './resources/index.js';
 import * as canvas from './canvas/index.js';
 
-export async function GetRenderer(config: Types.IPNGConfig) {
+export async function GetRenderer(config: Types.ISpriteRendererConfig) {
     const sprites = await resources.GetResources(config.sprites, config.defaultFPS);
     if (sprites instanceof Error) return sprites;
-    const rendererCanvas = canvas.CreateCanvas(config.size.x,config.size.y);
+    const rendererCanvas = canvas.CreateCanvas(config.canvas);
     if (rendererCanvas instanceof Error) return rendererCanvas;
     return {
         canvas: rendererCanvas,
