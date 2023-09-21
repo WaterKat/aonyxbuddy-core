@@ -1,5 +1,5 @@
 {
-  "name": "@aonyxbuddy/png-rendering",
+  "name": "@aonyxbuddy/sprite-rendering",
   "private": true,
   "version": "0.0.0",
   "main": "./src/index.ts",
