@@ -10,8 +10,11 @@ export async function GetRenderer(config: Types.ISpriteRendererConfig) {
     return {
         canvas: rendererCanvas,
         sprites: sprites,
-        renderSprite: (state: string, frame: number, callback?: () => void) => {
+        RenderSprite: (state: string, frame: number, callback?: () => void) => {
             canvas.DrawFrameOnCanvas(rendererCanvas, sprites, state, frame, callback);
+        },
+        ClearCanvas: (callback?: () => void) => {
+            canvas.ClearCanvas(rendererCanvas, callback)
         }
     }
 }

@@ -50,3 +50,14 @@ export function DrawFrameOnCanvas(canvas: HTMLCanvasElement, sprites: Types.IAni
             callback();
     }, sprites[key].delay[frame]);
 }
+
+export function ClearCanvas(canvas: HTMLCanvasElement, callback?: () => void) {
+    if (!cache[canvas.id]) {
+        cache[canvas.id] = canvas.getContext('2d') as CanvasRenderingContext2D;
+    }
+    cache[canvas.id].clearRect(0, 0, canvas.width, canvas.height);
+
+    if (!callback) return;
+
+    requestAnimationFrame(callback);
+}
