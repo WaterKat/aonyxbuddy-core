@@ -1,4 +1,4 @@
-import { StreamEventTypeID } from '../types.js';
+import { StreamEventTypeID } from '@aonyxbuddy/stream-events/src/types.js';
 
 export type Response = {
     [key in StreamEventTypeID]: string[];

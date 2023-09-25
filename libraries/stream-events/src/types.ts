@@ -79,10 +79,9 @@ export type StreamEvent = {
     message: ChatMessage;
     redeem_id : string;
 } | {
-    type : 'ignore';
-    ignore_message : string;
-} | {
-    type : 'custom';
-    custom_id : string;
-    custom_args : string[];
+    type : 'other';
+    original : StreamEvent,
+    other : {
+        [key: string] : string
+    }
 })
