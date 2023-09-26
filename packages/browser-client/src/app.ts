@@ -1,15 +1,56 @@
 import * as StreamCharacters from '@aonyxbuddy/stream-characters';
-import * as StreamEvents from '@aonyxbuddy/stream-events';
 import * as Tools from '@aonyxbuddy/tools';
+
+import * as SpriteRendering from '@aonyxbuddy/sprite-rendering';
+import * as StreamEvents from '@aonyxbuddy/stream-events';
+import StreamElements from '@aonyxbuddy/stream-elements';
 
 import config from './config/config.js';
 import log from './log.js';
+
+let talkingFrame = 0;
+
+function OnEventReceived(streamEvent: StreamEvents.Types.StreamEvent) {
+  let workingEvent = streamEvent;
+  workingEvent = StreamEvents.Manipulation.ParseCommand(workingEvent, true);
+  workingEvent = StreamEvents.Manipulation.FilterBannedWords(workingEvent, config.blockedWords);
+  workingEvent = StreamEvents.Manipulation.FilterEmojis(workingEvent, '');
+  workingEvent = StreamEvents.Manipulation.IgnoreFromBlacklist(streamEvent, config.blacklist);
+  workingEvent = StreamEvents.Manipulation.IgnoreFromBotlist(streamEvent, config.botlist);
+  workingEvent = StreamEvents.Manipulation.ProcessNicknames(streamEvent, config.nicknames);
+}
+
+StreamElements(OnEventReceived);
+
+function Render(renderer: SpriteRendering.Types.IRenderer) {
+  renderer.ClearCanvas();
+  renderer.RenderSprite('base', 0);
+  renderer.RenderSprite('talking', talkingFrame, () => { Render(renderer); })
+}
+
+SpriteRendering.default(config.spriteRendering).then(renderer => {
+  if (renderer instanceof Error) throw (renderer);
+  Render(renderer);
+});
+
+setInterval(() => {
+  const sin = (Math.sin(new Date().getTime() / 1000) + 1) / 2;
+  talkingFrame = Math.round(sin * (config.spriteRendering.sprites.talking.length - 1));
+}, 10)
+
+
+/*
 
 async function GetEventClient(
   blockedText: string[],
   botBlacklist: string[],
   nicknames: StreamEvents.Clients.PostProcessors.Nickname.INicknamePostProcessorOptions
 ): Promise<StreamEvents.Clients.EventManager> {
+
+  //TODO Implementstream event alternatives
+
+  function OnEventReceived(StreamEvents)
+
   const client = new StreamEvents.Clients.EventManager();
   const streamElementsEventListener =
     new StreamEvents.Clients.StreamElementsEventListener();
@@ -130,7 +171,7 @@ async function main() {
 
   const eventClient = await GetEventClient(
     config.badWords,
-    config.botBlacklist,
+    config.botlist,
     config.nicknames
   );
 
@@ -186,3 +227,4 @@ async function main() {
 }
 
 main();
+*/

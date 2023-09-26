@@ -4,7 +4,7 @@ import { IClientConfig } from './iclient-config.js';
 export const ClientConfigExample: IClientConfig = {
     id: 'fariaorion',
     name: 'frank',
-    botBlacklist: [
+    botlist: [
         'nightbot',
         'streamelements',
         'soundalerts',
@@ -132,7 +132,7 @@ export const ClientConfigExample: IClientConfig = {
         "yed",
         "zabourah"
     ],
-    png: {
+    spriteRendering: {
         config: {
             size: {
                 x: 256,

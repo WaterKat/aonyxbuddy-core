@@ -7,6 +7,7 @@ export async function GetRenderer(config: Types.ISpriteRendererConfig) {
     if (sprites instanceof Error) return sprites;
     const rendererCanvas = canvas.CreateCanvas(config.canvas);
     if (rendererCanvas instanceof Error) return rendererCanvas;
+
     return {
         canvas: rendererCanvas,
         sprites: sprites,
@@ -18,3 +19,5 @@ export async function GetRenderer(config: Types.ISpriteRendererConfig) {
         }
     }
 }
+
+export type IRenderer = Exclude<Awaited<(ReturnType<typeof GetRenderer>)>, Error>;

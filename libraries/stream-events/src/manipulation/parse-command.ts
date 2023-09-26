@@ -11,7 +11,7 @@ function log(...items: any) {
         console.log(items);
 }
 
-export function ParseCommand(streamEvent: Types.StreamEvent, useRequestField: boolean): Types.StreamEvent {
+export function ParseCommand(streamEvent: Types.StreamEvent, useRequestField?: boolean): Types.StreamEvent {
     const minimumMessageLength: number = useRequestField ? 4 : 2;
 
     if (streamEvent.type !== 'chat') {

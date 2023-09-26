@@ -1,3 +1,5 @@
+import { GetRenderer } from './renderer.js';
+
 export interface ISpriteRendererConfig {
     canvas: ICanvasConfig,
     defaultFPS: number,
@@ -24,3 +26,5 @@ export interface ISpriteData {
 export interface IAnimationData {
     [key: string] : ISpriteData
 }
+
+export type IRenderer = Exclude<Awaited<(ReturnType<typeof GetRenderer>)>, Error>;
