@@ -1,19 +1,18 @@
-import { StreamEvent } from '@aonyxbuddy/stream-events';
-import * as StreamEventComponent from '@aonyxbuddy/stream-events';
+import { Types } from '@aonyxbuddy/stream-events';
 
 import * as SETypes from './types.js';
 
-export default function TranslateStreamElementsEventToAonyxEvent(_event: any): StreamEvent | undefined {
-    function messageFromString(_message: string): StreamEventComponent.ChatMessage {
+export default function TranslateStreamElementsEventToAonyxEvent(_event: any): Types.StreamEvent | undefined {
+    function messageFromString(_message: string): Types.ChatMessage {
         return {
             text: _message ?? '',
             emotes: []
         }
     }
 
-    function translateMessage(_event: any): StreamEvent {
+    function translateMessage(_event: any): Types.StreamEvent {
         const seMessage: SETypes.SEMessageEvent = _event;
-        const aonyxMessage: StreamEvent = {
+        const aonyxMessage: Types.StreamEvent = {
             type: 'chat',
             username: seMessage.data.nick,
             message: {
@@ -32,7 +31,7 @@ export default function TranslateStreamElementsEventToAonyxEvent(_event: any): S
         return aonyxMessage;
     }
 
-    function translateOther(_event: any): StreamEvent | undefined {
+    function translateOther(_event: any): Types.StreamEvent | undefined {
         //Gift Parsing
         if (_event.type === 'subscriber') {
             if (_event.bulkGifted || _event.isCommunityGift || _event.gifted) {
@@ -41,7 +40,7 @@ export default function TranslateStreamElementsEventToAonyxEvent(_event: any): S
         }
 
         const seEvent: SETypes.SEBasicEvent = _event as SETypes.SEBasicEvent;
-        let aonyxEvent: StreamEvent;
+        let aonyxEvent: Types.StreamEvent;
         const base = {
             username: seEvent.name,
         }

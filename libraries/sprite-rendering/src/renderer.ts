@@ -19,5 +19,3 @@ export async function GetRenderer(config: Types.ISpriteRendererConfig) {
         }
     }
 }
-
-export type IRenderer = Exclude<Awaited<(ReturnType<typeof GetRenderer>)>, Error>;

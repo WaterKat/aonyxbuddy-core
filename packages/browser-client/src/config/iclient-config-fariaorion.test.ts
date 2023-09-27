@@ -1,5 +1,5 @@
 import { IClientConfig } from './iclient-config.js';
-//import { StreamEvents } from '../external';
+import FrankImages from './base64/frank.js';
 
 export const ClientConfigExample: IClientConfig = {
     id: 'fariaorion',
@@ -133,91 +133,15 @@ export const ClientConfigExample: IClientConfig = {
         "zabourah"
     ],
     spriteRendering: {
-        config: {
+        canvas: {
             size: {
                 x: 256,
                 y: 256
             },
-            smoothed: false,
-            defaultFPS: 5,
-            sprites: {
-                /* 
-                idle : [
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_1/0.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_1/1.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_1/2.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_1/3.png',
-                ], 
-                idle_2 : [
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_2/0.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_2/1.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_2/2.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_2/3.png',
-                ], 
-                idle_3 : [
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_3/0.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_3/1.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_3/2.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_3/3.png',
-                ], 
-                idle_4 : [
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_4/0.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_4/1.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_4/2.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/idle_4/3.png',
-                ], 
-                talking : [
-                    'https://resources.aonyxlimited.com/cat-sprites/talk/0.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/talk/1.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/talk/2.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/talk/3.png',
-                    'https://resources.aonyxlimited.com/cat-sprites/talk/4.png'
-                ]
-                */
-                //                idle : 'https://resources.aonyxlimited.com/frank/frank-idle-pretty.gif',
-                idle: ['https://resources.aonyxlimited.com/frank/0.png'],
-                talking: [
-                    'https://resources.aonyxlimited.com/frank/0.png',
-                    'https://resources.aonyxlimited.com/frank/1.png',
-                    'https://resources.aonyxlimited.com/frank/2.png',
-                    'https://resources.aonyxlimited.com/frank/3.png',
-                    'https://resources.aonyxlimited.com/frank/4.png',
-                    'https://resources.aonyxlimited.com/frank/5.png',
-                    'https://resources.aonyxlimited.com/frank/6.png',
-                    'https://resources.aonyxlimited.com/frank/7.png',
-                    'https://resources.aonyxlimited.com/frank/8.png',
-                    'https://resources.aonyxlimited.com/frank/9.png',
-                    'https://resources.aonyxlimited.com/frank/10.png'
-                ],
-
-            },
-            transitions: {
-                idle: [['talking', undefined, 0]],
-                talking: [['idle', undefined, 0]],
-                /*
-                idle: [
-                    ['idle', undefined, 20],
-                    ['idle*', undefined, 1],
-                    ['talking', undefined, 0]
-                ],
-                idle_2 : [
-                    ['idle*', undefined, 1],
-                    ['talking', undefined, 0]
-                ],
-                idle_3 : [
-                    ['idle*', undefined, 1],
-                    ['talking', undefined, 0]
-                ],
-                idle_4 : [
-                    ['idle*', undefined, 1],
-                    ['talking', undefined, 0]
-                ],
-                talking: [
-                    ['idle*', undefined, 0]
-                ]
-                */
-            },
-        }
+            antialiasing: false
+        },
+        defaultFPS: 10,
+        sprites: FrankImages
     },
     nicknames: {
         'waterkattv': ['papa', 'waterkat', 'the cat'],
@@ -238,9 +162,9 @@ export const ClientConfigExample: IClientConfig = {
         'carlos90975': ['carlos', 'kiss a homie'],
         'bluebekaw': ['blue bekaw', 'bekaw'],
         'fenrirdesigns': ['fenrir'],
-        'cupidjpeg' : ['cupid', 'cutie', 'sexy beast']
+        'cupidjpeg': ['cupid', 'cutie', 'sexy beast']
     },
-    tts: { voice: 'Brian'},
+    tts: { voice: 'Brian' },
     responses: {
         responses: {
             chat: {
