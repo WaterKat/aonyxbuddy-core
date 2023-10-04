@@ -4,7 +4,7 @@ const AlphaNumericsRegex: RegExp = /^[a-zA-Z0-9]+$/;
 const WhitespacesRegex: RegExp = /\s+/;
 const NonstandardUnicodesRegex: RegExp = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
 
-const logs = false;
+const logs = true;
 
 function log(...items: any) {
     if (logs)
@@ -23,8 +23,10 @@ export function ParseCommand(streamEvent: Types.StreamEvent, useRequestField?: b
     messageText = messageText.trim();
 
     //
-    if (messageText.length < minimumMessageLength)
+    if (messageText.length < minimumMessageLength){
+        log('Command is smaller than minimum Message Length');
         return streamEvent;
+    }
 
     //
     const firstCharacter = messageText[0];

@@ -5,6 +5,7 @@ import { GetAudioBufferSourceNode, PlayAudioBufferSourceNode, StopAudioBufferSou
 export function GetTextToSpeech(config: Types.ITextToSpeechConfig) {
     const context = new AudioContext();
     const analyzer = context.createAnalyser();
+    const sourceNodes : AudioBufferSourceNode[] = [];
     analyzer.connect(context.destination);
     return {
         context: context,
@@ -13,9 +14,16 @@ export function GetTextToSpeech(config: Types.ITextToSpeechConfig) {
             const audioBuffer = await GetVoiceAudioBuffer(text, config.voice, context);
             if (!audioBuffer) return;
             const audioBufferSourceNode = GetAudioBufferSourceNode(audioBuffer, context, analyzer);
+            sourceNodes.push(audioBufferSourceNode);
             PlayAudioBufferSourceNode(context, audioBufferSourceNode, onStop);
             return audioBufferSourceNode;
         },
-        Stop: StopAudioBufferSourceNode
+        Stop: () => {
+            while (sourceNodes.length > 0) {
+                const sourceNode = sourceNodes.pop();
+                if (!sourceNode) break;
+                StopAudioBufferSourceNode(sourceNode);
+            }
+        }
     }
 }

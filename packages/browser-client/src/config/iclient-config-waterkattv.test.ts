@@ -1,3 +1,5 @@
+/*
+
 import { IClientConfig } from './iclient-config.js';
 //import { StreamEvents } from '../external';
 
@@ -173,28 +175,8 @@ export const ClientConfigExample: IClientConfig = {
                     'https://resources.aonyxlimited.com/cat-sprites/talk/4.png'
                 ],
                 
-                /*
-                idle: ['https://resources.aonyxlimited.com/frank/0.png'],
-                talking: [
-                    'https://resources.aonyxlimited.com/frank/0.png',
-                    'https://resources.aonyxlimited.com/frank/1.png',
-                    'https://resources.aonyxlimited.com/frank/2.png',
-                    'https://resources.aonyxlimited.com/frank/3.png',
-                    'https://resources.aonyxlimited.com/frank/4.png',
-                    'https://resources.aonyxlimited.com/frank/5.png',
-                    'https://resources.aonyxlimited.com/frank/6.png',
-                    'https://resources.aonyxlimited.com/frank/7.png',
-                    'https://resources.aonyxlimited.com/frank/8.png',
-                    'https://resources.aonyxlimited.com/frank/9.png',
-                    'https://resources.aonyxlimited.com/frank/10.png'
-                ],
-                */
             },
             transitions: {
-                /*
-                idle: [['talking', undefined, 0]],
-                talking: [['idle', undefined, 0]],
-                */
                 idle: [
                     ['idle', undefined, 20],
                     ['idle*', undefined, 1],
@@ -271,3 +253,5 @@ export const ClientConfigExample: IClientConfig = {
         }
     }
 }
+
+*/

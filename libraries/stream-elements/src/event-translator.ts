@@ -15,6 +15,7 @@ export default function TranslateStreamElementsEventToAonyxEvent(_event: any): T
         const aonyxMessage: Types.StreamEvent = {
             type: 'chat',
             username: seMessage.data.nick,
+            nickname: seMessage.data.displayName ?? seMessage.data.nick,
             message: {
                 text: seMessage.data.text,
                 emotes: seMessage.data.emotes.map(seEmote => ({ type: seEmote.type, name: seEmote.name }))

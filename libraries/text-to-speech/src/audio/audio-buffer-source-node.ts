@@ -33,7 +33,8 @@ export function PlayAudioBufferSourceNode(audioContext: AudioContext, audioBuffe
 export function StopAudioBufferSourceNode(audioBufferSourceNode: AudioBufferSourceNode): undefined {
     audioBufferSourceNode.stop();
 }
-
+/* 
+// USES RMS
 export function GetAudioBufferAmplitude(audioAnalyzerNode: AnalyserNode): number {
     const byteData = new Uint8Array(audioAnalyzerNode.fftSize / 2);
     audioAnalyzerNode.getByteTimeDomainData(byteData);
@@ -48,4 +49,18 @@ export function GetAudioBufferAmplitude(audioAnalyzerNode: AnalyserNode): number
 
     return rms;
 }
+*/
 
+//USES PEAK
+export function GetAudioBufferAmplitude(audioAnalyzerNode: AnalyserNode): number {
+    const byteData = new Uint8Array(audioAnalyzerNode.fftSize / 2);
+    audioAnalyzerNode.getByteTimeDomainData(byteData);
+    
+    // Convert byte data to centered float ranging from -1 to 1.
+    const floatData = Array.from(byteData).map(n => (n - 128) / 128);
+    
+    // Calculate Peak Amplitude
+    const peak = Math.max(...floatData.map(Math.abs));
+
+    return peak;
+}

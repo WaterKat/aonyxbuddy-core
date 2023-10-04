@@ -9,15 +9,17 @@ export function NormalizeAudioBuffer(audioBuffer: AudioBuffer, audioContext?: Au
 
         // Find the maximum value
         for (let i = 0; i < channelData.length; i++) {
-            if (Math.abs(channelData[i]) > maxVal) {
-                maxVal = Math.abs(channelData[i]);
+            const absoluteValue = Math.abs(channelData[i]);
+            if (absoluteValue > maxVal) {
+                maxVal = absoluteValue;
             }
         }
 
         // Normalize the buffer
-        const gain = 1 / maxVal;
+        const gain = 1 / maxVal;    
         const newChannelData = newAudioBuffer.getChannelData(channel);
         for (let i = 0; i < channelData.length; i++) {
+
             newChannelData[i] = channelData[i] * gain;
         }
     }
