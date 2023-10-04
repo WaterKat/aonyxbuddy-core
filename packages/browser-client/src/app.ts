@@ -13,14 +13,14 @@ import log from './log.js';
 
 let talkingFrame = 0;
 
-//Body Prep
+//* Preparing Body Styling 
 document.body.style.margin = '0 0';
 document.body.style.padding = '0 0';
 
-//TTS
+//* Text To Speech
 const tts = TextToSpeech.default(config.tts)
 
-// function Combined Talk
+//* Text To Speech Queue Logic
 const speechQueue: { text: string, callback?: () => void }[] = [];
 const timeBetweenSpeech = 0.25;
 let isSpeakingQueue = false;
@@ -57,7 +57,7 @@ function SpeakInQueue() {
 		const speechRequest = speechQueue.shift();
 		if (!speechRequest) return;
 
-		console.log('Speech Request:', speechRequest.text);
+		log('info', 'Speech Request:', speechRequest.text);
 
 		const interval = setInterval(() => {
 			const amplitude = Math.min(TextToSpeech.Audio.GetAudioBufferAmplitude(tts.analyzer), 0.99);
@@ -75,8 +75,6 @@ function SpeakInQueue() {
 
 	setTimeout(SpeakRequest, 1000 * timeBetweenSpeech);
 }
-
-AppendToSpeechQueue('A-onyx Buddy is active.');
 
 //* Speech Skipping 
 
@@ -107,15 +105,37 @@ function SkipAllSpeech() {
 	}
 }
 
+//* Mute 
+let isMuted = false;
+let mutedFrame = 0;
+
+function SetMuted() {
+	isMuted = true;
+	mutedFrame = 1;
+	SkipAllSpeech();
+}
+
+function SetUnmuted() {
+	isMuted = false;
+	mutedFrame = 0;
+}
+
+
 //* StreamEventParser
 
-function ParseEvent(event: StreamEvents.Types.StreamEvent) {
-	const response = StreamEventParser.Parser.GetResponse(config.responses, event, 'voice');
+function ParseEvent(streamEvent: StreamEvents.Types.StreamEvent) {
+	const response = StreamEventParser.Parser.GetResponse(config.responses, streamEvent, 'voice');
 	AppendToSpeechQueue(response)
+
+	//* Special Condition for Subscription (Sub Messages)
+
+	if (streamEvent.type === 'subscriber'){
+		AppendToSpeechQueue(streamEvent.message?.text ?? '');
+	}
 }
 
 function ParseOther(event: StreamEvents.Types.StreamEvent) {
-	console.log('Other:', event);
+	log('log', 'Other:', event);
 }
 
 const command_identifier = '!';
@@ -128,12 +148,21 @@ function ParseCommand(event: StreamEvents.Types.StreamEvent) {
 	const command = event.command_request.toLocaleLowerCase();
 	switch (command) {
 		case 'debug':
+			log('log', 'Muted:', isMuted);
 			log('log', 'SkipCount:', skipCount);
 			log('log', speechQueue);
 			break;
 		case 'say':
 			log('info', 'say command called');
 			InsertToSpeechQueue(event.command_args);
+			break;
+		case 'mute': 
+			log('info', 'mute called');
+			SetMuted();
+			break;
+		case 'unmute':
+			log('info', 'unmute called');
+			SetUnmuted();
 			break;
 		case 'skip':
 			log('info', 'skip command called');
@@ -158,7 +187,8 @@ function ParseCommand(event: StreamEvents.Types.StreamEvent) {
 function Render(renderer: SpriteRendering.Types.IRenderer) {
 	renderer.ClearCanvas();
 	renderer.RenderSprite('base', 0);
-	renderer.RenderSprite('talking', Math.floor(talkingFrame), () => { Render(renderer); })
+	renderer.RenderSprite('mute', mutedFrame);
+	renderer.RenderSprite('talking', Math.floor(talkingFrame), () => { Render(renderer); });
 }
 
 const renderer = SpriteRendering.default(config.spriteRendering).then(renderer => {
@@ -170,11 +200,13 @@ const renderer = SpriteRendering.default(config.spriteRendering).then(renderer =
 function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
 	let streamEvent = rawEvent;
 	streamEvent = StreamEvents.Manipulation.ParseCommand(streamEvent, true);
+	streamEvent = StreamEvents.Manipulation.IgnoreCommandWithoutPermission(streamEvent, 'CommandPermission');
 	streamEvent = StreamEvents.Manipulation.FilterBannedWords(streamEvent, config.blockedWords);
 	streamEvent = StreamEvents.Manipulation.FilterEmojis(streamEvent, '');
 	streamEvent = StreamEvents.Manipulation.IgnoreFromBlacklist(streamEvent, config.blacklist);
 	streamEvent = StreamEvents.Manipulation.IgnoreFromBotlist(streamEvent, config.botlist);
 	streamEvent = StreamEvents.Manipulation.ProcessNicknames(streamEvent, config.nicknames);
+	streamEvent = StreamEvents.Manipulation.IgnoreWithCondition(streamEvent, !isMuted, 'MuteToggle');
 	console.info('RawEvent:', streamEvent);
 	if (streamEvent.type === 'other') {
 		ParseOther(streamEvent);
@@ -192,6 +224,8 @@ function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
 
 StreamElements(OnEventReceived);
 
+AppendToSpeechQueue('A-onyx Buddy is active.');
+SpeakInQueue();
 
 // * THIS IS FOR DEBUGGING PURPOSES
 /*

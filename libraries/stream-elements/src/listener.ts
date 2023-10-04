@@ -20,7 +20,7 @@ export default function ListenForStreamElementsEvents(callback: (event: Types.St
                 ..._eventData.detail.event,
                 type: _eventData.detail.listener.split("-")[0]
             }
-
+            //console.log('raw se: ',streamElementEvent);
             const aonyxStreamEvent = EventTranslator(streamElementEvent);
             if (aonyxStreamEvent) {
                 callback(aonyxStreamEvent);
