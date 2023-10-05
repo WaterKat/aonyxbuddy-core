@@ -129,14 +129,39 @@ function ParseEvent(streamEvent: StreamEvents.Types.StreamEvent) {
 
 	//* Special Condition for Subscription (Sub Messages)
 
-	if (streamEvent.type === 'subscriber'){
+	if (streamEvent.type === 'subscriber') {
 		AppendToSpeechQueue(streamEvent.message?.text ?? '');
 	}
 }
 
-function ParseOther(event: StreamEvents.Types.StreamEvent) {
-	log('log', 'Other:', event);
+function ParseOther(otherEvent: StreamEvents.Types.StreamEvent) {
+	if (otherEvent.type !== 'other') {
+		log('info', 'ParseOther: Event not "other" type');
+		return;
+	}
+
+	if (!otherEvent.other) {
+		log('info', 'ParseOther: event "other" field not set');
+		return;
+	}
+
+	if (!otherEvent.other.type) {
+		log('info', 'ParseOther: "type" field not set');
+		return;
+	}
+
+	if (otherEvent.other.type === 'chat-first') {
+		const customResponse = StreamEventParser.Parser.GetResponse(config.responses, otherEvent.original, 'voice', 'chat-first');
+		AppendToSpeechQueue(customResponse);
+		SpeakInQueue();
+		log('info', customResponse);
+	} else {
+		log('info', 'ParseOther: "type" is not chat-first');
+	}
+
+	log('error', otherEvent);
 }
+
 
 const command_identifier = '!';
 const command_group = 'frank';
@@ -156,7 +181,7 @@ function ParseCommand(event: StreamEvents.Types.StreamEvent) {
 			log('info', 'say command called');
 			InsertToSpeechQueue(event.command_args);
 			break;
-		case 'mute': 
+		case 'mute':
 			log('info', 'mute called');
 			SetMuted();
 			break;
@@ -207,6 +232,7 @@ function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
 	streamEvent = StreamEvents.Manipulation.IgnoreFromBotlist(streamEvent, config.botlist);
 	streamEvent = StreamEvents.Manipulation.ProcessNicknames(streamEvent, config.nicknames);
 	streamEvent = StreamEvents.Manipulation.IgnoreWithCondition(streamEvent, !isMuted, 'MuteToggle');
+	streamEvent = StreamEvents.Detection.DetectFirstEvent(streamEvent, ParseOther);
 	console.info('RawEvent:', streamEvent);
 	if (streamEvent.type === 'other') {
 		ParseOther(streamEvent);
@@ -218,7 +244,7 @@ function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
 
 	//! Hacky but works
 	SkipSpeech();
-	
+
 	SpeakInQueue();
 }
 

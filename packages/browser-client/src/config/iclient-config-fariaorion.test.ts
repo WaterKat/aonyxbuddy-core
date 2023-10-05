@@ -49,7 +49,6 @@ export const ClientConfigExample: IClientConfig = {
     },
     tts: { voice: 'Brian' },
     responses: {
-
         chat: {
             follow: ['Thank you for the follow, ${nickname}.'],
             subscriber: ['Thank you for the subscription, ${nickname}.'],
@@ -141,7 +140,7 @@ export const ClientConfigExample: IClientConfig = {
             chat: [],
             command: [],
             redeem: [],
-            "event-first-message": [
+            "chat-first": [
                 "Welcome, ${nickname}! Enjoy the cosmic vibes!",
                 "Greetings, ${nickname}! Thanks for joining us!",
                 "Hello there, ${nickname}! It's great to see you in the chat!",
