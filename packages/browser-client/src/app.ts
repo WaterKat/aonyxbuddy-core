@@ -150,7 +150,7 @@ function ParseOther(otherEvent: StreamEvents.Types.StreamEvent) {
 		return;
 	}
 
-	if (otherEvent.other.type === 'chat-first') {
+	if (otherEvent.other.type === 'chat-first' && otherEvent.original.type === 'chat') {
 		const customResponse = StreamEventParser.Parser.GetResponse(config.responses, otherEvent.original, 'voice', 'chat-first');
 		AppendToSpeechQueue(customResponse);
 		SpeakInQueue();

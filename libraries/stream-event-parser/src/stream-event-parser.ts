@@ -1,8 +1,8 @@
 import { Types } from '@aonyxbuddy/stream-events';
 import { IResponses } from './types';
 
-export function GetResponse(responses: IResponses, event: Types.StreamEvent, key: string){
-    const type = event.type;
+export function GetResponse(responses: IResponses, event: Types.StreamEvent, key: string, typeOverride?: string){
+    const type = typeOverride ?? event.type;
 
     if (!responses[key] || !responses[key][type] || responses[key][type].length < 1)
         return '';
