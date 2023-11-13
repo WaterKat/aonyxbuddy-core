@@ -8,7 +8,7 @@
     "build:tsc": "tsc --build",
     "build" : "bun build ./src/app.ts --minify --splitting --outfile=./dist/app.js",
     "build:dev" : 
-    "bun build ./src/app.ts --splitting --outfile=./dist/app.js; echo \"<script>\" > ./dist/index.html; cat ./dist/app.js >> ./dist/index.html; echo \"</script>\" >> ./dist/index.html" 
+    "bun build ./src/app.ts --splitting --outfile=./dist/app.js; echo \"<!DOCTYPE html><head/><body><script defer>\" > ./dist/index.html; cat ./dist/app.js >> ./dist/index.html; echo \"</script></body>\" >> ./dist/index.html" 
   },
   "devDependencies": {
     "typescript": "^5.0.2",

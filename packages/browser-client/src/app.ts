@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 //import * as StreamCharacters from '@aonyxbuddy/stream-characters';
 //import * as Tools from '@aonyxbuddy/tools';
 
@@ -6,10 +8,13 @@ import * as StreamEvents from '@aonyxbuddy/stream-events';
 import * as TextToSpeech from '@aonyxbuddy/text-to-speech';
 import * as StreamEventParser from '@aonyxbuddy/stream-event-parser';
 import StreamElements from '@aonyxbuddy/stream-elements';
+import WebSocketStreamEvents from '@aonyxbuddy/event-streams';
 
 //import config from './config/config.js';
 import { ClientConfigExample as config } from './config/iclient-config-fariaorion.test.js';
 import log from './log.js';
+
+
 
 let talkingFrame = 0;
 
@@ -249,6 +254,10 @@ function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
 }
 
 StreamElements(OnEventReceived);
+
+const websocketURL = 'wss://www.aonyxlimited.com/api/v1/ws'
+//const websocketURL = `ws://localhost:3000/api/v1/ws/asdf`
+WebSocketStreamEvents(websocketURL, OnEventReceived, true);
 
 AppendToSpeechQueue('A-onyx Buddy is active.');
 SpeakInQueue();
