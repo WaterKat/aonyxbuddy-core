@@ -255,8 +255,8 @@ function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
 
 StreamElements(OnEventReceived);
 
-const websocketURL = 'wss://www.aonyxlimited.com/api/v1/ws'
-//const websocketURL = `ws://localhost:3000/api/v1/ws/asdf`
+//const websocketURL = 'wss://www.aonyxlimited.com/api/v1/ws'
+const websocketURL = `ws://wk-pc.wf-net.home:3000/api/v1/ws/asdf`
 WebSocketStreamEvents(websocketURL, OnEventReceived, true);
 
 AppendToSpeechQueue('A-onyx Buddy is active.');
