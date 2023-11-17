@@ -1,4 +1,4 @@
-import ListenForWebSocketStreamEvents from "./index.js";
+import ListenForWebSocketStreamEvents from "./listener.js";
 
 const url = `ws://localhost:3000/api/v1/ws/asdf`
 

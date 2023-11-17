@@ -4,14 +4,14 @@
   "version": "0.0.0",
   "main": "./src/index.ts",
   "type": "module",
-  "scripts": {
-    "build:dev" : "echo \"<p>Sprite-Renderer</p><script>\" > ./dist/index.html;  bun build ./src/renderer.test.ts --splitting --outfile=./dist/test.js; cat ./dist/test.js >> ./dist/index.html; echo \"</script>\" >> ./dist/index.html"
-  },
   "devDependencies": {
     "typescript": "^5.2.2",
     "bun-types": "latest"
   },
   "dependencies": {
     "gifuct-js": "^2.1.2"
+  },
+  "scripts": {
+    "build:dev": "echo \"<p>Sprite-Renderer</p><script>\" > ./dist/index.html;  bun build ./src/renderer.test.ts --splitting --outfile=./dist/test.js; cat ./dist/test.js >> ./dist/index.html; echo \"</script>\" >> ./dist/index.html"
   }
 }

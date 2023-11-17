@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext"],
+    "lib": [
+      "ESNext"
+    ],
     "module": "esnext",
     "target": "esnext",
     "moduleResolution": "bundler",
@@ -14,9 +16,12 @@
     "jsx": "preserve",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "allowJs": true
-  },
-  "references": [
-    {"@aonyxbuddy/*": "./libraries/*"},
-  ]
+    "allowJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "@aonyxbuddy/*": [
+        "./libraries/*"
+      ]
+    }
+  }
 }

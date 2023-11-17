@@ -1,14 +1,12 @@
 {
   "name": "@aonyxbuddy/event-streams",
-  "version": "0.0.0",
   "private": true,
-  "module": "src/index.ts",
+  "version": "0.0.0",
+  "module": "./src/index.ts",
   "type": "module",
   "devDependencies": {
+    "typescript": "^5.2.2",
     "bun-types": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
   },
   "scripts": {
     "start:test": "bun ./src/index.test.ts"
