@@ -5,6 +5,9 @@ import DefaultBlockedWords from './blocked-words/default.js';
 export const ClientConfigExample: IClientConfig = {
     id: 'fariaorion',
     name: 'frank',
+    webSocketToken: '_V6FY2k1Fe3ELHGwbanhWg',
+    commandIdentifier: '!',
+    commandGroup: 'frank',
     blacklist: [],
     botlist: [
         'nightbot',

@@ -14,5 +14,8 @@ export interface IClientConfig {
     blockedWords : string[],
     responses : {
         [key: string] : { [key: string]: string[]}
-    }
+    },
+    webSocketToken?: string,
+    commandGroup?: string,
+    commandIdentifier?: string,
 }

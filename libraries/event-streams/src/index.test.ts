@@ -1,6 +1,7 @@
 import ListenForWebSocketStreamEvents from "./listener.js";
 
-const url = `ws://localhost:3000/api/v1/ws/asdf`
+//const url = `ws://localhost:3000/api/v1/ws/asdf`
+const url = `wss://www.aonyxlimited.com/api/v1/ws/asdf`
 
 function main() {
     function print(obj: any) {
