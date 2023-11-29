@@ -1,6 +1,6 @@
 import { IClientConfig } from './iclient-config.js';
 //import * as StreamCharacters from '@aonyxbuddy/stream-characters';
-import * as StreamEvents from '@aonyxbuddy/stream-events';
+import * as StreamEvents from '../stream-events/index.js';
 import FrankBase64Sprites from './base64-sprites/frank.js';
 
 export const ClientConfigExample: IClientConfig = {

@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 
-import { Types } from '@aonyxbuddy/stream-events';
+import { Types } from '../stream-events/index.js';
 
 const connectionTimeout = 1000 * 3;
 
