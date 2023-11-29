@@ -1,4 +1,9 @@
-
+/**
+ * Will receive an audio buffer and normalize it to the loudest point in the buffer
+ * @param audioBuffer the audio buffer you wish to normalize the audio of
+ * @param audioContext optional, assigning an audio context here prevents the creation of a new audio context (try to provide yours)
+ * @returns the normalized audio buffer based on the loudest point in the audio buffer
+ */
 export function NormalizeAudioBuffer(audioBuffer: AudioBuffer, audioContext?: AudioContext) : AudioBuffer {
     const numberOfChannels = audioBuffer.numberOfChannels;
     const newAudioBuffer = (audioContext ?? new AudioContext()).createBuffer(numberOfChannels, audioBuffer.length, audioBuffer.sampleRate);
