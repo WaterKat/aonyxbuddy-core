@@ -1,5 +1,5 @@
-import { GetVoiceAudioBuffer } from "./resources/index.js";
-import { GetAudioBufferSourceNode, PlayAudioBufferSourceNode, StopAudioBufferSourceNode } from "./audio/audio-buffer-source-node.js";
+import { GetVoiceAudioBuffer } from "./get-voice-audio-buffer.js";
+import { GetAudioBufferSourceNode, PlayAudioBufferSourceNode, StopAudioBufferSourceNode } from "./audio-buffer-source-node.js";
 import { ITextToSpeechWrapper, ITextToSpeechOptions } from "./types.js";
 
 export function GetTextToSpeech(config: ITextToSpeechOptions) : ITextToSpeechWrapper {

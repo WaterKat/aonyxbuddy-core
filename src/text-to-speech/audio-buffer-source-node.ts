@@ -1,4 +1,10 @@
-
+/**
+ * Creates a new audio buffer source node that uses a provided audio buffer as its source
+ * @param audioBuffer the audio buffer to use as a source for the new audio buffer source node
+ * @param audioContext not required but recommended, the audio context used to create the buffer source node, providing one prevents the creation of a new one
+ * @param audioAnalyzerNode not required but recommended, the destination analyzer node for the new audio buffer source node
+ * @returns 
+ */
 export function GetAudioBufferSourceNode(audioBuffer: AudioBuffer, audioContext?: AudioContext, audioAnalyzerNode?: AnalyserNode): AudioBufferSourceNode {
     const context = audioContext ?? new AudioContext();
     const analyzer = audioAnalyzerNode ?? (() => {
@@ -33,25 +39,7 @@ export function PlayAudioBufferSourceNode(audioContext: AudioContext, audioBuffe
 export function StopAudioBufferSourceNode(audioBufferSourceNode: AudioBufferSourceNode): undefined {
     audioBufferSourceNode.stop();
 }
-/* 
-// USES RMS
-export function GetAudioBufferAmplitude(audioAnalyzerNode: AnalyserNode): number {
-    const byteData = new Uint8Array(audioAnalyzerNode.fftSize / 2);
-    audioAnalyzerNode.getByteTimeDomainData(byteData);
 
-    // Convert byte data to centered float ranging from -1 to 1.
-    const floatData = Array.from(byteData).map(n => (n - 128) / 128);
-
-    // Calculate RMS.
-    const rms = Math.sqrt(
-        floatData.reduce((sum, val) => sum + (val * val), 0) / floatData.length
-    );
-
-    return rms;
-}
-*/
-
-//USES PEAK
 export function GetAudioBufferAmplitude(audioAnalyzerNode: AnalyserNode): number {
     const byteData = new Uint8Array(audioAnalyzerNode.fftSize / 2);
     audioAnalyzerNode.getByteTimeDomainData(byteData);
