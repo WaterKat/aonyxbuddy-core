@@ -1,5 +1,5 @@
 #reverse gitignore
-#/**/*.*
+/**/*.*
 
 #git
 !.gitignore
@@ -14,7 +14,7 @@
 !/**/*.ts
 
 # bun ignore
-#/**/node_modules
+/**/node_modules
 
 #build ignore
-#/**/out
+/**/out

@@ -1,4 +1,4 @@
-import { Types } from '@aonyxbuddy/stream-events';
+import { Types } from '../stream-events/index.js';
 
 import * as SETypes from './types.js';
 

@@ -1,6 +1,6 @@
-import { Types } from "./index.ts";
-import { GetVoiceAudioBuffer } from "./resources/index.ts";
-import { GetAudioBufferSourceNode, PlayAudioBufferSourceNode, StopAudioBufferSourceNode } from "./audio/audio-buffer-source-node.ts";
+import { Types } from "./index.js";
+import { GetVoiceAudioBuffer } from "./resources/index.js";
+import { GetAudioBufferSourceNode, PlayAudioBufferSourceNode, StopAudioBufferSourceNode } from "./audio/audio-buffer-source-node.js";
 
 export function GetTextToSpeech(config: Types.ITextToSpeechConfig) {
     const context = new AudioContext();

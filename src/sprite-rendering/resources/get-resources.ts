@@ -1,6 +1,6 @@
-import { Types } from '../index.ts';
-import { GetImage } from './get-image.ts';
-import { GetGIFFromURL } from './get-gif-from-url.ts';
+import { Types } from '../index.js';
+import { GetImage } from './get-image.js';
+import { GetGIFFromURL } from './get-gif-from-url.js';
 
 export async function GetResources(spriteReferences: Types.SpriteReferences, defaultFPS: number): Promise<Types.IAnimationData | Error> {
     const sprites: Types.IAnimationData = {};

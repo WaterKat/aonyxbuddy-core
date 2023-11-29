@@ -1,11 +1,11 @@
 /// <reference lib="dom" />
 
-import * as SpriteRendering from '@aonyxbuddy/sprite-rendering';
-import * as StreamEvents from '@aonyxbuddy/stream-events';
-import * as TextToSpeech from '@aonyxbuddy/text-to-speech';
-import * as StreamEventParser from '@aonyxbuddy/stream-event-parser';
-import StreamElements from '@aonyxbuddy/stream-elements';
-import { GetWebSocketWrapper } from './external/al-aonyxbuddy-client.js';
+import * as SpriteRendering from './sprite-rendering/index.js';
+import * as StreamEvents from './stream-events/index.js';
+import * as TextToSpeech from './text-to-speech/index.js';
+import * as StreamEventParser from './stream-event-parser/index.js';
+import StreamElements from './stream-elements/index.js';
+//import { GetWebSocketWrapper } from './external/al-aonyxbuddy-client.js';
 import { ClientConfigExample as config } from './config/iclient-config-waterkattv.test.js';
 
 import log from './log.js';
@@ -249,12 +249,14 @@ function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
 
 StreamElements(OnEventReceived);
 
+/*
 const websocketURL = `wss://www.aonyxlimited.com/api/v1/ws`;
 GetWebSocketWrapper(websocketURL, OnEventReceived, {
 	logging: true,
 	token: config.webSocketToken ?? ''
 });
-//WebSocketStreamEvents(websocketURL, OnEventReceived, true);
+WebSocketStreamEvents(websocketURL, OnEventReceived, true);
+*/
 
 AppendToSpeechQueue(`'A-onyx Buddy also known as ${config.name}, is active.'`);
 SpeakInQueue();

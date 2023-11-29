@@ -11,5 +11,10 @@
   },
   "dependencies": {
     "gifuct-js": "^2.1.2"
+  },
+  "scripts": {
+    "build:aonyxbuddy" : "bun build ./src/app.js --outfile ./out/app.js --minify",
+    "build:aonyxbuddy-declarations" : "tsc ./src/app.ts --declaration --emitDeclarationOnly --lib es2016 --outfile ./out/app.ts",
+    "build" : "bun run build:aonyxbuddy && bun run build:aonyxbuddy-declarations"
   }
 }
