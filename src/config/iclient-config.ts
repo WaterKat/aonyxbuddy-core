@@ -8,7 +8,7 @@ export interface IClientConfig {
     name: string,
     spriteRendering: SpriteRendering.Types.ISpriteRendererConfig,
     nicknames : { [key: string]: string[]},
-    tts: TextToSpeech.Types.ITextToSpeechConfig,
+    tts: TextToSpeech.Types.ITextToSpeechOptions,
     blacklist: string[],
     botlist : string[],
     blockedWords : string[],
