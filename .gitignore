@@ -1,43 +1,20 @@
 #reverse gitignore
-/**/*.*
+#/**/*.*
 
 #git
-!/**/*.gitignore
+!.gitignore
 !LICENSE.md
 !README.md
 
-#environmental variables
-/**/*.env
-!/**/example.env
+# bun
+!package.json
 
-#docker
-!docker.compose.dev.yml
-!docker.compose.yml
-!/**/dockerfile
-
-#tsc
+# tsc
 !/**/tsconfig.json
 !/**/*.ts
-!/**/*.tsx
-!/**/*.cts
 
-#eslint
-!/**/*.eslintrc.json
-!/**/*.eslintrc
-
-#nginx
-!/**/*.nginx
-
-#####IGNORE DIRECTORIES#####
-
-#npm/bun
-!/**/package.json
-!/**/bun.lockb
-/**/node_modules
+# bun ignore
+#/**/node_modules
 
 #build ignore
-/**/lib/*.*
-/**/dist/*.*
-/**/build/*.*
-/**/deprecated/*.*
-/**/post
+#/**/out

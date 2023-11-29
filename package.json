@@ -1,11 +1,15 @@
 {
-  "name": "aonyxbuddy",
-  "private": true,
-  "workspaces": [
-    "libraries/*",
-    "packages/*"
-  ],
+  "name": "al-aonyxbuddy",
+  "private" : true,
+  "module": "./src/index.ts",
+  "type": "module",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
   "devDependencies": {
-    "typescript": "^5.2.2"
+    "bun-types": "latest"
+  },
+  "dependencies": {
+    "gifuct-js": "^2.1.2"
   }
 }
