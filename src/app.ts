@@ -8,7 +8,7 @@ import StreamElements from './stream-elements/index.js';
 //import { GetWebSocketWrapper } from './external/al-aonyxbuddy-client.js';
 import { ClientConfigExample as config } from './config/iclient-config-waterkattv.test.js';
 
-import log from './log.js';
+import Log from './log.js';
 
 let talkingFrame = 0;
 
@@ -56,7 +56,7 @@ function SpeakInQueue() {
 		const speechRequest = speechQueue.shift();
 		if (!speechRequest) return;
 
-		log('info', 'Speech Request:', speechRequest.text);
+		Log('info', 'Speech Request:', speechRequest.text);
 
 		const interval = setInterval(() => {
 			const amplitude = Math.min(TextToSpeech.Audio.GetAudioBufferAmplitude(tts.analyzer), 0.99);
@@ -81,7 +81,7 @@ let skipCount = 0;
 
 function SkipSpeech(count?: number) {
 	skipCount += count ?? 0;
-	log('info', 'Skips Starting: ' + skipCount);
+	Log('info', 'Skips Starting: ' + skipCount);
 
 	if (skipCount < 1) return;
 
@@ -89,18 +89,18 @@ function SkipSpeech(count?: number) {
 
 	while (skipCount > 0 && speechQueue.length > 0) {
 		const skipped = speechQueue.pop();
-		log('info', 'SkipSpeech ' + skipped?.text);
+		Log('info', 'SkipSpeech ' + skipped?.text);
 		skipCount -= 1;
 	}
 
-	log('info', 'Skips Left: ' + skipCount);
+	Log('info', 'Skips Left: ' + skipCount);
 }
 
 function SkipAllSpeech() {
 	StopSpeaking();
 	while (speechQueue.length > 0) {
 		const skipped = speechQueue.pop();
-		log('info', 'SkipAllSpeech ' + skipped?.text);
+		Log('info', 'SkipAllSpeech ' + skipped?.text);
 	}
 }
 
@@ -135,17 +135,17 @@ function ParseEvent(streamEvent: StreamEvents.Types.StreamEvent) {
 
 function ParseOther(otherEvent: StreamEvents.Types.StreamEvent) {
 	if (otherEvent.type !== 'other') {
-		log('info', 'ParseOther: Event not "other" type');
+		Log('info', 'ParseOther: Event not "other" type');
 		return;
 	}
 
 	if (!otherEvent.other) {
-		log('info', 'ParseOther: event "other" field not set');
+		Log('info', 'ParseOther: event "other" field not set');
 		return;
 	}
 
 	if (!otherEvent.other.type) {
-		log('info', 'ParseOther: "type" field not set');
+		Log('info', 'ParseOther: "type" field not set');
 		return;
 	}
 
@@ -153,12 +153,12 @@ function ParseOther(otherEvent: StreamEvents.Types.StreamEvent) {
 		const customResponse = StreamEventParser.Parser.GetResponse(config.responses, otherEvent.original, 'voice', 'chat-first');
 		AppendToSpeechQueue(customResponse);
 		SpeakInQueue();
-		log('info', customResponse);
+		Log('info', customResponse);
 	} else {
-		log('info', 'ParseOther: "type" is not chat-first');
+		Log('info', 'ParseOther: "type" is not chat-first');
 	}
 
-	log('error', otherEvent);
+	Log('error', otherEvent);
 }
 
 
@@ -172,35 +172,35 @@ function ParseCommand(event: StreamEvents.Types.StreamEvent) {
 	const command = event.command_request.toLocaleLowerCase();
 	switch (command) {
 		case 'debug':
-			log('log', 'Muted:', isMuted);
-			log('log', 'SkipCount:', skipCount);
-			log('log', speechQueue);
+			Log('log', 'Muted:', isMuted);
+			Log('log', 'SkipCount:', skipCount);
+			Log('log', speechQueue);
 			break;
 		case 'say':
-			log('info', 'say command called');
+			Log('info', 'say command called');
 			InsertToSpeechQueue(event.command_args);
 			break;
 		case 'mute':
-			log('info', 'mute called');
+			Log('info', 'mute called');
 			SetMuted();
 			break;
 		case 'unmute':
-			log('info', 'unmute called');
+			Log('info', 'unmute called');
 			SetUnmuted();
 			break;
 		case 'skip':
-			log('info', 'skip command called');
+			Log('info', 'skip command called');
 			if (event.command_args.trim().length < 1) {
-				log('info', 'skip arg is empty, therefore using 1 as default');
+				Log('info', 'skip arg is empty, therefore using 1 as default');
 				SkipSpeech(1);
 			} else if (!isNaN(+event.command_args.trim())) {
-				log('info', 'skip arg is number');
+				Log('info', 'skip arg is number');
 				SkipSpeech(Math.max(0, +event.command_args));
 			} else if (event.command_args.trim() === 'all') {
-				log('info', 'skip all command');
+				Log('info', 'skip all command');
 				SkipAllSpeech();
 			} else if (event.command_args.trim() === 'clear') {
-				log('info', 'skip clear command');
+				Log('info', 'skip clear command');
 				skipCount = 0;
 			}
 			break;

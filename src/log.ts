@@ -1,7 +1,8 @@
-const name = 'aonyxbuddy';
-type tags = 'log' | 'error' | 'info';
+const NAME_TAG: string = 'aonyxbuddy';
 
-export default function log(tag: tags, ...args : any) : void {
-    console[tag](`[${name}:${tag}]`, ...args);
+type LogTags = 'log' | 'error' | 'info' | 'warn';
+
+export default function Log(tag: LogTags, ...args: any): void {
+    console[tag](`[${NAME_TAG}:${tag === 'log' ? '' : `/${tag}`}]`, ...args);
     return;
 }
