@@ -1,6 +1,6 @@
 import { Types } from '../index.js';
 
-const config: Types.ITextToSpeechConfig = {
+const config: Types.ITextToSpeechOptions = {
     voice: 'Brian'
 }
 

@@ -1,13 +1,15 @@
-import { Types } from "./index.js";
 import { GetVoiceAudioBuffer } from "./resources/index.js";
 import { GetAudioBufferSourceNode, PlayAudioBufferSourceNode, StopAudioBufferSourceNode } from "./audio/audio-buffer-source-node.js";
+import { ITextToSpeechWrapper, ITextToSpeechOptions } from "./types.js";
 
-export function GetTextToSpeech(config: Types.ITextToSpeechConfig) {
+export function GetTextToSpeech(config: ITextToSpeechOptions) : ITextToSpeechWrapper {
     const context = new AudioContext();
     const analyzer = context.createAnalyser();
     const sourceNodes : AudioBufferSourceNode[] = [];
+
     analyzer.connect(context.destination);
-    return {
+    
+    const wrapper : ITextToSpeechWrapper= {
         context: context,
         analyzer: analyzer,
         Speak: async (text: string, onStop?: () => void) => {
@@ -33,5 +35,7 @@ export function GetTextToSpeech(config: Types.ITextToSpeechConfig) {
                 StopAudioBufferSourceNode(sourceNode);
             }
         }
-    }
+    };
+    
+    return wrapper;
 }
