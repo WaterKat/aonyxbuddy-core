@@ -1,6 +1,6 @@
 {
   "name": "al-aonyxbuddy",
-  "private" : true,
+  "private": true,
   "module": "./src/index.ts",
   "type": "module",
   "peerDependencies": {
@@ -10,11 +10,12 @@
     "bun-types": "latest"
   },
   "dependencies": {
+    "al-stream-elements-translator": "git@github.com:WaterKat/al-stream-elements-translator.git",
     "gifuct-js": "^2.1.2"
   },
   "scripts": {
-    "build:aonyxbuddy" : "bun build ./src/app.js --outfile ./out/app.js --minify",
-    "build:aonyxbuddy-declarations" : "tsc ./src/app.ts --declaration --emitDeclarationOnly --lib es2016 --outfile ./out/app.ts",
-    "build" : "bun run build:aonyxbuddy && bun run build:aonyxbuddy-declarations"
+    "build:aonyxbuddy": "bun build ./src/app.js --outfile ./out/app.js --minify",
+    "build:aonyxbuddy-declarations": "tsc ./src/app.ts --declaration --emitDeclarationOnly --lib es2016 --outfile ./out/app.ts",
+    "build": "bun run build:aonyxbuddy && bun run build:aonyxbuddy-declarations"
   }
 }
