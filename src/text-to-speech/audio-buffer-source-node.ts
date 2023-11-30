@@ -19,6 +19,12 @@ export function GetAudioBufferSourceNode(audioBuffer: AudioBuffer, audioContext?
     return audioBufferSourceNode;
 }
 
+/**
+ * Will play audio from an audio buffer source node and run a callback when that audio is either stopped or finished
+ * @param audioContext the audio source to play through with the audio buffer source node
+ * @param audioBufferSourceNode the audio buffer source node used to play the audio buffer
+ * @param onStopCallback the callback to be called once this audio has finished playing or has been stopped
+ */
 export function PlayAudioBufferSourceNode(audioContext: AudioContext, audioBufferSourceNode: AudioBufferSourceNode, onStopCallback?: () => void): void {
     audioBufferSourceNode.start();
     UnPause();
@@ -36,10 +42,19 @@ export function PlayAudioBufferSourceNode(audioContext: AudioContext, audioBuffe
     }
 }
 
+/**
+ * Will stop the audio coming from the provided audio buffer source node
+ * @param audioBufferSourceNode the audio buffer source node to stop
+ */
 export function StopAudioBufferSourceNode(audioBufferSourceNode: AudioBufferSourceNode): undefined {
     audioBufferSourceNode.stop();
 }
 
+/**
+ * Will provide a (x/1) value for the amplitude of a given audio analyzer node that is currently playing
+ * @param audioAnalyzerNode the audio analyzer node linked to the audio buffer source node
+ * @returns the current amplitude of the audio out of 1
+ */
 export function GetAudioBufferAmplitude(audioAnalyzerNode: AnalyserNode): number {
     const byteData = new Uint8Array(audioAnalyzerNode.fftSize / 2);
     audioAnalyzerNode.getByteTimeDomainData(byteData);

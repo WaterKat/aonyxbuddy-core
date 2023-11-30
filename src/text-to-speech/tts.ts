@@ -2,7 +2,12 @@ import { GetVoiceAudioBuffer } from "./get-voice-audio-buffer.js";
 import { GetAudioBufferSourceNode, PlayAudioBufferSourceNode, StopAudioBufferSourceNode } from "./audio-buffer-source-node.js";
 import { ITextToSpeechWrapper, ITextToSpeechOptions } from "./types.js";
 
-export function GetTextToSpeech(config: ITextToSpeechOptions) : ITextToSpeechWrapper {
+/**
+ * Provides a wrapper for text to speech functions, specifically starting and stopping speech
+ * @param options the configuration used to select voice type and other configuration
+ * @returns the wrapper for the text to speech function, used to start and stop speech
+ */
+export function GetTextToSpeech(options: ITextToSpeechOptions) : ITextToSpeechWrapper {
     const context = new AudioContext();
     const analyzer = context.createAnalyser();
     const sourceNodes : AudioBufferSourceNode[] = [];
@@ -21,7 +26,7 @@ export function GetTextToSpeech(config: ITextToSpeechOptions) : ITextToSpeechWra
                 return;
             }
 
-            const audioBuffer = await GetVoiceAudioBuffer(text, config.voice, context);
+            const audioBuffer = await GetVoiceAudioBuffer(text, options.voice, context);
             if (!audioBuffer) return;
             const audioBufferSourceNode = GetAudioBufferSourceNode(audioBuffer, context, analyzer);
             sourceNodes.push(audioBufferSourceNode);
