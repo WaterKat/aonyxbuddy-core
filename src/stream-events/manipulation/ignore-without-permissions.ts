@@ -1,9 +1,10 @@
-import { Types } from '../index.js';
+import { StreamEvent, StreamEventType } from '../types.js';
 
-function IgnoreEvent(streamEvent: Types.StreamEvent, id?: string) {
-    const ignoredEvent: Types.StreamEvent = {
+function IgnoreEvent(streamEvent: StreamEvent, id?: string) {
+    const ignoredEvent: StreamEvent = {
+        tstype: StreamEventType.TS_TYPE,
         username: streamEvent.username,
-        type: 'other',
+        type: StreamEventType.OTHER,
         original: streamEvent,
         other: {
             ignore_message : `${IgnoreCommandWithoutPermission.name} ${id ? `[${id}]` : ''} has set event from ${streamEvent.username} to be ignored.`
@@ -13,7 +14,7 @@ function IgnoreEvent(streamEvent: Types.StreamEvent, id?: string) {
     return ignoredEvent;
 }
 
-export function IgnoreCommandWithoutPermission(streamEvent: Types.StreamEvent, id?: string): Types.StreamEvent {
+export function IgnoreCommandWithoutPermission(streamEvent: StreamEvent, id?: string): StreamEvent {
     if (streamEvent.type !== 'command')
         return streamEvent;
 

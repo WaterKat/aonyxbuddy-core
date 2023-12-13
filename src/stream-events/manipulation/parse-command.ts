@@ -1,4 +1,4 @@
-import { Types } from '../index.js';
+import { StreamEvent, StreamEventType } from '../types.js';
 
 const AlphaNumericsRegex: RegExp = /^[a-zA-Z0-9]+$/;
 const WhitespacesRegex: RegExp = /\s+/;
@@ -11,7 +11,7 @@ function log(...items: any) {
         console.log(items);
 }
 
-export function ParseCommand(streamEvent: Types.StreamEvent, useRequestField?: boolean): Types.StreamEvent {
+export function ParseCommand(streamEvent: StreamEvent, useRequestField?: boolean): StreamEvent {
     const minimumMessageLength: number = useRequestField ? 4 : 2;
 
     if (streamEvent.type !== 'chat') {
@@ -75,9 +75,9 @@ export function ParseCommand(streamEvent: Types.StreamEvent, useRequestField?: b
     }
 
     //
-    const newCommand: Types.StreamEvent = {
+    const newCommand: StreamEvent = {
         ...streamEvent,
-        type: 'command',
+        type: StreamEventType.COMMAND,
         command_identifier: commandIdentifier,
         command_group: commandGroup,
         command_request: commandRequest,

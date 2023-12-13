@@ -1,6 +1,6 @@
 import { Types } from "../index.js";
 
-export function FilterBannedWords(streamEvent: Types.StreamEvent, bannedWords: string[], replacement?: string, caseSensitive?: boolean): Types.StreamEvent {
+export function FilterBannedWords(streamEvent: Types.StreamEvent, bannedWords: string[], replacement: string = '', caseSensitive: boolean = false): Types.StreamEvent {
     const modifiedEvent: Types.StreamEvent = {
         ...streamEvent
     }

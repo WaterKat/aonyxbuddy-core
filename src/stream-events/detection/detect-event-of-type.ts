@@ -1,6 +1,6 @@
-import { Types } from '../index.js';
+import { StreamEvent, StreamEventType } from '../types.js';
 
-export function DetectEventOfType(streamEvent: Types.StreamEvent, type: Types.StreamEventTypeID | 'other', callback: (streamEvent: Types.StreamEvent) => void) : Types.StreamEvent {
+export function DetectEventOfType(streamEvent: StreamEvent, type: StreamEventType, callback: (streamEvent: StreamEvent) => void) : StreamEvent {
     if (streamEvent.type === type) {
         callback(streamEvent);
     }

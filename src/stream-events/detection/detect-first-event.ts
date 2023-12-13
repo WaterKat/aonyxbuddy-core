@@ -1,9 +1,9 @@
-import { Types } from '../index.js';
+import { StreamEvent, StreamEventType } from '../types.js';
 
 const globalUsernames: string[] = [];
 
 
-export function DetectFirstEvent(streamEvent: Types.StreamEvent, callback?: (streamEvent: Types.StreamEvent) => void, usernames?: string[]): Types.StreamEvent {
+export function DetectFirstEvent(streamEvent: StreamEvent, callback?: (streamEvent: StreamEvent) => void, usernames?: string[]): StreamEvent {
     const functionName = 'DetectFirstEvent';
 
     const activeUsernameArray = usernames ?? globalUsernames;
@@ -13,7 +13,7 @@ export function DetectFirstEvent(streamEvent: Types.StreamEvent, callback?: (str
         if (callback) {
             callback({
                 ...streamEvent,
-                type: 'other',
+                type: StreamEventType.OTHER,
                 original: streamEvent,
                 other: {
                     type: "chat-first"

@@ -1,7 +1,18 @@
-export type StreamEventTypeID = 
-'follow' | 'subscriber' | 
-'gift-single' | 'gift-bulk-sent' | 'gift-bulk-received' | 
-'raid' | 'cheer' | 'chat' | 'command' | 'redeem';
+export enum StreamEventType {
+    TS_TYPE = 'al-aonyxbuddy-data',
+    FOLLOW = 'follow',
+    SUBSCRIBER = 'subscriber',
+    GIFT_SINGLE = 'gift-single',
+    GIFT_BULK_SENT = 'gift-bulk-sent',
+    GIFT_BULK_RECEIVED = 'gift-bulk-received',
+    RAID = 'raid',
+    CHEER = 'cheer',
+    CHAT = 'chat',
+    COMMAND = 'command',
+    REDEEM = 'redeem',
+    OTHER = 'other'
+
+}
 
 export type Permissions = {
     chatter: boolean,
@@ -10,7 +21,7 @@ export type Permissions = {
     vip: boolean,
     moderator: boolean,
     streamer: boolean,
-};
+}
 
 export type Emote = {
     type: string,
@@ -18,68 +29,69 @@ export type Emote = {
 }
 
 export type ChatMessage = {
-    text: string;
+    text: string,
     emotes: Array<Emote>
 }
 
 export type StreamEvent = {
-    type : string; 
-    username: string;
-    nickname?: string;
-    permissions?: Permissions;
-    message? : ChatMessage;
+    tstype: StreamEventType.TS_TYPE,
+    type : Exclude<StreamEventType, StreamEventType.TS_TYPE>,
+    username: string,
+    nickname?: string,
+    permissions?: Permissions,
+    message? : ChatMessage,
 
-    subscriber_length? : number;
-    gift_receiver? : string;
-    gift_count?: number;
-    raid_count? : number;
-    cheer_amount? : number;
-    command_identifier? : string;
-    command_group? : string;
-    command_request? : string;
-    command_args? : string;
-    redeem_id? : string;
-    ignore_message? : string;
-    custom_id? : string;
-    custom_args? : string[];
+    subscriber_length? : number,
+    gift_receiver? : string,
+    gift_count?: number,
+    raid_count? : number,
+    cheer_amount? : number,
+    command_identifier? : string,
+    command_group? : string,
+    command_request? : string,
+    command_args? : string,
+    redeem_id? : string,
+    ignore_message? : string,
+    custom_id? : string,
+    custom_args? : string[],
 } & ({
-    type: 'follow';
+    type: StreamEventType.FOLLOW
 } | {
-    type: 'subscriber';
-    message: ChatMessage;
-    subscriber_length : number;
+    type: StreamEventType.SUBSCRIBER
+    message: ChatMessage,
+    subscriber_length : number,
 } | {
-    type: 'gift-single';
-    gift_receiver : string;
+    type: StreamEventType.GIFT_SINGLE
+    gift_receiver : string,
 } | {
-    type: 'gift-bulk-sent';
-    gift_count: number;
+    type: StreamEventType.GIFT_BULK_SENT
+    gift_count: number,
 } | {
-    type: 'gift-bulk-received';
-    gift_receiver : string;
+    type: StreamEventType.GIFT_BULK_RECEIVED
+    gift_receiver : string,
 } | {
-    type: 'raid';
-    raid_count : number;
+    type: StreamEventType.RAID
+    raid_count : number,
 } | {
-    type: 'cheer';
-    message : ChatMessage;
-    cheer_amount : number;
+    type: StreamEventType.CHEER
+    message : ChatMessage,
+    cheer_amount : number,
 } | {
-    type: 'chat';
-    message : ChatMessage;
+    type: StreamEventType.CHAT
+    message : ChatMessage,
 } | {
-    type: 'command';
-    message : ChatMessage;
-    command_identifier : string;
-    command_group : string;
-    command_request : string;
-    command_args : string;
+    type: StreamEventType.COMMAND,
+    message : ChatMessage,
+    command_identifier : string,
+    command_group : string,
+    command_request : string,
+    command_args : string,
 } | {
-    type: 'redeem';
-    message: ChatMessage;
-    redeem_id : string;
+    type: StreamEventType.REDEEM
+    message: ChatMessage,
+    redeem_id : string,
 } | {
-    type : 'other';
+    type: StreamEventType.OTHER
     original : StreamEvent,
     other : {
         [key: string] : string

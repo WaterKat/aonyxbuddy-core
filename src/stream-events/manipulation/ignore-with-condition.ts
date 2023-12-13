@@ -1,6 +1,6 @@
-import { Types } from '../index.js';
+import { StreamEvent, StreamEventType } from '../types.js';
 
-export function IgnoreWithCondition(streamEvent: Types.StreamEvent, condition: boolean, id?: string): Types.StreamEvent {
+export function IgnoreWithCondition(streamEvent: StreamEvent, condition: boolean, id?: string): StreamEvent {
     if (condition)
         return streamEvent;
 
@@ -8,9 +8,10 @@ export function IgnoreWithCondition(streamEvent: Types.StreamEvent, condition: b
         return streamEvent;
     }
 
-    const ignoredEvent: Types.StreamEvent = {
+    const ignoredEvent: StreamEvent = {
+        tstype: StreamEventType.TS_TYPE,
         username: streamEvent.username,
-        type: 'other',
+        type: StreamEventType.OTHER,
         original: streamEvent,
         other: {
             ignore_message : `${IgnoreWithCondition.name} ${id ? `[${id}]` : ''} has set event from ${streamEvent.username} to be ignored.`

@@ -5,10 +5,10 @@ import * as StreamEvents from './stream-events/index.js';
 import * as TextToSpeech from './text-to-speech/index.js';
 import * as StreamEventParser from './stream-event-parser/index.js';
 import StreamElements from './stream-elements/index.js';
-//import { GetWebSocketWrapper } from './external/al-aonyxbuddy-client.js';
-import { ClientConfigExample as config } from './config/iclient-config-waterkattv.test.js';
+import { ClientConfigExample as config } from './config/iclient-config-fariaorion.test.js';
 
 import Log from './log.js';
+import GetAonyxBuddyStreamEventListener from './stream-event-listener/index.js';
 
 let talkingFrame = 0;
 
@@ -168,7 +168,7 @@ const command_group = config.commandGroup ?? 'aonyxbuddy';
 function ParseCommand(event: StreamEvents.Types.StreamEvent) {
 	if (event.type !== 'command') return;
 	if (event.command_identifier !== command_identifier) return;
-	if (event.command_group !== command_group) return;
+	if (event.command_group !== command_group && event.command_group !== 'aonyxbuddy') return;
 	const command = event.command_request.toLocaleLowerCase();
 	switch (command) {
 		case 'debug':
@@ -223,9 +223,9 @@ const renderer = SpriteRendering.default(config.spriteRendering).then(renderer =
 //Stream Events
 function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
 	let streamEvent = rawEvent;
+	streamEvent = StreamEvents.Manipulation.FilterBannedWords(streamEvent, config.blockedWords, 'ploop',false);
 	streamEvent = StreamEvents.Manipulation.ParseCommand(streamEvent, true);
 	streamEvent = StreamEvents.Manipulation.IgnoreCommandWithoutPermission(streamEvent, 'CommandPermission');
-	streamEvent = StreamEvents.Manipulation.FilterBannedWords(streamEvent, config.blockedWords);
 	streamEvent = StreamEvents.Manipulation.FilterEmojis(streamEvent, '');
 	streamEvent = StreamEvents.Manipulation.IgnoreFromBlacklist(streamEvent, config.blacklist);
 	streamEvent = StreamEvents.Manipulation.IgnoreFromBotlist(streamEvent, config.botlist);
@@ -241,22 +241,13 @@ function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
 		ParseEvent(streamEvent);
 	}
 
-	//! Hacky but works
 	SkipSpeech();
 
 	SpeakInQueue();
 }
 
 StreamElements(OnEventReceived);
+GetAonyxBuddyStreamEventListener(OnEventReceived);
 
-/*
-const websocketURL = `wss://www.aonyxlimited.com/api/v1/ws`;
-GetWebSocketWrapper(websocketURL, OnEventReceived, {
-	logging: true,
-	token: config.webSocketToken ?? ''
-});
-WebSocketStreamEvents(websocketURL, OnEventReceived, true);
-*/
-
-AppendToSpeechQueue(`'A-onyx Buddy also known as ${config.name}, is active.'`);
+AppendToSpeechQueue(`'A-onyx Buddy systems online. ${config.name}, is active.'`);
 SpeakInQueue();

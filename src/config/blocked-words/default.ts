@@ -1,4 +1,5 @@
 export default [
+    "al-filtered-word",
     "dyke",
     "fag",
     "fag1t",

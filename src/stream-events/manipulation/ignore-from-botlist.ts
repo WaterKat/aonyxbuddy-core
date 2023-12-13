@@ -1,6 +1,6 @@
-import { Types } from '../index.js';
+import { StreamEvent, StreamEventType } from '../types.js';
 
-export function IgnoreFromBotlist(streamEvent: Types.StreamEvent, botlist: string[]): Types.StreamEvent {
+export function IgnoreFromBotlist(streamEvent: StreamEvent, botlist: string[]): StreamEvent {
     if (!botlist.includes(streamEvent.username))
         return streamEvent;
 
@@ -8,9 +8,10 @@ export function IgnoreFromBotlist(streamEvent: Types.StreamEvent, botlist: strin
         return streamEvent;
     }
 
-    const ignoredEvent: Types.StreamEvent = {
+    const ignoredEvent: StreamEvent = {
+        tstype: StreamEventType.TS_TYPE,
         username: streamEvent.username,
-        type: 'other',
+        type: StreamEventType.OTHER,
         original: streamEvent,
         other: {
             ignore_message : `${IgnoreFromBotlist.name} has set event from ${streamEvent.username} to be ignored.`
