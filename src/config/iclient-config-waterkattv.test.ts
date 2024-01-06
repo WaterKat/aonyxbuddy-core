@@ -4,10 +4,10 @@ import DefaultBlockedWords from './blocked-words/default.js';
 
 export const ClientConfigExample: IClientConfig = {
     id: 'waterkat',
-    name: 'ai',
+    name: 'sol',
     webSocketToken: 'urPO9OMZYRhQPwNTHZ4RcA',
     commandIdentifier: '!',
-    commandGroup: 'ai',
+    commandGroup: 'sol',
     blacklist: [],
     botlist: [
         'nightbot',
@@ -21,26 +21,27 @@ export const ClientConfigExample: IClientConfig = {
     spriteRendering: {
         canvas: {
             size: {
-                x: 256,
-                y: 256
+                x: 512,
+                y: 512
             },
             antialiasing: false
         },
         defaultFPS: 60,
         sprites: {
-            base: ["https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/ai/base.png"],
+            base: "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/sol/idle.gif",
             talking: [
-                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/ai/talking/0.png",
-                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/ai/talking/1.png",
-                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/ai/talking/2.png",
-                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/ai/talking/3.png",
-                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/ai/talking/4.png",
-                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/ai/talking/5.png",
-                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/ai/talking/6.png",
-                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/ai/talking/7.png",
-                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/ai/talking/8.png",
-                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/ai/talking/9.png",
-                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/ai/talking/10.png",
+                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/sol/talking/0.png",
+                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/sol/talking/1.png",
+                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/sol/talking/2.png",
+                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/sol/talking/3.png",
+                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/sol/talking/4.png",
+                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/sol/talking/5.png",
+                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/sol/talking/6.png",
+                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/sol/talking/7.png",
+                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/sol/talking/8.png",
+                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/sol/talking/9.png",
+                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/sol/talking/10.png",
+                "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/sol/talking/11.png"
             ],
             mute: [
                 "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/ai/empty.png",
@@ -53,7 +54,7 @@ export const ClientConfigExample: IClientConfig = {
         'fariaorion': ['onion', 'faria', 'foreo mik flurry', 'faris', 'foreo', 'froggia', 'fawi', 'fori', 'fawwia', 'ferrari'],
         'alexr118': ['alex'],
         'tundraflame': ['tundra'],
-        'w01f_k': ['woof woof', 'bark bark', 'wolf', 'wolf owo', 'cheater', 'wolfie', 'wahf wahf'],
+        'w01f_k': ['woof woof', 'bark bark', 'wolf', 'wolf owo', 'wolfie', 'wahf wahf'],
         'squishylope': ['squishy'],
         'theherooftime69': ['the hero of time sixty nine', 'the roof of time', 'roof', 'hero'],
         'fawia_support_raccoon': ['racc', 'rack attack'],
@@ -69,7 +70,7 @@ export const ClientConfigExample: IClientConfig = {
         'fenrirdesigns': ['fenrir'],
         'cupidjpeg': ['cupid', 'cutie', 'sexy beast']
     },
-    tts: { voice: 'Emma' },
+    tts: { voice: 'Joey'},
     responses: {
         chat: {
             follow: ['Thank you for the follow, ${nickname}.'],

@@ -5,12 +5,13 @@ import * as StreamEvents from './stream-events/index.js';
 import * as TextToSpeech from './text-to-speech/index.js';
 import * as StreamEventParser from './stream-event-parser/index.js';
 import StreamElements from './stream-elements/index.js';
-import { ClientConfigExample as config } from './config/iclient-config-fariaorion.test.js';
+
+//import { ClientConfigExample as config } from './config/iclient-config-cupidjpeg.test.js';
+import { ClientConfigExample as config } from './config/iclient-config-waterkattv.test.js';
 
 import Log from './log.js';
 import GetAonyxBuddyStreamEventListener from './stream-event-listener/index.js';
 
-let talkingFrame = 0;
 
 //* Preparing Body Styling 
 document.body.style.margin = '0 0';
@@ -208,22 +209,35 @@ function ParseCommand(event: StreamEvents.Types.StreamEvent) {
 }
 
 //Sprite Renderer
+let talkingFrame = 0;
+let idleFrame = 0;
+
 function Render(renderer: SpriteRendering.Types.IRenderer) {
 	renderer.ClearCanvas();
-	renderer.RenderSprite('base', 0);
+	renderer.RenderSprite('base', idleFrame);
 	renderer.RenderSprite('mute', mutedFrame);
 	renderer.RenderSprite('talking', Math.floor(talkingFrame), () => { Render(renderer); });
+}
+
+function FlipBaseImage(renderer: SpriteRendering.Types.IRenderer) {
+	idleFrame++;
+	idleFrame %= renderer.sprites['base'].bitmap.length;
+	setTimeout(() => {
+		FlipBaseImage(renderer);
+	}, renderer.sprites['base'].delay[idleFrame]);
 }
 
 const renderer = SpriteRendering.default(config.spriteRendering).then(renderer => {
 	if (renderer instanceof Error) throw (renderer);
 	Render(renderer);
+	if (renderer.sprites['base'].bitmap.length > 0)
+		FlipBaseImage(renderer);
 });
 
 //Stream Events
 function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
 	let streamEvent = rawEvent;
-	streamEvent = StreamEvents.Manipulation.FilterBannedWords(streamEvent, config.blockedWords, 'ploop',false);
+	streamEvent = StreamEvents.Manipulation.FilterBannedWords(streamEvent, config.blockedWords, 'ploop', false);
 	streamEvent = StreamEvents.Manipulation.ParseCommand(streamEvent, true);
 	streamEvent = StreamEvents.Manipulation.IgnoreCommandWithoutPermission(streamEvent, 'CommandPermission');
 	streamEvent = StreamEvents.Manipulation.FilterEmojis(streamEvent, '');
