@@ -3,8 +3,8 @@ import FrankBase64Sprites from './base64-sprites/frank.js';
 import DefaultBlockedWords from './blocked-words/default.js';
 
 export const ClientConfigExample: IClientConfig = {
-    id: 'fariaorion',
-    name: 'frank',
+    owner_id: 'fariaorion',
+    nickname: 'frank',
     webSocketToken: '_V6FY2k1Fe3ELHGwbanhWg',
     commandIdentifier: '!',
     commandGroup: 'frank',
@@ -139,7 +139,9 @@ export const ClientConfigExample: IClientConfig = {
                 "Incoming meteor shower! Thanks ${nickname} for bringing ${raid.count} raider${raid.plural}!",
                 "Attention star beans! ${nickname} and ${raid.count} raider${raid.plural} are incoming!"
             ],
-            cheer: [],
+            cheer: [
+                "Thank you for the bits! ${nickname}! The cosmos appreciated your support."
+            ],
             chat: [],
             command: [],
             redeem: [],

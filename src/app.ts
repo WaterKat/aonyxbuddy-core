@@ -7,7 +7,7 @@ import * as StreamEventParser from './stream-event-parser/index.js';
 import StreamElements from './stream-elements/index.js';
 
 //import { ClientConfigExample as config } from './config/iclient-config-cupidjpeg.test.js';
-import { ClientConfigExample as config } from './config/iclient-config-waterkattv.test.js';
+import { ClientConfigExample as config } from './config/iclient-config-cupidjpeg.test.js';
 
 import Log from './log.js';
 import GetAonyxBuddyStreamEventListener from './stream-event-listener/index.js';
@@ -129,7 +129,7 @@ function ParseEvent(streamEvent: StreamEvents.Types.StreamEvent) {
 
 	//* Special Condition for Subscription (Sub Messages)
 
-	if (streamEvent.type === 'subscriber') {
+	if ((streamEvent.type === StreamEvents.Types.StreamEventType.SUBSCRIBER) || (streamEvent.type && StreamEvents.Types.StreamEventType.CHEER)) {
 		AppendToSpeechQueue(streamEvent.message?.text ?? '');
 	}
 }
@@ -151,10 +151,11 @@ function ParseOther(otherEvent: StreamEvents.Types.StreamEvent) {
 	}
 
 	if (otherEvent.other.type === 'chat-first' && otherEvent.original.type === 'chat') {
-		const customResponse = StreamEventParser.Parser.GetResponse(config.responses, otherEvent.original, 'voice', 'chat-first');
-		AppendToSpeechQueue(customResponse);
+		const customChatFirstResponse = StreamEventParser.Parser.GetResponse(config.responses, otherEvent.original, 'chat-first-custom', otherEvent.username);
+		const generalChatFirstResponse = StreamEventParser.Parser.GetResponse(config.responses, otherEvent.original, 'voice', 'chat-first');
+		AppendToSpeechQueue(customChatFirstResponse.length > 0 ? customChatFirstResponse : generalChatFirstResponse);
 		SpeakInQueue();
-		Log('info', customResponse);
+		Log('info', generalChatFirstResponse);
 	} else {
 		Log('info', 'ParseOther: "type" is not chat-first');
 	}
@@ -263,5 +264,5 @@ function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
 StreamElements(OnEventReceived);
 GetAonyxBuddyStreamEventListener(OnEventReceived);
 
-AppendToSpeechQueue(`'A-onyx Buddy systems online. ${config.name}, is active.'`);
+AppendToSpeechQueue(`'A-onyx Buddy systems online. ${config.nickname}, is active.'`);
 SpeakInQueue();

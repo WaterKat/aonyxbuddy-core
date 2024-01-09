@@ -4,8 +4,8 @@ import * as StreamEvents from '../stream-events/index.js';
 import FrankBase64Sprites from './base64-sprites/frank.js';
 
 export const ClientConfigExample: IClientConfig = {
-    id: 'franktts',
-    name: 'frank',
+    owner_id: 'franktts',
+    nickname: 'frank',
     spriteRendering: {
         canvas: {
             size: {

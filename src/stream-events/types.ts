@@ -10,8 +10,8 @@ export enum StreamEventType {
     CHAT = 'chat',
     COMMAND = 'command',
     REDEEM = 'redeem',
-    OTHER = 'other'
-
+    OTHER = 'other',
+    CHAT_FIRST = 'chat-first'
 }
 
 export type Permissions = {

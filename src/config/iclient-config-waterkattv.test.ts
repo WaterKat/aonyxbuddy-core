@@ -3,8 +3,8 @@ import FrankBase64Sprites from './base64-sprites/frank.js';
 import DefaultBlockedWords from './blocked-words/default.js';
 
 export const ClientConfigExample: IClientConfig = {
-    id: 'waterkat',
-    name: 'sol',
+    owner_id: 'waterkat',
+    nickname: 'sol',
     webSocketToken: 'urPO9OMZYRhQPwNTHZ4RcA',
     commandIdentifier: '!',
     commandGroup: 'sol',
@@ -70,20 +70,24 @@ export const ClientConfigExample: IClientConfig = {
         'fenrirdesigns': ['fenrir'],
         'cupidjpeg': ['cupid', 'cutie', 'sexy beast']
     },
-    tts: { voice: 'Joey'},
+    tts: { voice: 'Joey' },
     responses: {
-        chat: {
-            follow: ['Thank you for the follow, ${nickname}.'],
-            subscriber: ['Thank you for the subscription, ${nickname}.'],
-            "gift-single": ['Thank you for gifting a subscription, ${nickname}. ${gift.receiver} enjoy your stay.'],
-            "gift-bulk-sent": ['Thank you for gifting ${gift.count} subscriptions ${nickname}.'],
-            "gift-bulk-received": [],
-            raid: ['Thank you for the raid ${nickname}.'],
-            cheer: ['Thank you for the ${cheer.amount} bits, ${nickname}'],
-            chat: [],
-            command: [],
-            redeem: ['Thank you for redeeming ${redeem.id}, ${nickname}'],
-            "chat-first": ['Welcome to the stream ${nickname}.']
+        "chat-first-custom": {
+            "cupidjpeg": [
+                "Hello my good friend! ${nickname}"
+            ],
+            "waterkattv": [
+                "Hello! ${nickname}, everything seems to be working just fine"
+            ],
+            "fariaorion": [
+                "Is that the ${nickname}? The one and only ${nickname}! Wow."
+            ],
+            "alexr118": [
+                "${nickname} also known as dah deep dish demon"
+            ],
+            "bluebekaw": [
+                "${nickname} long time no see haha"
+            ]
         },
         voice: {
             follow: [
@@ -129,7 +133,7 @@ export const ClientConfigExample: IClientConfig = {
             ],
             "command-say": [
                 "${message.text}"
-            ]
+            ],
         }
     }
 }

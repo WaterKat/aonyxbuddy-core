@@ -3,8 +3,8 @@ import ChuckBase64Sprites from './base64-sprites/chuck.js';
 import DefaultBlockedWords from './blocked-words/default.js';
 
 export const ClientConfigExample: IClientConfig = {
-    id: 'cupidjpeg',
-    name: 'chuck',
+    owner_id: 'cupidjpeg',
+    nickname: 'chuck',
     webSocketToken: '',
     commandIdentifier: '!',
     commandGroup: 'chuck',
@@ -32,26 +32,16 @@ export const ClientConfigExample: IClientConfig = {
         sprites: ChuckBase64Sprites
     },
     nicknames: {
-        'waterkattv': ['waterkat', 'the cat'],
+        'waterkattv': ['water kat', 'the cat'],
         'fariaorion': ['faria'],
         'alexr118': ['alex'],
-        'cupidjpeg': ['cupid', 'cutie', 'sexy beast'],
-        'ssptaicho': ['Thai Cho']
+        'cupidjpeg': ['cupid'],
+        'ssptaicho': ['thai cho']
     },
     tts: { voice: 'Matthew' },
     responses: {
-        chat: {
-            follow: ['Thank you for the follow, ${nickname}.'],
-            subscriber: ['Thank you for the subscription, ${nickname}.'],
-            "gift-single": ['Thank you for gifting a subscription, ${nickname}. ${gift.receiver} enjoy your stay.'],
-            "gift-bulk-sent": ['Thank you for gifting ${gift.count} subscriptions ${nickname}.'],
-            "gift-bulk-received": [],
-            raid: ['Thank you for the raid ${nickname}.'],
-            cheer: ['Thank you for the ${cheer.amount} bits, ${nickname}'],
-            chat: [],
-            command: [],
-            redeem: ['Thank you for redeeming ${redeem.id}, ${nickname}'],
-            "chat-first": ['Welcome to the stream ${nickname}.']
+        "chat-first-custom": {
+            "fariaorion" : ["Hey look who it is, the eepy star demon cat!"]
         },
         voice: {
             follow: [
