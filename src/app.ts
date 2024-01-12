@@ -8,7 +8,8 @@ import StreamElements from './stream-elements/index.js';
 
 //import { ClientConfigExample as config } from './config/iclient-config-cupidjpeg.test.js';
 //import { ClientConfigExample as config } from './config/iclient-config-waterkattv.test.js';
-import { ClientConfigExample as config } from './config/iclient-config-fariaorion.test.js';
+//import { ClientConfigExample as config } from './config/iclient-config-fariaorion.test.js';
+import { config } from './config/config.ts';
 
 import Log from './log.js';
 import GetAonyxBuddyStreamEventListener from './stream-event-listener/index.js';
