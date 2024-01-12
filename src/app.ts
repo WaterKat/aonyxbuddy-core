@@ -7,7 +7,8 @@ import * as StreamEventParser from './stream-event-parser/index.js';
 import StreamElements from './stream-elements/index.js';
 
 //import { ClientConfigExample as config } from './config/iclient-config-cupidjpeg.test.js';
-import { ClientConfigExample as config } from './config/iclient-config-cupidjpeg.test.js';
+//import { ClientConfigExample as config } from './config/iclient-config-waterkattv.test.js';
+import { ClientConfigExample as config } from './config/iclient-config-fariaorion.test.js';
 
 import Log from './log.js';
 import GetAonyxBuddyStreamEventListener from './stream-event-listener/index.js';
@@ -129,7 +130,7 @@ function ParseEvent(streamEvent: StreamEvents.Types.StreamEvent) {
 
 	//* Special Condition for Subscription (Sub Messages)
 
-	if ((streamEvent.type === StreamEvents.Types.StreamEventType.SUBSCRIBER) || (streamEvent.type && StreamEvents.Types.StreamEventType.CHEER)) {
+	if ((streamEvent.type === StreamEvents.Types.StreamEventType.SUBSCRIBER) || (streamEvent.type === StreamEvents.Types.StreamEventType.CHEER)) {
 		AppendToSpeechQueue(streamEvent.message?.text ?? '');
 	}
 }
@@ -242,6 +243,7 @@ function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
 	streamEvent = StreamEvents.Manipulation.ParseCommand(streamEvent, true);
 	streamEvent = StreamEvents.Manipulation.IgnoreCommandWithoutPermission(streamEvent, 'CommandPermission');
 	streamEvent = StreamEvents.Manipulation.FilterEmojis(streamEvent, '');
+	streamEvent = StreamEvents.Manipulation.FilterCheers(streamEvent, ' ');
 	streamEvent = StreamEvents.Manipulation.IgnoreFromBlacklist(streamEvent, config.blacklist);
 	streamEvent = StreamEvents.Manipulation.IgnoreFromBotlist(streamEvent, config.botlist);
 	streamEvent = StreamEvents.Manipulation.ProcessNicknames(streamEvent, config.nicknames);

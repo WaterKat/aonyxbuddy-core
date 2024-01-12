@@ -116,7 +116,7 @@ export const ClientConfigExample: IClientConfig = {
                 "Incoming stream! Parsing ${raid.count} new connection${raid.plural}. Thank you for joining ${nickname}!",
                 "${raid.count} new viewer${raid.plural} detected. Thank your ${nickname} for bringing your community!"
             ],
-            cheer: [],
+            cheer: ["Thank you for the cheer! ${nickname}"],
             chat: [],
             command: [],
             redeem: [],
