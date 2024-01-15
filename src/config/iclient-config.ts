@@ -7,11 +7,13 @@ export interface IClientConfig {
     owner_id: string,
     nickname: string,
     nicknames: { [key: string]: string[] },
+
     spriteRendering: SpriteRendering.Types.ISpriteRendererConfig,
     tts: TextToSpeech.Types.ITextToSpeechOptions,
+    blockedWords: string[],
+
     blacklist: string[],
     botlist: string[],
-    blockedWords: string[],
     responses: {
         [key: string]: {
             [key: string]: string[]
@@ -22,11 +24,39 @@ export interface IClientConfig {
     commandIdentifier?: string,
 }
 
-// aonyxbuddy_configs@aonyxbuddy
-interface IAonyxBuddyConfig  {
-    aonyxbuddy_id?: number,
-    owner_id: string, // ref: users@auth
-    nickname: string,
+
+// aonyxbuddy_public.users 
+interface IAonyxBuddyUser {
+    user_id?: number,
+    username: string,
+
+    created_at: Date,
+}
+
+// aonyxbuddy_public.instances
+export interface IAonyxBuddyInstance {
+    instance_id?: number,
+    user_id?: number, //ref:aonyxbuddy_public.users.user_id
+    created_at?: string,
+
+    instance_nickname: string,
+
+    rendering: {
+        spriteRendering: SpriteRendering.Types.ISpriteRendererConfig
+    },
+    texttospeech: TextToSpeech.Types.ITextToSpeechOptions,
+    users: {
+        nicknames: { [username: string]: string[] },
+        botlist: string[],
+        blacklist: string[]
+    }
+    responses: {
+        [message: string] : string[]
+    },
+    commands : { // [trigger][prefix] [action] [argument(s)]
+        prefixes: string[],
+        actions: string[],
+    },
 }
 
 interface IAonyxBuddyResponsesRow {

@@ -7,18 +7,20 @@
     "typescript": "^5.0.0"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "jest": "^29.7.0"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.39.3",
     "al-stream-elements-translator": "git@github.com:WaterKat/al-stream-elements-translator.git",
     "al-websocket-client": "../al-websocket-client",
-    "gifuct-js": "^2.1.2"
+    "gifuct-js": "^2.1.2",
+    "pino": "^8.17.2"
   },
   "scripts": {
     "build:aonyxbuddy": "bun build ./src/app.js --outfile ./out/app.js --minify",
     "build:aonyxbuddy-declarations": "tsc ./src/app.ts --declaration --emitDeclarationOnly --lib es2016 --outfile ./out/app.ts",
     "build": "bun run build:aonyxbuddy && bun run build:aonyxbuddy-declarations",
-    "build:dev": "bun build ./src/app.js --outfile ./out/app.js && echo \"//# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js\" >> ./out/app.js"
+    "build:dev": "bun build ./src/app.js --outfile ./out/app.js && echo \"//# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js\" >> ./out/app.js && echo \"<!DOCTYPE html><body><script>\" > ./out/index.html && cat ./out/app.js >> ./out/index.html && echo \"</script></body></html>\" >> ./out/index.html"
   }
 }

@@ -1,16 +1,74 @@
+import pino from "pino";
+const logger = pino();
+
 import { StreamEvent, StreamEventType } from '../types.js';
 
 const AlphaNumericsRegex: RegExp = /^[a-zA-Z0-9]+$/;
 const WhitespacesRegex: RegExp = /\s+/;
 const NonstandardUnicodesRegex: RegExp = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
 
-const logs = true;
+export function ParseCommand(streamEvent: StreamEvent, prefixes: string[], actions: string[]) {
+    if (streamEvent.type !== 'chat') {
+        logger.info('Not chat event');
+        return streamEvent;
+    }
 
-function log(...items: any) {
-    if (logs)
-        console.log(items);
+    let messageText: string = streamEvent.message.text;
+
+    // prefix
+    messageText = messageText.trim();
+
+    let commandPrefix: string = "";
+    let containsCommandPrefix: boolean = false;
+
+    for (let i = 0; i < prefixes.length; i++) {
+        const prefix = prefixes[i];
+        if (messageText.startsWith(prefix)) {
+            containsCommandPrefix = true;
+            commandPrefix = prefix;
+            messageText.substring(prefix.length);
+            break;
+        }
+    }
+
+    if (!containsCommandPrefix) {
+        logger.info('Does not contain prefix');
+        return streamEvent;
+    }
+
+    // actions
+    messageText = messageText.trim();
+
+    let commandAction: string = "";
+    let containsCommandAction: boolean = false;
+
+    for (let i = 0; i < actions.length; i++) {
+        const parsedActions = actions[i].split('@');
+        const action = parsedActions[0];
+        const actionAliases = parsedActions[1].split(',');
+        actionAliases.push(action);
+
+        let commandActionAlias = "";
+        let containsActionAlias = false;
+        for (let j = 0; j < actionAliases.length; j++) {
+            const alias = actionAliases[j];
+            if (messageText.startsWith(alias)) {
+                messageText = messageText.substring(alias.length);
+                commandActionAlias = alias;
+                containsActionAlias = true;
+                break;
+            }
+        }
+
+        if (containsActionAlias) {
+            commandAction = action;
+            containsCommandAction = true;
+            break;
+        }
+    }
 }
 
+/*
 export function ParseCommand(streamEvent: StreamEvent, useRequestField?: boolean): StreamEvent {
     const minimumMessageLength: number = useRequestField ? 4 : 2;
 
@@ -86,3 +144,4 @@ export function ParseCommand(streamEvent: StreamEvent, useRequestField?: boolean
 
     return newCommand;
 }
+*/

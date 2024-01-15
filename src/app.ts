@@ -20,7 +20,7 @@ document.body.style.margin = '0 0';
 document.body.style.padding = '0 0';
 
 //* Text To Speech
-const tts = TextToSpeech.default(config.tts)
+const tts = TextToSpeech.default(config.texttospeech)
 
 //* Text To Speech Queue Logic
 const speechQueue: { text: string, callback?: () => void }[] = [];
@@ -63,7 +63,7 @@ function SpeakInQueue() {
 
 		const interval = setInterval(() => {
 			const amplitude = Math.min(TextToSpeech.Audio.GetAudioBufferAmplitude(tts.analyzer), 0.99);
-			talkingFrame = Math.floor(config.spriteRendering.sprites['talking'].length * amplitude)
+			talkingFrame = Math.floor(config.rendering.spriteRendering.sprites['talking'].length * amplitude)
 		}, 1000 / 60);
 
 		tts.Speak(speechRequest.text, () => {
@@ -230,7 +230,7 @@ function FlipBaseImage(renderer: SpriteRendering.Types.IRenderer) {
 	}, renderer.sprites['base'].delay[idleFrame]);
 }
 
-const renderer = SpriteRendering.default(config.spriteRendering).then(renderer => {
+const renderer = SpriteRendering.default(config.rendering.spriteRendering).then(renderer => {
 	if (renderer instanceof Error) throw (renderer);
 	Render(renderer);
 	if (renderer.sprites['base'].bitmap.length > 0)
@@ -240,14 +240,14 @@ const renderer = SpriteRendering.default(config.spriteRendering).then(renderer =
 //Stream Events
 function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
 	let streamEvent = rawEvent;
-	streamEvent = StreamEvents.Manipulation.FilterBannedWords(streamEvent, config.blockedWords, 'ploop', false);
+	streamEvent = StreamEvents.Manipulation.FilterBannedWords(streamEvent, config..blockedWords, 'ploop', false);
 	streamEvent = StreamEvents.Manipulation.ParseCommand(streamEvent, true);
 	streamEvent = StreamEvents.Manipulation.IgnoreCommandWithoutPermission(streamEvent, 'CommandPermission');
 	streamEvent = StreamEvents.Manipulation.FilterEmojis(streamEvent, '');
 	streamEvent = StreamEvents.Manipulation.FilterCheers(streamEvent, ' ');
-	streamEvent = StreamEvents.Manipulation.IgnoreFromBlacklist(streamEvent, config.blacklist);
-	streamEvent = StreamEvents.Manipulation.IgnoreFromBotlist(streamEvent, config.botlist);
-	streamEvent = StreamEvents.Manipulation.ProcessNicknames(streamEvent, config.nicknames);
+	streamEvent = StreamEvents.Manipulation.IgnoreFromBlacklist(streamEvent, config.users.blacklist);
+	streamEvent = StreamEvents.Manipulation.IgnoreFromBotlist(streamEvent, config.users.botlist);
+	streamEvent = StreamEvents.Manipulation.ProcessNicknames(streamEvent, config.users.nicknames);
 	streamEvent = StreamEvents.Manipulation.IgnoreWithCondition(streamEvent, !isMuted, 'MuteToggle');
 	streamEvent = StreamEvents.Detection.DetectFirstEvent(streamEvent, ParseOther);
 	console.info('RawEvent:', streamEvent);
@@ -267,5 +267,5 @@ function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
 StreamElements(OnEventReceived);
 GetAonyxBuddyStreamEventListener(OnEventReceived);
 
-AppendToSpeechQueue(`'A-onyx Buddy systems online. ${config.nickname}, is active.'`);
+AppendToSpeechQueue(`'A-onyx Buddy systems online. ${config.instance_nickname}, is active.'`);
 SpeakInQueue();
