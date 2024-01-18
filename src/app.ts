@@ -166,13 +166,12 @@ function ParseOther(otherEvent: StreamEvents.Types.StreamEvent) {
 }
 
 
-const command_identifier = config.commandIdentifier ?? '!';
-const command_group = config.commandGroup ?? 'aonyxbuddy';
+const command_prefixes = config.commands.prefixes;
 
 function ParseCommand(event: StreamEvents.Types.StreamEvent) {
 	if (event.type !== 'command') return;
-	if (event.command_identifier !== command_identifier) return;
-	if (event.command_group !== command_group && event.command_group !== 'aonyxbuddy') return;
+	if (event.command_identifier !== command_prefixes) return;
+	if (event.command_group !== command_actions && event.command_group !== 'aonyxbuddy') return;
 	const command = event.command_request.toLocaleLowerCase();
 	switch (command) {
 		case 'debug':

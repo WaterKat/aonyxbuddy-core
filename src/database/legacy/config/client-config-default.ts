@@ -1,6 +1,7 @@
-import { IAonyxBuddyInstance, IClientConfig } from './iclient-config.js';
+import { IClientConfig } from '../iclient-config.js';
+import { IAonyxBuddyInstance } from '../../config-types.js';
 //import * as StreamCharacters from '@aonyxbuddy/stream-characters';
-import * as StreamEvents from '../stream-events/index.js';
+import * as StreamEvents from '@aonyxbuddy/stream-events';
 import FrankBase64Sprites from './base64-sprites/frank.js';
 
 export const DefaultAonyxBuddyConfiguration: IAonyxBuddyInstance = {
@@ -54,7 +55,6 @@ export const DefaultAonyxBuddyConfiguration: IAonyxBuddyInstance = {
             "kofistreambot",
             "aonyxbuddy"
         ],
-        "blacklist": []
     },
     responses: {
         "Welcome in! ${nickname}.": [
@@ -83,6 +83,10 @@ export const DefaultAonyxBuddyConfiguration: IAonyxBuddyInstance = {
             "unmute",
             "skip"
         ]
+    },
+    security: {
+        "blacklist": [],
+        "blockedWords": [],
     },
     created_at: '2024-01-14 02:49:11.534649+00'
 }

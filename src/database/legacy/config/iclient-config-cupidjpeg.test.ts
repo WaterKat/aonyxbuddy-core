@@ -1,4 +1,4 @@
-import { IClientConfig } from './iclient-config.js';
+import { IClientConfig } from '../iclient-config.js';
 import ChuckBase64Sprites from './base64-sprites/chuck.js';
 import DefaultBlockedWords from './blocked-words/default.js';
 

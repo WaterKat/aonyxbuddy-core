@@ -1,4 +1,5 @@
-import { IAonyxBuddyInstance, IClientConfig } from './iclient-config.js';
+//import { IClientConfig } from '../database/legacy/iclient-config.js';
+//import { IAonyxBuddyInstance } from '../database/config-types.js';
 import { DefaultAonyxBuddyConfiguration as defaultConfig } from './client-config-default.js';
 
 
@@ -31,8 +32,8 @@ async function GetConfigFromSupabase() {
 
 GetConfigFromSupabase();
 
-declare const providedConfig: IAonyxBuddyInstance;
-
+//declare const providedConfig: IAonyxBuddyInstance;
+/*
 function GetConfig(): IAonyxBuddyInstance {
     if (typeof providedConfig !== 'undefined') {
         return providedConfig;
@@ -41,3 +42,5 @@ function GetConfig(): IAonyxBuddyInstance {
 }
 
 export const config: IAonyxBuddyInstance = GetConfig();
+
+*/

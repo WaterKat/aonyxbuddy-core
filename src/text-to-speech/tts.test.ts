@@ -1,5 +1,11 @@
 import { GetTextToSpeech } from './tts.js';
-import config from './example.config.js';
+
+import { ITextToSpeechOptions } from "./types.js"
+
+/** This is the standard text to speech configuration stream elements uses. This is BrianTTS */
+const config: ITextToSpeechOptions = {
+    voice: 'Brian'
+}
 
 /** first you get your tts wrapper, and hold the reference */
 const tts = GetTextToSpeech(config);

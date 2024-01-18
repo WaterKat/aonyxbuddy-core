@@ -1,4 +1,4 @@
-import { IClientConfig } from './iclient-config.js';
+import { IClientConfig } from '../iclient-config.js';
 import FrankBase64Sprites from './base64-sprites/frank.js';
 import DefaultBlockedWords from './blocked-words/default.js';
 
@@ -52,19 +52,6 @@ export const ClientConfigExample: IClientConfig = {
     },
     tts: { voice: 'Brian' },
     responses: {
-        chat: {
-            follow: ['Thank you for the follow, ${nickname}.'],
-            subscriber: ['Thank you for the subscription, ${nickname}.'],
-            "gift-single": ['Thank you for gifting a subscription, ${nickname}. ${gift.receiver} enjoy your stay.'],
-            "gift-bulk-sent": ['Thank you for gifting ${gift.count} subscriptions ${nickname}.'],
-            "gift-bulk-received": [],
-            raid: ['Thank you for the raid ${nickname}.'],
-            cheer: ['Thank you for the ${cheer.amount} bits, ${nickname}'],
-            chat: [],
-            command: [],
-            redeem: ['Thank you for redeeming ${redeem.id}, ${nickname}'],
-            "chat-first": ['Welcome to the stream ${nickname}.']
-        },
         voice: {
             follow: [
                 "Thanks for following, ${nickname}! Enjoy the cosmic journey!",
@@ -152,12 +139,6 @@ export const ClientConfigExample: IClientConfig = {
                 "Hey, ${nickname}! The cosmic adventure begins now. Buckle up!",
                 "Greetings, ${nickname}! Your presence makes the stream shine brighter!",
                 "Welcome, ${nickname}! Your arrival brings a new spark to the cosmic journey!",
-            ],
-            "event-subscriber-message": [
-                "${nickname} says... ${message.text}"
-            ],
-            "command-say": [
-                "${message.text}"
             ]
         }
     }

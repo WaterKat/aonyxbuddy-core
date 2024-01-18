@@ -46,10 +46,6 @@ export type StreamEvent = {
     gift_count?: number,
     raid_count? : number,
     cheer_amount? : number,
-    command_identifier? : string,
-    command_group? : string,
-    command_request? : string,
-    command_args? : string,
     redeem_id? : string,
     ignore_message? : string,
     custom_id? : string,
@@ -82,10 +78,11 @@ export type StreamEvent = {
 } | {
     type: StreamEventType.COMMAND,
     message : ChatMessage,
-    command_identifier : string,
-    command_group : string,
-    command_request : string,
-    command_args : string,
+    command: {
+        prefix: string,
+        action: string,
+        args : string
+    }
 } | {
     type: StreamEventType.REDEEM
     message: ChatMessage,
