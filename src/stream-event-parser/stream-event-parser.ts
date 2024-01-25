@@ -1,7 +1,8 @@
-import { Types } from '../stream-events/index.js';
+//import { Types } from '../stream-events/index.js';
 import { IResponses } from './types';
+import { type AonyxBuddyStreamEvent } from '@aonyxbuddy/stream-events';
 
-export function GetResponse(responses: IResponses, event: Types.StreamEvent, key: string, typeOverride?: string){
+export function GetResponse(responses: IResponses, event: AonyxBuddyStreamEvent, key: string, typeOverride?: string){
     const type = typeOverride ?? event.type;
 
     if (!responses[key] || !responses[key][type] || responses[key][type].length < 1)
@@ -21,7 +22,7 @@ function GetRandomResponse(responseArray: string[]) {
     return responseArray[randomResponseIndex];
 }
 
-function GetVariablReplacements(event: Types.StreamEvent) : {[key: string]: string} {
+function GetVariablReplacements(event: AonyxBuddyStreamEvent) : {[key: string]: string} {
     return {
         'nickname': event.nickname || event.username,
         'subscriber.length' : event.subscriber_length?.toString() || '',

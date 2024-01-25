@@ -18,14 +18,16 @@
     "al-stream-elements-translator": "git@github.com:WaterKat/al-stream-elements-translator.git",
     "gifuct-js": "^2.1.2",
     "pino": "^8.17.2",
-    "@aonyxbuddy/stream-events": "link:@aonyxbuddy/stream-events"
+    "@aonyxbuddy/stream-events": "link:@aonyxbuddy/stream-events",
+    "@aonyxbuddy/websocket-client": "link:@aonyxbuddy/websocket-client"
   },
   "scripts": {
     "generate-types" : "supabase gen types typescript --project-id rkageyxjkwpdbggemyhk --schema aonyxbuddy_public --schema public > ./src/database/supabase-types.ts",
     "serve" : "bun --watch ./serve.ts",
-    "build:dev": "bun build ./src/index.test.ts --outfile ./out/index.test.js --minify",
+    "build:dev": "bun build ./src/index.test.ts --outfile ./out/index.test.js",
 
     "build:aonyxbuddy": "bun build ./src/app.js --outfile ./out/app.js --minify",
+    "build:aonyxbuddy:dev": "bun build ./src/app.js --outfile ./out/app.js", 
     "build:aonyxbuddy-declarations": "tsc ./src/app.ts --declaration --emitDeclarationOnly --lib es2016 --outfile ./out/app.ts",
     "build": "bun run build:aonyxbuddy && bun run build:aonyxbuddy-declarations"
   }

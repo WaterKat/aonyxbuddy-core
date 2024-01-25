@@ -1,7 +1,7 @@
-import { Types } from "../index.js";
+import { AonyxBuddyStreamEvent } from "@aonyxbuddy/stream-events";
 
-export function FilterBannedWords(streamEvent: Types.StreamEvent, bannedWords: string[], replacement: string = '', caseSensitive: boolean = false): Types.StreamEvent {
-    const modifiedEvent: Types.StreamEvent = {
+export function FilterBannedWords(streamEvent: AonyxBuddyStreamEvent, bannedWords: string[], replacement: string = '', caseSensitive: boolean = false): Types.StreamEvent {
+    const modifiedEvent: AonyxBuddyStreamEvent = {
         ...streamEvent
     }
     if (modifiedEvent.message) {

@@ -28,3 +28,9 @@ export interface IAnimationData {
 }
 
 export type IRenderer = Exclude<Awaited<(ReturnType<typeof GetRenderer>)>, Error>;
+
+export interface IRendererParam {
+    value: number,
+    min: number,
+    max: number
+}

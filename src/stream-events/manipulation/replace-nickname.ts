@@ -1,6 +1,7 @@
-import { Types } from "../index.js";
+//import { Types } from "../index.js";
+import { AonyxBuddyStreamEvent } from "@aonyxbuddy/stream-events";
 
-export function ProcessNicknames(streamEvent: Types.StreamEvent, nicknameMap: { [key: string]: string[] }): Types.StreamEvent {
+export function ProcessNicknames(streamEvent: AonyxBuddyStreamEvent, nicknameMap: { [key: string]: string[] }): AonyxBuddyStreamEvent {
     const validUsernames = Object.keys(nicknameMap);
     if (validUsernames.includes(streamEvent.username)) {
         const nicknames = nicknameMap[streamEvent.username];

@@ -1,3 +1,6 @@
+import pino from "pino";
+export const Logger = pino();
+
 const NAME_TAG: string = 'aonyxbuddy';
 
 /** Available Tags for use with the Log function, similar to console.log, console.warn, etc */

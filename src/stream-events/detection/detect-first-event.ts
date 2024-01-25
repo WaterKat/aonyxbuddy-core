@@ -1,4 +1,5 @@
-import { StreamEvent, StreamEventType } from '../types.js';
+//import { StreamEvent, StreamEventType } from '../types.js';
+import { AonyxBuddyStreamEvent as StreamEvent, AonyxBuddyStreamEventTypes as StreamEventType } from "@aonyxbuddy/stream-events";
 
 const globalUsernames: string[] = [];
 

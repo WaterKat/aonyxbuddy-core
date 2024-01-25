@@ -1,9 +1,10 @@
-import { Types } from "../index.js";
+//import { Types } from "../index.js";
+import { AonyxBuddyStreamEvent } from "@aonyxbuddy/stream-events";
 
 const EmojiRegex : RegExp = /Cheer\d+/g;
 
-export function FilterCheers(streamEvent: Types.StreamEvent, replacement?: string) : Types.StreamEvent {
-    const modifiedEvent : Types.StreamEvent = {
+export function FilterCheers(streamEvent: AonyxBuddyStreamEvent, replacement?: string) : AonyxBuddyStreamEvent {
+    const modifiedEvent : AonyxBuddyStreamEvent = {
         ...streamEvent
     };
 

@@ -1,4 +1,5 @@
-import { StreamEvent, StreamEventType } from '../types.js';
+//import { StreamEvent, StreamEventType } from '../types.js';
+import { AonyxBuddyStreamEvent as StreamEvent, AonyxBuddyStreamEventTypes as StreamEventType, AonyxBuddyTypescriptIDS } from "@aonyxbuddy/stream-events";
 
 export function IgnoreWithCondition(streamEvent: StreamEvent, condition: boolean, id?: string): StreamEvent {
     if (condition)
@@ -9,7 +10,7 @@ export function IgnoreWithCondition(streamEvent: StreamEvent, condition: boolean
     }
 
     const ignoredEvent: StreamEvent = {
-        tstype: StreamEventType.TS_TYPE,
+        tstype: AonyxBuddyTypescriptIDS.STREAM_EVENT,
         username: streamEvent.username,
         type: StreamEventType.OTHER,
         original: streamEvent,

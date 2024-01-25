@@ -1,9 +1,10 @@
-import { Types } from '../stream-events/index.js'; 
+//import { Types } from '../stream-events/index.js'; 
 
+import { type AonyxBuddyStreamEvent } from "@aonyxbuddy/stream-events";
 import EventTranslator from './event-translator.js';
         //^?
 
-export default function ListenForStreamElementsEvents(callback: (event: Types.StreamEvent) => void): void | Error {
+export default function ListenForStreamElementsEvents(callback: (event: AonyxBuddyStreamEvent) => void): void | Error {
     if (!window) {
         return new Error('Window not found, this can only run in a browser');
     }

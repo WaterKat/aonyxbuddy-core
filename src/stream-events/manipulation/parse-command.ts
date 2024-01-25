@@ -1,7 +1,7 @@
 import pino from "pino";
 const logger = pino();
 
-import { StreamEvent, StreamEventType } from '../types.js';
+import { AonyxBuddyStreamEvent, AonyxBuddyStreamEventTypes } from "@aonyxbuddy/stream-events";
 
 const AlphaNumericsRegex: RegExp = /^[a-zA-Z0-9]+$/;
 const WhitespacesRegex: RegExp = /\s+/;
@@ -16,7 +16,7 @@ const NonstandardUnicodesRegex: RegExp = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
  * ex: the "say@\~,speak,read" string defines an action "say" and alternative ways of calling it like "~", "speak", "read".
  * @returns a parsed command stream event if the input is a valid command, otherwise returns original stream event
  */
-export function ParseCommand(streamEvent: StreamEvent, prefixes: string[], actions: string[]) : StreamEvent {
+export function ParseCommand(streamEvent: AonyxBuddyStreamEvent, prefixes: string[], actions: string[]) : AonyxBuddyStreamEvent {
     if (streamEvent.type !== 'chat') {
         logger.info('Not chat event');
         return streamEvent;
@@ -102,9 +102,9 @@ export function ParseCommand(streamEvent: StreamEvent, prefixes: string[], actio
     messageText = messageText.trim();
 
     // return
-    const commandStreamEvent : StreamEvent = {
+    const commandStreamEvent : AonyxBuddyStreamEvent = {
         ...streamEvent,
-        type: StreamEventType.COMMAND,
+        type: AonyxBuddyStreamEventTypes.COMMAND,
         command : {
             prefix : commandPrefix,
             action : commandAction,
@@ -114,81 +114,3 @@ export function ParseCommand(streamEvent: StreamEvent, prefixes: string[], actio
 
     return commandStreamEvent;
 }
-
-/*
-export function ParseCommand(streamEvent: StreamEvent, useRequestField?: boolean): StreamEvent {
-    const minimumMessageLength: number = useRequestField ? 4 : 2;
-
-    if (streamEvent.type !== 'chat') {
-        log('Not chat event');
-        return streamEvent;
-    }
-    //
-    let messageText: string = streamEvent.message.text;
-    messageText = messageText.trim();
-
-    //
-    if (messageText.length < minimumMessageLength){
-        log('Command is smaller than minimum Message Length');
-        return streamEvent;
-    }
-
-    //
-    const firstCharacter = messageText[0];
-    if (AlphaNumericsRegex.test(firstCharacter)) {
-        log('First character is alphanumeric, should be symbol');
-        return streamEvent;
-    }
-
-    const commandIdentifier = firstCharacter;
-    messageText = messageText.substring(1);
-
-    //
-    const words = messageText.split(WhitespacesRegex).filter(word => word !== "");
-    log(words);
-    let commandGroup: string;
-    let commandRequest: string;
-    let lastWord: string;
-
-    if (useRequestField) {
-        if (words.length < 2) {
-            log('useRequestField is enabled, but less than two words');
-            return streamEvent;
-        } else {
-            commandGroup = words[0];
-            commandRequest = words[1];
-            lastWord = words[1];
-        }
-    } else {
-        if (words.length < 1) {
-            log('less than one words');
-            return streamEvent
-        } else {
-            commandGroup = words[0];
-            commandRequest = '';
-            lastWord = words[0];
-        }
-    }
-
-    //
-    const argsBeginningIndex = messageText.indexOf(lastWord) + lastWord.length;
-    let commandArgs: string;
-    if (argsBeginningIndex >= messageText.length) {
-        commandArgs = '';
-    } else {
-        commandArgs = messageText.substring(argsBeginningIndex).replace(NonstandardUnicodesRegex, '');
-    }
-
-    //
-    const newCommand: StreamEvent = {
-        ...streamEvent,
-        type: StreamEventType.COMMAND,
-        command_identifier: commandIdentifier,
-        command_group: commandGroup,
-        command_request: commandRequest,
-        command_args: commandArgs
-    }
-
-    return newCommand;
-}
-*/
