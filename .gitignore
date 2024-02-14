@@ -1,20 +1,26 @@
-#reverse gitignore
+# ignore all
 /**/*.*
 
-#git
+# allow git files
 !.gitignore
 !LICENSE.md
 !README.md
 
-# bun
+# allow bun
 !package.json
+!bun.lockb
+!/tsconfig.json
+!/src/**/*.ts
 
-# tsc
-!/**/tsconfig.json
-!/**/*.ts
+# allow tools
+!/tools/*.*
 
-# bun ignore
+# allow testing
+!/test/*.*
+
+# ignore again
 /**/node_modules
-
-#build ignore
 /**/out
+/**/build
+/**/*.env
+
