@@ -38,7 +38,7 @@ export function GetTextQueue(tts: ITextToSpeechWrapper, variableWrapper?: IVaria
 
   function TryRunningQueue() {
     if (running) return;
-    const activeTask = taskQueue.pop();
+    const activeTask = taskQueue.shift();
     if (!activeTask) return;
     running = true;
     tts.Speak(activeTask.text, () => { running = false; });
@@ -84,7 +84,8 @@ export function GetTextQueue(tts: ITextToSpeechWrapper, variableWrapper?: IVaria
     Stop,
     Append,
     IsRunning, 
-    Skip
+    Skip,
+    taskQueue
   }
 }
 

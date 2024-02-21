@@ -1,9 +1,8 @@
 import * as index from './index.js';
 import config from './config/offline.config.js';
+import { test } from 'bun:test';
 
-
-
-async function main() {
+test("renderer", async () => {
     document.body.style.background = 'DarkSeaGreen';
 
     const renderer = await index.default(config)
@@ -47,6 +46,4 @@ async function main() {
     }
 
     anim();
-}
-
-window.onload = main;
+});

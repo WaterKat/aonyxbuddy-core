@@ -7,21 +7,18 @@
     "typescript": "^5.0.0"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "standardized-audio-context-mock": "^9.6.34"
   },
   "dependencies": {
     "al-stream-elements-translator": "git@github.com:WaterKat/al-stream-elements-translator.git",
-    "al-websocket-client": "../al-websocket-client",
     "gifuct-js": "^2.1.2"
   },
   "scripts": {
     "build:aonyxbuddy": "bun build ./src/app.js --outfile ./out/app.js --minify",
     "build:aonyxbuddy-declarations": "tsc ./src/app.ts --declaration --emitDeclarationOnly --lib es2016 --outfile ./out/app.ts",
     "build": "bun run build:aonyxbuddy && bun run build:aonyxbuddy-declarations",
-
-    "build:dev" : "cp ./test/* ./build/ && bun build ./src/app.js --outfile ./build/app.js && echo \"//# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js\" >> ./out/app.js",
-    
-    "serve" : "bun ./tools/serve.ts"
-
+    "build:dev": "cp ./test/* ./build/ && bun build ./src/app.js --outfile ./build/app.js && echo \"//# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js\" >> ./out/app.js",
+    "serve": "bun ./tools/serve.ts"
   }
 }

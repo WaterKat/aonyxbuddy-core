@@ -8,7 +8,7 @@ import { ITextToSpeechWrapper, ITextToSpeechOptions } from "./types.js";
  * @returns the wrapper for the text to speech function, used to start and stop speech
  */
 export function GetTextToSpeech(options: ITextToSpeechOptions) : ITextToSpeechWrapper {
-    const context = new AudioContext();
+    const context = options.context ?? new AudioContext();
     const analyzer = context.createAnalyser();
     const sourceNodes : AudioBufferSourceNode[] = [];
 

@@ -2,7 +2,8 @@ export { };
 
 /** an options interface for use with TextToSpeech */
 export interface ITextToSpeechOptions {
-    voice: StreamElementsVoiceID
+    voice: StreamElementsVoiceID,
+    context?: AudioContext
 }
 
 /** A string type that is a tested valid voice id for use with stream elements text to speech */
