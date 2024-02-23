@@ -9,10 +9,10 @@ export function GetAonyxBuddyInstance(config: IClientConfig) {
     const speechAmplitudeVariable = { 
         value: 0
     }
-    const textqueue = GetTextQueue(tts, speechAmplitudeVariable)
+    const textqueue = GetTextQueue(tts, speechAmplitudeVariable);
+    
     return {
         TextToSpeech: tts,
         TextQueue: textqueue
     };
 }
-

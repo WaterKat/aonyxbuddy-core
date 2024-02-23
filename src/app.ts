@@ -106,7 +106,7 @@ function main() {
       Log("info", "SkipAllSpeech " + skipped?.text);
     }
   }
-
+  //!```````````````````````````````````````````````````````````````````````````````````````
   //* Mute
   let isMuted = false;
   let mutedFrame = 0;
