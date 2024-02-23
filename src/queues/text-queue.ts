@@ -62,6 +62,7 @@ export function GetTextQueue(tts: ITextToSpeechWrapper, variableWrapper?: IVaria
   /**
    * Skips a count of queued messages
    * @param count current running included
+   * @return the remaining count of skips after being applied 
    */
   function Skip(count: number) {
     let currentCount = count;
@@ -78,6 +79,7 @@ export function GetTextQueue(tts: ITextToSpeechWrapper, variableWrapper?: IVaria
         break;
       }
     }
+    return currentCount;
   }
 
   return {

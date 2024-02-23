@@ -12,115 +12,32 @@ import { ClientConfigExample as config } from "./config/iclient-config-fariaorio
 
 import Log from "./log.js";
 import GetAonyxBuddyStreamEventListener from "./stream-event-listener/index.js";
+import { GetAonyxBuddyInstance } from "./index.js";
 
 function main() {
-  const aonyxbuddy = Get
-
-  //* Text To Speech
-  const tts = TextToSpeech.default(config.tts);
-
-  //* Text To Speech Queue Logic
-  const speechQueue: { text: string; callback?: () => void }[] = [];
-  const timeBetweenSpeech = 0.25;
-  let isSpeakingQueue = false;
-
-  function AppendToSpeechQueue(text: string, callback?: () => void) {
-    speechQueue.push({ text: text, callback: callback });
-  }
-  function InsertToSpeechQueue(text: string, callback?: () => void) {
-    speechQueue.splice(0, 0, { text: text, callback: callback });
-  }
-
-  function StopSpeaking(): boolean {
-    if (isSpeakingQueue) {
-      tts.Stop();
-      isSpeakingQueue = false;
-      return true;
-    }
-    return false;
-  }
-
-  function SpeakInQueue() {
-    if (isSpeakingQueue) return;
-    isSpeakingQueue = true;
-
-    function SpeakRequest() {
-      if (!isSpeakingQueue) return;
-
-      if (speechQueue.length < 1) {
-        isSpeakingQueue = false;
-        return;
-      }
-
-      const speechRequest = speechQueue.shift();
-      if (!speechRequest) return;
-
-      Log("info", "Speech Request:", speechRequest.text);
-
-      const interval = setInterval(() => {
-        const amplitude = Math.min(
-          TextToSpeech.Audio.GetAudioBufferAmplitude(tts.analyzer),
-          0.99
-        );
-        talkingFrame = Math.floor(
-          config.spriteRendering.sprites["talking"].length * amplitude
-        );
-      }, 1000 / 60);
-
-      tts.Speak(speechRequest.text, () => {
-        clearInterval(interval);
-        talkingFrame = 0;
-        if (speechRequest.callback) speechRequest.callback();
-        SpeakRequest();
-      });
-    }
-
-    setTimeout(SpeakRequest, 1000 * timeBetweenSpeech);
-  }
-
-  //* Speech Skipping
-
   let skipCount = 0;
 
-  function SkipSpeech(count?: number) {
-    skipCount += count ?? 0;
-    Log("info", "Skips Starting: " + skipCount);
+  const aonyxbuddy = GetAonyxBuddyInstance(config);
 
-    if (skipCount < 1) return;
-
-    if (StopSpeaking()) skipCount -= 1;
-
-    while (skipCount > 0 && speechQueue.length > 0) {
-      const skipped = speechQueue.pop();
-      Log("info", "SkipSpeech " + skipped?.text);
-      skipCount -= 1;
-    }
-
-    Log("info", "Skips Left: " + skipCount);
-  }
-
-  function SkipAllSpeech() {
-    StopSpeaking();
-    while (speechQueue.length > 0) {
-      const skipped = speechQueue.pop();
-      Log("info", "SkipAllSpeech " + skipped?.text);
-    }
-  }
   //!```````````````````````````````````````````````````````````````````````````````````````
-  //* Mute
-  let isMuted = false;
+
   let mutedFrame = 0;
+  /*
+    //* Mute
+    let isMuted = false;
+    let mutedFrame = 0;
 
-  function SetMuted() {
-    isMuted = true;
-    mutedFrame = 1;
-    SkipAllSpeech();
-  }
+    function SetMuted() {
+      isMuted = true;
+      mutedFrame = 1;
+      SkipAllSpeech();
+    }
 
-  function SetUnmuted() {
-    isMuted = false;
-    mutedFrame = 0;
-  }
+    function SetUnmuted() {
+      isMuted = false;
+      mutedFrame = 0;
+    }
+  */
 
   //* StreamEventParser
 
@@ -130,7 +47,7 @@ function main() {
       streamEvent,
       "voice"
     );
-    AppendToSpeechQueue(response);
+    aonyxbuddy.TextQueue.Append(response);
 
     //* Special Condition for Subscription (Sub Messages)
 
@@ -138,7 +55,7 @@ function main() {
       streamEvent.type === StreamEvents.Types.StreamEventType.SUBSCRIBER ||
       streamEvent.type === StreamEvents.Types.StreamEventType.CHEER
     ) {
-      AppendToSpeechQueue(streamEvent.message?.text ?? "");
+      aonyxbuddy.TextQueue.Append(streamEvent.message?.text ?? "");
     }
   }
 
@@ -174,12 +91,11 @@ function main() {
         "voice",
         "chat-first"
       );
-      AppendToSpeechQueue(
+      aonyxbuddy.TextQueue.Append(
         customChatFirstResponse.length > 0
           ? customChatFirstResponse
           : generalChatFirstResponse
       );
-      SpeakInQueue();
       Log("info", generalChatFirstResponse);
     } else {
       Log("info", 'ParseOther: "type" is not chat-first');
@@ -202,33 +118,38 @@ function main() {
     const command = event.command_request.toLocaleLowerCase();
     switch (command) {
       case "debug":
-        Log("log", "Muted:", isMuted);
+        Log("log", "Muted:", mutedFrame);
         Log("log", "SkipCount:", skipCount);
-        Log("log", speechQueue);
+        Log("log", aonyxbuddy.TextQueue.taskQueue);
         break;
       case "say":
         Log("info", "say command called");
-        InsertToSpeechQueue(event.command_args);
+        aonyxbuddy.TextQueue.Append(event.command_args);
         break;
       case "mute":
         Log("info", "mute called");
-        SetMuted();
+        mutedFrame = 1;
+        skipCount = 1000;
         break;
       case "unmute":
         Log("info", "unmute called");
-        SetUnmuted();
+        mutedFrame = 0;
+        skipCount = 0;
         break;
       case "skip":
         Log("info", "skip command called");
         if (event.command_args.trim().length < 1) {
           Log("info", "skip arg is empty, therefore using 1 as default");
-          SkipSpeech(1);
+          skipCount = aonyxbuddy.TextQueue.Skip(1 + skipCount);
         } else if (!isNaN(+event.command_args.trim())) {
           Log("info", "skip arg is number");
-          SkipSpeech(Math.max(0, +event.command_args));
+          skipCount = aonyxbuddy.TextQueue.Skip(
+            Math.max(0, skipCount + +event.command_args)
+          );
         } else if (event.command_args.trim() === "all") {
           Log("info", "skip all command");
-          SkipAllSpeech();
+          aonyxbuddy.TextQueue.Skip(100);
+          if (mutedFrame < 1) skipCount = 0;
         } else if (event.command_args.trim() === "clear") {
           Log("info", "skip clear command");
           skipCount = 0;
@@ -296,7 +217,7 @@ function main() {
     );
     streamEvent = StreamEvents.Manipulation.IgnoreWithCondition(
       streamEvent,
-      !isMuted,
+      !(mutedFrame > 0),
       "MuteToggle"
     );
     streamEvent = StreamEvents.Detection.DetectFirstEvent(
@@ -312,27 +233,21 @@ function main() {
       ParseEvent(streamEvent);
     }
 
-    SkipSpeech();
-
-    SpeakInQueue();
+    aonyxbuddy.TextQueue.Skip(1);
   }
 
   StreamElements(OnEventReceived);
   GetAonyxBuddyStreamEventListener(OnEventReceived);
 
-  AppendToSpeechQueue(
+  aonyxbuddy.TextQueue.Append(
     `'A-onyx Buddy systems online. ${config.nickname}, is active.'`
   );
-  SpeakInQueue();
 }
 
-
-  //* Preparing Body Styling
-  document.body.style.margin = "0 0";
-  document.body.style.padding = "0 0";
-
+//* Preparing Body Styling
+document.body.style.margin = "0 0";
+document.body.style.padding = "0 0";
 
 main();
-
 
 //# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js
