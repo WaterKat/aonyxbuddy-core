@@ -14,7 +14,9 @@ import Log from "./log.js";
 import GetAonyxBuddyStreamEventListener from "./stream-event-listener/index.js";
 
 function main() {
-  const aonyxbuddy = Get
+  //* Preparing Body Styling
+  document.body.style.margin = "0 0";
+  document.body.style.padding = "0 0";
 
   //* Text To Speech
   const tts = TextToSpeech.default(config.tts);
@@ -325,12 +327,6 @@ function main() {
   );
   SpeakInQueue();
 }
-
-
-  //* Preparing Body Styling
-  document.body.style.margin = "0 0";
-  document.body.style.padding = "0 0";
-
 
 main();
 

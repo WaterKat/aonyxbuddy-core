@@ -7,7 +7,7 @@ type SpeechTaskState =
   | "waiting"
   | "running";
 
-interface ISpeechTask {
+export interface ISpeechTask {
   text: string
 }
 
