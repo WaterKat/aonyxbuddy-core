@@ -17,9 +17,48 @@ import { GetAonyxBuddyInstance } from "./index.js";
 function main() {
   let skipCount = 0;
 
-  const aonyxbuddy = GetAonyxBuddyInstance(config);
+  const params = {
+    mouth: {
+      value: 0
+    }
+  }
+
+  setInterval(() => {
+    console.log(params.mouth.value);
+  }, 100);
+
+  const aonyxbuddy = GetAonyxBuddyInstance(config, params);
 
   //!```````````````````````````````````````````````````````````````````````````````````````
+
+  //Sprite Renderer
+//  let talkingFrame = 0;
+  let idleFrame = 0;
+
+  function Render(renderer: SpriteRendering.Types.IRenderer) {
+    renderer.ClearCanvas();
+    renderer.RenderSprite("base", idleFrame);
+    renderer.RenderSprite("mute", mutedFrame);
+    renderer.RenderSprite("talking", Math.floor(params.mouth.value), () => {
+      Render(renderer);
+    });
+  }
+
+  function FlipBaseImage(renderer: SpriteRendering.Types.IRenderer) {
+    idleFrame++;
+    idleFrame %= renderer.sprites["base"].bitmap.length;
+    setTimeout(() => {
+      FlipBaseImage(renderer);
+    }, renderer.sprites["base"].delay[idleFrame]);
+  }
+
+  const renderer = SpriteRendering.default(config.spriteRendering).then(
+    (renderer) => {
+      if (renderer instanceof Error) throw renderer;
+      Render(renderer);
+      if (renderer.sprites["base"].bitmap.length > 0) FlipBaseImage(renderer);
+    }
+  );
 
   let mutedFrame = 0;
   /*
@@ -158,34 +197,7 @@ function main() {
     }
   }
 
-  //Sprite Renderer
-  let talkingFrame = 0;
-  let idleFrame = 0;
 
-  function Render(renderer: SpriteRendering.Types.IRenderer) {
-    renderer.ClearCanvas();
-    renderer.RenderSprite("base", idleFrame);
-    renderer.RenderSprite("mute", mutedFrame);
-    renderer.RenderSprite("talking", Math.floor(talkingFrame), () => {
-      Render(renderer);
-    });
-  }
-
-  function FlipBaseImage(renderer: SpriteRendering.Types.IRenderer) {
-    idleFrame++;
-    idleFrame %= renderer.sprites["base"].bitmap.length;
-    setTimeout(() => {
-      FlipBaseImage(renderer);
-    }, renderer.sprites["base"].delay[idleFrame]);
-  }
-
-  const renderer = SpriteRendering.default(config.spriteRendering).then(
-    (renderer) => {
-      if (renderer instanceof Error) throw renderer;
-      Render(renderer);
-      if (renderer.sprites["base"].bitmap.length > 0) FlipBaseImage(renderer);
-    }
-  );
 
   //Stream Events
   function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {

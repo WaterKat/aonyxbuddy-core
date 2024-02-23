@@ -11,7 +11,7 @@ export interface ISpeechTask {
   text: string
 }
 
-interface IVariableContainer {
+export interface IVariableContainer {
   value: number
 }
 
