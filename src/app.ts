@@ -37,9 +37,10 @@ function main() {
 
   function Render(renderer: SpriteRendering.Types.IRenderer) {
     renderer.ClearCanvas();
+    const speakingFrame = Math.floor(renderer.sprites["talking"].bitmap.length * params.mouth.value);
     renderer.RenderSprite("base", idleFrame);
     renderer.RenderSprite("mute", mutedFrame);
-    renderer.RenderSprite("talking", Math.floor(params.mouth.value), () => {
+    renderer.RenderSprite("talking", speakingFrame, () => {
       Render(renderer);
     });
   }
