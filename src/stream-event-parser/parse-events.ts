@@ -1,4 +1,4 @@
-import { StreamEvent, StreamEventType } from "../stream-events/types.js";
+import { StreamEvent, StreamEventType } from "../core/stream-events/types.js";
 import { GetResponse } from "./stream-event-parser.js";
 import { IResponses } from "./types.js";
 

@@ -1,7 +1,7 @@
 import { IClientConfig } from "./config/iclient-config.js";
 
-import { GetTextToSpeech } from "./text-to-speech/index.js";
-import { GetTextQueue, IVariableContainer } from "./queues/text-queue.js";
+import { GetTextToSpeech } from "./ui/text-to-speech/index.js";
+import { GetTextQueue, IVariableContainer } from "./core/queues/text-queue.js";
 
 interface RendererParams {
   [key: string]: IVariableContainer;

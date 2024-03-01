@@ -1,5 +1,5 @@
-import { Types } from '../stream-events/index.js';
-import { StreamEventType } from '../stream-events/types.js';
+import { Types } from '../core/stream-events/index.js';
+import { StreamEventType } from '../core/stream-events/types.js';
 
 import * as SETypes from './types.js';
 

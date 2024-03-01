@@ -1,8 +1,8 @@
 /// <reference lib="dom" />
 
-import * as SpriteRendering from "./sprite-rendering/index.js";
-import * as StreamEvents from "./stream-events/index.js";
-import * as TextToSpeech from "./text-to-speech/index.js";
+import * as SpriteRendering from "./ui/sprite-rendering/index.js";
+import * as StreamEvents from "./core/stream-events/index.js";
+import * as TextToSpeech from "./ui/text-to-speech/index.js";
 import * as StreamEventParser from "./stream-event-parser/index.js";
 import StreamElements from "./stream-elements/index.js";
 
@@ -271,12 +271,12 @@ function main() {
   //Stream Events
   function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
     let streamEvent = rawEvent;
-    streamEvent = StreamEvents.Manipulation.FilterBannedWords(
-      streamEvent,
-      config.blockedWords,
-      "ploop",
-      false
-    );
+    streamEvent = StreamEvents.Manipulation
+      .FilterWordArrayFromChatMessageEventCaseInsensitive(
+        streamEvent,
+        config.blockedWords,
+        "ploop"
+      );
     streamEvent = StreamEvents.Manipulation.ParseCommand(streamEvent, true);
     streamEvent = StreamEvents.Manipulation.IgnoreCommandWithoutPermission(
       streamEvent,

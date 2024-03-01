@@ -1,4 +1,4 @@
-import { Types } from '../stream-events/index.js';
+import { Types } from '../core/stream-events/index.js';
 import { IResponses } from './types';
 
 export function GetResponse(responses: IResponses, event: Types.StreamEvent, key: string, typeOverride?: string){

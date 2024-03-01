@@ -1,3 +1,6 @@
+/**
+ * This enum represents the different types of stream events that can be emitted
+ */
 export enum StreamEventType {
     TS_TYPE = 'al-aonyxbuddy-data',
     FOLLOW = 'follow',
@@ -14,6 +17,9 @@ export enum StreamEventType {
     CHAT_FIRST = 'chat-first'
 }
 
+/**
+ * This type represents the different permission types a user can have
+ */
 export type Permissions = {
     chatter: boolean,
     follower: boolean,
@@ -23,37 +29,29 @@ export type Permissions = {
     streamer: boolean,
 }
 
+/**
+ * This type represents a single emote within a message
+ */
 export type Emote = {
     type: string,
     name: string
 }
 
+/**
+ * This type represents a chat message, and any emotes within it
+ */
 export type ChatMessage = {
     text: string,
     emotes: Array<Emote>
 }
 
+/**
+ * This type represents a stream event emmitted by an ongoing stream
+ */
 export type StreamEvent = {
     tstype: StreamEventType.TS_TYPE,
     type : Exclude<StreamEventType, StreamEventType.TS_TYPE>,
     username: string,
-    nickname?: string,
-    permissions?: Permissions,
-    message? : ChatMessage,
-
-    subscriber_length? : number,
-    gift_receiver? : string,
-    gift_count?: number,
-    raid_count? : number,
-    cheer_amount? : number,
-    command_identifier? : string,
-    command_group? : string,
-    command_request? : string,
-    command_args? : string,
-    redeem_id? : string,
-    ignore_message? : string,
-    custom_id? : string,
-    custom_args? : string[],
 } & ({
     type: StreamEventType.FOLLOW
 } | {

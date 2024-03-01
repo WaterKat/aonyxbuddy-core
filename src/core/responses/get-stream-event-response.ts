@@ -1,4 +1,4 @@
-import { StreamEvent } from "../stream-events/types.js";
+import { StreamEvent } from "../core/stream-events/types.js";
 import { GetRandomResponse, IResponseArray } from "./get-random-response.js";
 import { ISubstitutionMap, SubstuteAllInSubstitutionMap } from "./substitute-response-vars.js";
 

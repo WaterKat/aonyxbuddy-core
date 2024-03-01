@@ -1,4 +1,4 @@
-import { StreamEvent, StreamEventType } from '../stream-events/types.js';
+import { StreamEvent, StreamEventType } from '../core/stream-events/types.js';
 
 export default function GetAonyxBuddyStreamEventListener(callback: (event: StreamEvent) => void): void | Error {
     if (!window) {
