@@ -62,9 +62,9 @@ export function SubstituteStringVar(
 export function SubstuteAllInSubstitutionMap(
     substitutionMap: ISubstitutionMap,
     text: string
-) : string {
+): string {
     let processedText = text;
-    for (const key in  substitutionMap) {
+    for (const key in substitutionMap) {
         processedText = SubstituteStringVar(processedText, key, substitutionMap[key]);
     }
     return processedText;
