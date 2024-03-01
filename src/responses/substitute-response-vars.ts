@@ -1,5 +1,8 @@
-import { StreamEvent } from "../stream-events/types.js";
-
+/**
+ * This enum is used to define the string variable IDs or keys
+ * that can be used in the substitution map. The substitution map is used to 
+ * replace the string variables with the actual values provided.
+ */
 export enum StringVariableIDs {
     NICKNAME = "nickname",
     SUBSCRIBER_LENGTH = "subscriber.length",
@@ -14,11 +17,26 @@ export enum StringVariableIDs {
     MESSAGE_TEXT = "message.text"
 }
 
+/**
+ * This interface is used to define the substitution map that is used to replace
+ * the string variables with the actual values provided.
+ */
 export interface ISubstitutionMap {
     [key: string]: string
 }
 
-export function SubstituteStringVars(
+/**
+ * This function is used to substitute a string variable with a value in a given
+ * text. The text is the string that contains the string variable to be replaced.
+ * The varID is the string variable ID or key that is used to identify the string
+ * variable to be replaced. The substitution is the value that is used to replace
+ * the string variable in the text.
+ * @param text the text to substitute the string variable in
+ * @param varID the string variable ID or key to identify the string variable
+ * @param subsitution the value to replace the string variable with
+ * @returns the text with the string variable replaced with the value
+ */
+export function SubstituteStringVar(
     text: string, varID: string, subsitution: string
 ): string {
     const placeholderRegex =
@@ -33,17 +51,21 @@ export function SubstituteStringVars(
     return replacedString;
 }
 
-function GetSubstitutionMapFromEvent(event: StreamEvent): ISubstitutionMap {
-    return {
-        'nickname': event.nickname || event.username,
-        'subscriber.length': event.subscriber_length?.toString() || '',
-        'subscriber.plural': ((event.subscriber_length ?? 0) > 1) ? 's' : '',
-        'gift.receiver': event.gift_receiver || '',
-        'gift.count': event.gift_count?.toString() || '',
-        'raid.count': event.raid_count?.toString() || '',
-        'raid.plural': ((event.raid_count ?? 0) > 1) ? 's' : '',
-        'cheer.amount': event.cheer_amount?.toString() || '',
-        'cheer.plural': ((event.cheer_amount ?? 0) > 1) ? 's' : '',
-        'message.text': event.message?.text || '',
-    };
+/**
+ * This function is used to substitute all the string variables in a given text
+ * with the values provided in the substitution map. 
+ * @param substitutionMap a map of keys and values that are used to replace the
+ * string variables in the text
+ * @param text the text to substitute the string variables in
+ * @returns the text with the string variables replaced with the values provided 
+ */
+export function SubstuteAllInSubstitutionMap(
+    substitutionMap: ISubstitutionMap,
+    text: string
+) : string {
+    let processedText = text;
+    for (const key in  substitutionMap) {
+        processedText = SubstituteStringVar(processedText, key, substitutionMap[key]);
+    }
+    return processedText;
 }
