@@ -8,4 +8,8 @@ export {
     FilterWordArrayFromChatMessageEventCaseSensitive,
     FilterWordArrayFromChatMessageEventCaseInsensitive
 } from './filter-banned-words.js';
+export {
+    IProcessCommandOptions,
+    ProcessCommand
+} from './process-command.js';
 
