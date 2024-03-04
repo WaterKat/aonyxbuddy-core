@@ -1,6 +1,9 @@
 const NAME_TAG: string = 'aonyxbuddy';
 
-/** Available Tags for use with the Log function, similar to console.log, console.warn, etc */
+/** 
+ * Available Tags for use with the Log function, similar to console.log, 
+ * console.warn, etc 
+ */
 type LogTag = 'log' | 'error' | 'info' | 'warn';
 
 /**
