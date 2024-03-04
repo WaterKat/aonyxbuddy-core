@@ -1,7 +1,7 @@
 /**
  * This enum represents the different types of stream events that can be emitted
  */
-export enum StreamEventType {
+export enum EStreamEventType {
     TS_TYPE = 'al-aonyxbuddy-data',
     FOLLOW = 'follow',
     SUBSCRIBER = 'subscriber',
@@ -13,6 +13,7 @@ export enum StreamEventType {
     CHAT = 'chat',
     COMMAND = 'command',
     REDEEM = 'redeem',
+    IGNORE = 'ignore',
     OTHER = 'other',
     CHAT_FIRST = 'chat-first'
 }
@@ -20,7 +21,7 @@ export enum StreamEventType {
 /**
  * This type represents the different permission types a user can have
  */
-export type Permissions = {
+export type TPermissions = {
     chatter: boolean,
     follower: boolean,
     subscriber: boolean,
@@ -32,7 +33,7 @@ export type Permissions = {
 /**
  * This type represents a single emote within a message
  */
-export type Emote = {
+export type TEmote = {
     type: string,
     name: string
 }
@@ -40,58 +41,66 @@ export type Emote = {
 /**
  * This type represents a chat message, and any emotes within it
  */
-export type ChatMessage = {
+export type TChatMessage = {
     text: string,
-    emotes: Array<Emote>
+    emotes: TEmote[]
 }
 
 /**
  * This type represents a stream event emmitted by an ongoing stream
  */
-export type StreamEvent = {
-    tstype: StreamEventType.TS_TYPE,
-    type : Exclude<StreamEventType, StreamEventType.TS_TYPE>,
+export type TStreamEvent = {
+    tstype: EStreamEventType.TS_TYPE,
+    type : Exclude<EStreamEventType, EStreamEventType.TS_TYPE>,
     username: string,
+    nickname?: string,
+    permissions?: TPermissions,
 } & ({
-    type: StreamEventType.FOLLOW
+    type: EStreamEventType.FOLLOW
 } | {
-    type: StreamEventType.SUBSCRIBER
-    message: ChatMessage,
+    type: EStreamEventType.SUBSCRIBER
+    message: TChatMessage,
     subscriber_length : number,
 } | {
-    type: StreamEventType.GIFT_SINGLE
+    type: EStreamEventType.GIFT_SINGLE
     gift_receiver : string,
 } | {
-    type: StreamEventType.GIFT_BULK_SENT
+    type: EStreamEventType.GIFT_BULK_SENT
     gift_count: number,
 } | {
-    type: StreamEventType.GIFT_BULK_RECEIVED
+    type: EStreamEventType.GIFT_BULK_RECEIVED
     gift_receiver : string,
 } | {
-    type: StreamEventType.RAID
+    type: EStreamEventType.RAID
     raid_count : number,
 } | {
-    type: StreamEventType.CHEER
-    message : ChatMessage,
+    type: EStreamEventType.CHEER
+    message : TChatMessage,
     cheer_amount : number,
 } | {
-    type: StreamEventType.CHAT
-    message : ChatMessage,
+    type: EStreamEventType.CHAT
+    message : TChatMessage,
 } | {
-    type: StreamEventType.COMMAND,
-    message : ChatMessage,
+    type: EStreamEventType.CHAT_FIRST
+    message : TChatMessage,
+} | {
+    type: EStreamEventType.COMMAND,
+    //message : ChatMessage,
     command_identifier : string,
-    command_group : string,
-    command_request : string,
+    command_group? : string,
+    command_action : string,
     command_args : string,
 } | {
-    type: StreamEventType.REDEEM
-    message: ChatMessage,
+    type: EStreamEventType.REDEEM
+    message: TChatMessage,
     redeem_id : string,
 } | {
-    type: StreamEventType.OTHER
-    original : StreamEvent,
+    type: EStreamEventType.OTHER
+    original : TStreamEvent,
     other : {
         [key: string] : string
     }
+} | {
+    type: EStreamEventType.IGNORE,
+    reason: string
 })

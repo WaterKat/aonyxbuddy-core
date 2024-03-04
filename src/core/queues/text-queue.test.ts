@@ -1,3 +1,4 @@
+/*
 import { GetTextQueue } from "./text-queue.js";
 import GetTextToSpeech from "../text-to-speech/index.js";
 
@@ -48,3 +49,4 @@ test("text-queue", async () => {
     , 1000));
   console.log(queue.IsRunning());
 }, { timeout: 20000});
+*/

@@ -1,4 +1,4 @@
-import { StreamEvent } from "../core/stream-events/types.js";
+import { TStreamEvent } from "../stream-events/types.js";
 import { GetRandomResponse, IResponseArray } from "./get-random-response.js";
 import { ISubstitutionMap, SubstuteAllInSubstitutionMap } from "./substitute-response-vars.js";
 
@@ -8,7 +8,7 @@ import { ISubstitutionMap, SubstuteAllInSubstitutionMap } from "./substitute-res
  * @returns a substitution map from the stream event
  */
 export function GetSubstitutionMapFromEvent(
-    event: StreamEvent
+    event: TStreamEvent
 ): ISubstitutionMap {
     return {
         'nickname': event.nickname || event.username,
@@ -33,7 +33,7 @@ export function GetSubstitutionMapFromEvent(
  */
 export function GetStreamEventResponse(
     responses: IResponseArray,
-    event: StreamEvent
+    event: TStreamEvent
 ): string {
     return SubstuteAllInSubstitutionMap(
         GetSubstitutionMapFromEvent(event),

@@ -5,10 +5,21 @@ import * as StreamEvents from "./core/stream-events/index.js";
 import * as TextToSpeech from "./ui/text-to-speech/index.js";
 import * as StreamEventParser from "./stream-event-parser/index.js";
 import StreamElements from "./stream-elements/index.js";
+/*
+import { 
+  ClientConfigExample as config 
+} from './config/iclient-config-cupidjpeg.test.js';
+*/
 
-//import { ClientConfigExample as config } from './config/iclient-config-cupidjpeg.test.js';
-//import { ClientConfigExample as config } from './config/iclient-config-waterkattv.test.js';
-import { ClientConfigExample as config } from "./config/iclient-config-fariaorion.test.js";
+import { 
+  ClientConfigExample as config 
+} from './config/iclient-config-waterkattv.test.js';
+
+/*
+import { 
+  ClientConfigExample as config 
+} from "./config/iclient-config-fariaorion.test.js";
+*/
 
 import Log from "./log.js";
 import GetAonyxBuddyStreamEventListener from "./stream-event-listener/index.js";
@@ -126,7 +137,7 @@ function main() {
 
   //* StreamEventParser
 
-  function ParseEvent(streamEvent: StreamEvents.Types.StreamEvent) {
+  function ParseEvent(streamEvent: StreamEvents.Types.TStreamEvent) {
     const response = StreamEventParser.Parser.GetResponse(
       config.responses,
       streamEvent,
@@ -137,14 +148,14 @@ function main() {
     //* Special Condition for Subscription (Sub Messages)
 
     if (
-      streamEvent.type === StreamEvents.Types.StreamEventType.SUBSCRIBER ||
-      streamEvent.type === StreamEvents.Types.StreamEventType.CHEER
+      streamEvent.type === StreamEvents.Types.EStreamEventType.SUBSCRIBER ||
+      streamEvent.type === StreamEvents.Types.EStreamEventType.CHEER
     ) {
       AppendToSpeechQueue(streamEvent.message?.text ?? "");
     }
   }
 
-  function ParseOther(otherEvent: StreamEvents.Types.StreamEvent) {
+  function ParseOther(otherEvent: StreamEvents.Types.TStreamEvent) {
     if (otherEvent.type !== "other") {
       Log("info", 'ParseOther: Event not "other" type');
       return;
@@ -193,7 +204,7 @@ function main() {
   const command_identifier = config.commandIdentifier ?? "!";
   const command_group = config.commandGroup ?? "aonyxbuddy";
 
-  function ParseCommand(event: StreamEvents.Types.StreamEvent) {
+  function ParseCommand(event: StreamEvents.Types.TStreamEvent) {
     if (event.type !== "command") return;
     if (event.command_identifier !== command_identifier) return;
     if (
@@ -201,7 +212,7 @@ function main() {
       event.command_group !== "aonyxbuddy"
     )
       return;
-    const command = event.command_request.toLocaleLowerCase();
+    const command = event.command_action.toLocaleLowerCase();
     switch (command) {
       case "debug":
         Log("log", "Muted:", isMuted);
@@ -269,13 +280,15 @@ function main() {
   );
 
   //Stream Events
-  function OnEventReceived(rawEvent: StreamEvents.Types.StreamEvent) {
+  function OnEventReceived(rawEvent: StreamEvents.Types.TStreamEvent) {
     let streamEvent = rawEvent;
     streamEvent = StreamEvents.Manipulation
-      .FilterWordArrayFromChatMessageEventCaseInsensitive(
+      .ProcessFilterWordsCaseInsensitive(
         streamEvent,
-        config.blockedWords,
-        "ploop"
+        {
+          wordsToFilter: config.blacklist,
+          replacement: "ploop"
+        }
       );
     streamEvent = StreamEvents.Manipulation.ParseCommand(streamEvent, true);
     streamEvent = StreamEvents.Manipulation.IgnoreCommandWithoutPermission(

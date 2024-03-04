@@ -1,4 +1,13 @@
-import { StreamEvent, StreamEventType } from "../types.js";
+import { TEmote, TStreamEvent, EStreamEventType } from "../types.js";
+
+/**
+ * Options for the ProcessFilterWords function. Inlcudes the words to filter,
+ * and the replacement string to use.
+ */
+export interface IProcessFilterWordsOptions {
+    wordsToFilter: string[];
+    replacement: string;
+}
 
 /**
  * Filters out words from a string with text within an array of words, and 
@@ -8,7 +17,7 @@ import { StreamEvent, StreamEventType } from "../types.js";
  * @param replacement the string to replace the banned words with 
  * @returns the filtered text 
  */
-export function FilterWordArrayCaseSensitive(
+function FilterWordArrayCaseSensitive(
     wordsToFilter: Array<string>,
     text: string,
     replacement: string
@@ -28,7 +37,7 @@ export function FilterWordArrayCaseSensitive(
  * @param replacement the string to replace the banned words with
  * @returns the filtered text
  */
-export function FilterWordArrayCaseInsensitive(
+function FilterWordArrayCaseInsensitive(
     wordsToFilter: Array<string>,
     text: string,
     replacement: string
@@ -54,29 +63,27 @@ export function FilterWordArrayCaseInsensitive(
  * @param replacement the string to replace the filtered words with
  * @returns the filtered stream event 
  */
-export function FilterWordArrayFromChatMessageEventCaseSensitive(
-    event: StreamEvent,
-    wordsToFilter: string[],
-    replacement: string = ''
-): StreamEvent {
-    if (event.type !== StreamEventType.CHAT) {
-        return {
-            ...event
+export const ProcessFilterWordsCaseSensitive = (
+    event: TStreamEvent,
+    options: IProcessFilterWordsOptions
+) => (
+    event.type === EStreamEventType.CHAT ? <TStreamEvent>{
+        tstype: event.tstype,
+        type: event.type,
+        username: event.username,
+        nickname: event.nickname,
+        message: {
+            text: FilterWordArrayCaseSensitive(
+                options.wordsToFilter,
+                event.message.text,
+                options.replacement
+            ),
+            emotes: event.message.emotes.map(
+                (emote) => (<TEmote>{ type: emote.type, name: emote.name })
+            )
         }
-    } else {
-        return {
-            ...event,
-            message: {
-                ...event.message,
-                text: FilterWordArrayCaseSensitive(
-                    wordsToFilter,
-                    event.message.text,
-                    replacement
-                )
-            }
-        }
-    }
-}
+    } : event
+);
 
 /**
  * Filters out an array of words from a chat message, and replaces them with a
@@ -86,26 +93,24 @@ export function FilterWordArrayFromChatMessageEventCaseSensitive(
  * @param replacement the string to replace the filtered words with
  * @returns the filtered stream event
  */
-export function FilterWordArrayFromChatMessageEventCaseInsensitive(
-    event: StreamEvent,
-    wordsToFilter: string[],
-    replacement: string = ''
-): StreamEvent {
-    if (event.type !== StreamEventType.CHAT) {
-        return {
-            ...event
+export const ProcessFilterWordsCaseInsensitive = (
+    event: TStreamEvent,
+    options: IProcessFilterWordsOptions
+) => (
+    event.type === EStreamEventType.CHAT ? <TStreamEvent>{
+        tstype: event.tstype,
+        type: event.type,
+        username: event.username,
+        nickname: event.nickname,
+        message: {
+            text: FilterWordArrayCaseInsensitive(
+                options.wordsToFilter,
+                event.message.text,
+                options.replacement
+            ),
+            emotes: event.message.emotes.map(
+                (emote) => (<TEmote>{ type: emote.type, name: emote.name })
+            )
         }
-    } else {
-        return {
-            ...event,
-            message: {
-                ...event.message,
-                text: FilterWordArrayCaseSensitive(
-                    wordsToFilter,
-                    event.message.text,
-                    replacement
-                )
-            }
-        }
-    }
-}
+    } : event 
+);

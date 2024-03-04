@@ -1,15 +1,41 @@
 export {
     ProcessEvent,
-    type IProcessEventOptions
-} from './apply-processes-to-event.js';
+    IProcessEventOptions
+} from "./apply-processes-to-event.js";
 export {
-    FilterWordArrayCaseSensitive,
-    FilterWordArrayCaseInsensitive,
-    FilterWordArrayFromChatMessageEventCaseSensitive,
-    FilterWordArrayFromChatMessageEventCaseInsensitive
-} from './filter-banned-words.js';
+    ProcessorFilterBlacklist,
+    IProcessFilterBlacklistOptions
+} from "./processor-filter-blacklist.js";
 export {
-    IProcessCommandOptions,
-    ProcessCommand
-} from './process-command.js';
-
+    ProcessorIgnoreBotlist,
+    IProcessorIgnoreBotlistOptions
+} from "./processor-filter-botlist.js"
+export {
+    ProcessorFilterCheermotes,
+    IProcessorFilterCheermotesOptions
+} from "./processor-filter-cheermotes.js"
+export {
+    ProcessFilterCondition,
+    IProcessFilterConditionOptions
+} from "./processor-filter-condition.js";
+export {
+    ProcessorFilterEmojis,
+    IProcessFilterEmojisOptions
+} from "./processor-filter-emojis.js"
+export {
+    ProcessFilterPermissions,
+    IProcessFilterPermissionsOptions
+} from "./processor-filter-permissions.js"
+export {
+    ProcessFilterWordsCaseSensitive,
+    ProcessFilterWordsCaseInsensitive,
+    IProcessFilterWordsOptions
+} from "./processor-filter-words.js";
+export {
+    ProcessCommand,
+    IProcessCommandOptions
+} from "./processor-get-command.js";
+export {
+    ProcessNicknames,
+    IProcessNicknamesOptions
+} from "./processor-get-nickname.js";

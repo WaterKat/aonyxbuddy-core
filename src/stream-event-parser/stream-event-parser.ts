@@ -1,7 +1,7 @@
 import { Types } from '../core/stream-events/index.js';
 import { IResponses } from './types';
 
-export function GetResponse(responses: IResponses, event: Types.StreamEvent, key: string, typeOverride?: string){
+export function GetResponse(responses: IResponses, event: Types.TStreamEvent, key: string, typeOverride?: string){
     const type = typeOverride ?? event.type;
 
     if (!responses[key] || !responses[key][type] || responses[key][type].length < 1)
@@ -21,7 +21,7 @@ function GetRandomResponse(responseArray: string[]) {
     return responseArray[randomResponseIndex];
 }
 
-function GetVariablReplacements(event: Types.StreamEvent) : {[key: string]: string} {
+function GetVariablReplacements(event: Types.TStreamEvent) : {[key: string]: string} {
     return {
         'nickname': event.nickname || event.username,
         'subscriber.length' : event.subscriber_length?.toString() || '',

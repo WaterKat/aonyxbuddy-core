@@ -1,4 +1,4 @@
-import { StreamEvent, StreamEventType } from "../core/stream-events/types.js";
+import { TStreamEvent, EStreamEventType } from "../core/stream-events/types.js";
 import { GetResponse } from "./stream-event-parser.js";
 import { IResponses } from "./types.js";
 
@@ -11,8 +11,8 @@ type IEventResponse = {
     action: "command"
 }
 
-function ParseOther(event: StreamEvent): IEventResponse {
-    if (event.type !== StreamEventType.OTHER) return { action: "none" }; // so ts stops complaining
+function ParseOther(event: TStreamEvent): IEventResponse {
+    if (event.type !== EStreamEventType.OTHER) return { action: "none" }; // so ts stops complaining
 
     if (event.other.type === "chat-first" && event.original.type === "chat") {
         const customChatFirstResponse = GetResponse(
@@ -45,26 +45,26 @@ function ParseOther(event: StreamEvent): IEventResponse {
  * @param streamEvent - a preprocessed aonybuddy event
  * @return eventResponse - an instruction to be taken in response to this event
  */
-function ParseEvent(respponses: IResponses, streamEvent: StreamEvent): IEventResponse {
+function ParseEvent(respponses: IResponses, streamEvent: TStreamEvent): IEventResponse {
     if (
-        (streamEvent.type === StreamEventType.FOLLOW) ||
-        (streamEvent.type === StreamEventType.SUBSCRIBER) ||
-        (streamEvent.type === StreamEventType.GIFT_SINGLE) ||
-        (streamEvent.type === StreamEventType.GIFT_BULK_SENT) ||
-        (streamEvent.type === StreamEventType.GIFT_BULK_RECEIVED) ||
-        (streamEvent.type === StreamEventType.RAID) ||
-        (streamEvent.type === StreamEventType.CHEER) ||
-        (streamEvent.type === StreamEventType.REDEEM)
+        (streamEvent.type === EStreamEventType.FOLLOW) ||
+        (streamEvent.type === EStreamEventType.SUBSCRIBER) ||
+        (streamEvent.type === EStreamEventType.GIFT_SINGLE) ||
+        (streamEvent.type === EStreamEventType.GIFT_BULK_SENT) ||
+        (streamEvent.type === EStreamEventType.GIFT_BULK_RECEIVED) ||
+        (streamEvent.type === EStreamEventType.RAID) ||
+        (streamEvent.type === EStreamEventType.CHEER) ||
+        (streamEvent.type === EStreamEventType.REDEEM)
     ) {
         return {
             action: "speak",
             message: GetResponse(respponses, streamEvent, "voice")
         }
-    } else if (streamEvent.type === StreamEventType.COMMAND) {
+    } else if (streamEvent.type === EStreamEventType.COMMAND) {
         return {
             action: "command"
         }
-    } else if (streamEvent.type === StreamEventType.OTHER) {
+    } else if (streamEvent.type === EStreamEventType.OTHER) {
         if (
             (streamEvent.other.type === "chat-first") &&
             (streamEvent.original.type === "chat")
@@ -84,7 +84,7 @@ function ParseEvent(respponses: IResponses, streamEvent: StreamEvent): IEventRes
         }
     }
 
-    if (streamEvent.type === StreamEventType.OTHER) {
+    if (streamEvent.type === EStreamEventType.OTHER) {
         ParseOther(streamEvent);
 
     }

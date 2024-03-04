@@ -1,4 +1,4 @@
-import { StreamEvent, StreamEventType } from "../types.js";
+import { TStreamEvent, EStreamEventType } from "../types.js";
 
 /**
  * Process Command options for the ProcessCommand function, 
@@ -18,7 +18,13 @@ interface IAlias {
     aliases: string[]
 }
 
+/**
+ * Whitespace regex, used to replace multiple whitespaces with a single space
+ */
 const WhitespacesRegex: RegExp = /\s+/;
+/**
+ * Nonstandard unicodes regex, used to remove nonstandard unicodes from a string
+ */
 const NonstandardUnicodesRegex: RegExp = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
 
 /**
@@ -29,14 +35,12 @@ const NonstandardUnicodesRegex: RegExp = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
  * @returns The processed event
  */
 export function ProcessCommand(
-    event: StreamEvent,
+    event: TStreamEvent,
     options: IProcessCommandOptions
-): StreamEvent {
+): TStreamEvent {
 
-    if (event.type !== StreamEventType.CHAT) {
-        return {
-            ...event
-        };
+    if (event.type !== EStreamEventType.CHAT) {
+        return event;
     }
 
     const cleanedText = event.message.text
@@ -50,9 +54,7 @@ export function ProcessCommand(
     );
 
     if (!validIdentifier) {
-        return {
-            ...event
-        };
+        return event;
     }
 
     const identifierRemovedText = cleanedText
@@ -73,9 +75,7 @@ export function ProcessCommand(
     );
 
     if (!validAlias) {
-        return {
-            ...event
-        };
+        return event;
     }
 
     const validAliasString = validAlias.action;
@@ -87,12 +87,14 @@ export function ProcessCommand(
         )
         .trim();
 
-    const newCommand: StreamEvent = {
-        ...event,
-        type: StreamEventType.COMMAND,
+    const newCommand: TStreamEvent = {
+        tstype: event.tstype,
+        type: EStreamEventType.COMMAND,
+        username: event.username,
+        nickname: event.nickname,
         command_identifier: validIdentifier,
         command_group: validIdentifier,
-        command_request: validAliasString,
+        command_action: validAliasString,
         command_args: aliasRemovedText,
     }
 
