@@ -1,13 +1,22 @@
 import { expect, test } from "bun:test";
+
 import { TStreamEvent, EStreamEventType } from "../types.js";
-import { 
+
+import {
     ProcessCommand,
-    IProcessCommandOptions 
+    IProcessCommandOptions
 } from "./processor-get-command.js";
-import { 
-    ProcessNicknames,
-    IProcessNicknamesOptions
+
+import {
+    ProcessGetNicknames,
+    IProcessGetNicknamesOptions
 } from "./processor-get-nickname.js";
+
+import {
+    ProcessEvent,
+    IProcessEventOptions,
+    EPermissionLevel
+} from "./index.js";
 
 test("ProcessCommand", () => {
     // Test A
@@ -29,10 +38,10 @@ test("ProcessCommand", () => {
         tstype: EStreamEventType.TS_TYPE,
         type: EStreamEventType.COMMAND,
         username: "testuser",
-        command_identifier: "!aonyxbuddy",
-        command_group: "!aonyxbuddy",
-        command_action: "debug",
-        command_args: ""
+        identifier: "!aonyxbuddy",
+        group: "!aonyxbuddy",
+        action: "debug",
+        args: ""
     };
     expect(resultA).toEqual(desiredEventA);
 
@@ -55,10 +64,10 @@ test("ProcessCommand", () => {
         tstype: EStreamEventType.TS_TYPE,
         type: EStreamEventType.COMMAND,
         username: "testuser",
-        command_identifier: "!a",
-        command_group: "!a",
-        command_action: "debug",
-        command_args: "testing"
+        identifier: "!a",
+        group: "!a",
+        action: "debug",
+        args: "testing"
     };
     expect(resultB).toEqual(desiredEventB);
 
@@ -81,10 +90,10 @@ test("ProcessCommand", () => {
         tstype: EStreamEventType.TS_TYPE,
         type: EStreamEventType.COMMAND,
         username: "testuser",
-        command_identifier: "!",
-        command_group: "!",
-        command_action: "say",
-        command_args: "hello world!"
+        identifier: "!",
+        group: "!",
+        action: "say",
+        args: "hello world!"
     };
     expect(resultC).toEqual(desiredEventC);
 });
@@ -101,14 +110,14 @@ test("ProcessNickname", () => {
         }
     };
 
-    const optionsA: IProcessNicknamesOptions = {
+    const optionsA: IProcessGetNicknamesOptions = {
         nicknameMap: {
             "testuser": ["testuser", "testy", "test"]
         },
         getNumBetween01Func: () => 0.5
     };
 
-    const resultA = ProcessNicknames(eventA, optionsA);
+    const resultA = ProcessGetNicknames(eventA, optionsA);
     expect(resultA.nickname).toEqual("testy");
 
 
@@ -123,14 +132,14 @@ test("ProcessNickname", () => {
         }
     };
 
-    const optionsB: IProcessNicknamesOptions = {
+    const optionsB: IProcessGetNicknamesOptions = {
         nicknameMap: {
             "testuser": ["testuser", "testy", "test"]
         },
         getNumBetween01Func: () => 0.9
     };
 
-    const resultB = ProcessNicknames(eventB, optionsB);
+    const resultB = ProcessGetNicknames(eventB, optionsB);
     expect(resultB.nickname).toEqual("test");
 
     // Test C
@@ -144,16 +153,82 @@ test("ProcessNickname", () => {
         }
     };
 
-    const optionsC: IProcessNicknamesOptions = {
+    const optionsC: IProcessGetNicknamesOptions = {
         nicknameMap: {
             "anotherNickname": ["notright", "notrighty1", "notrighty2"]
         },
         getNumBetween01Func: () => 0.9
     };
 
-    const resultC = ProcessNicknames(eventC, optionsC);
+    const resultC = ProcessGetNicknames(eventC, optionsC);
     expect(resultC.nickname).toEqual("testuser");
 
 });
 
+test("ProcessCommands", () => {
+    const eventA: TStreamEvent = {
+        tstype: EStreamEventType.TS_TYPE,
+        type: EStreamEventType.CHAT,
+        username: "adminuser",
+        message: {
+            text: "!aonyxbuddy debug",
+            emotes: []
+        }
+    };
 
+    const optionsA: IProcessEventOptions = {
+        FilterBlacklistOptions: {
+            blacklist: []
+        },
+        CommandOptions: {
+            identifiers: ["!aonyxbuddy"],
+            actions: ["debug"]
+        },
+        FilterBotlistOptions: {
+            botlist: [],
+            allow: []
+        },
+        FilterWordsCaseSensitiveOptions: {
+            wordsToFilter: [],
+            replacement: ""
+        },
+        FilterWordsCaseInsensitiveOptions: {
+            wordsToFilter: [],
+            replacement: ""
+        },
+        FilterEmojisOptions: {
+            replacement: ""
+        },
+        GetNicknameOptions: {
+            nicknameMap: {
+                "adminuser": ["adminuserA", "adminuserB", "adminuserC"]
+            },
+            getNumBetween01Func: () => 0.5
+        },
+        FilterPermissionsOptions: {
+            permissionRequirements: {
+                [EStreamEventType.TS_TYPE]: EPermissionLevel.CHATTER,
+                [EStreamEventType.FOLLOW]: EPermissionLevel.CHATTER,
+                [EStreamEventType.SUBSCRIBER]: EPermissionLevel.CHATTER,
+                [EStreamEventType.GIFT_SINGLE]: EPermissionLevel.CHATTER,
+                [EStreamEventType.GIFT_BULK_SENT]: EPermissionLevel.CHATTER,
+                [EStreamEventType.GIFT_BULK_RECEIVED]:
+                    EPermissionLevel.CHATTER,
+                [EStreamEventType.RAID]: EPermissionLevel.CHATTER,
+                [EStreamEventType.CHEER]: EPermissionLevel.CHATTER,
+                [EStreamEventType.CHAT]: EPermissionLevel.CHATTER,
+                [EStreamEventType.CHAT_FIRST]: EPermissionLevel.CHATTER,
+                [EStreamEventType.COMMAND]: EPermissionLevel.MODERATOR,
+                [EStreamEventType.REDEEM]: EPermissionLevel.CHATTER,
+                [EStreamEventType.IGNORE]: EPermissionLevel.CHATTER,
+                [EStreamEventType.OTHER]: EPermissionLevel.CHATTER
+            },
+            permissions: {
+                "adminuser": EPermissionLevel.MODERATOR
+            }
+        }
+    };
+
+    const resultA = ProcessEvent(eventA, optionsA);
+    console.log(resultA);
+});

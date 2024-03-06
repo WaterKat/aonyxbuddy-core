@@ -166,13 +166,13 @@ function main() {
 
   function ParseCommand(event: StreamEvents.Types.TStreamEvent) {
     if (event.type !== "command") return;
-    if (event.command_identifier !== command_identifier) return;
+    if (event.identifier !== command_identifier) return;
     if (
-      event.command_group !== command_group &&
-      event.command_group !== "aonyxbuddy"
+      event.group !== command_group &&
+      event.group !== "aonyxbuddy"
     )
       return;
-    const command = event.command_action.toLocaleLowerCase();
+    const command = event.action.toLocaleLowerCase();
     switch (command) {
       case "debug":
         Log("log", "Muted:", mutedFrame);
@@ -181,7 +181,7 @@ function main() {
         break;
       case "say":
         Log("info", "say command called");
-        aonyxbuddy.TextQueue.Append(event.command_args);
+        aonyxbuddy.TextQueue.Append(event.args);
         break;
       case "mute":
         Log("info", "mute called");
@@ -195,19 +195,19 @@ function main() {
         break;
       case "skip":
         Log("info", "skip command called");
-        if (event.command_args.trim().length < 1) {
+        if (event.args.trim().length < 1) {
           Log("info", "skip arg is empty, therefore using 1 as default");
           skipCount = aonyxbuddy.TextQueue.Skip(1 + skipCount);
-        } else if (!isNaN(+event.command_args.trim())) {
+        } else if (!isNaN(+event.args.trim())) {
           Log("info", "skip arg is number");
           skipCount = aonyxbuddy.TextQueue.Skip(
-            Math.max(0, skipCount + +event.command_args)
+            Math.max(0, skipCount + +event.args)
           );
-        } else if (event.command_args.trim() === "all") {
+        } else if (event.args.trim() === "all") {
           Log("info", "skip all command");
           aonyxbuddy.TextQueue.Skip(100);
           if (mutedFrame < 1) skipCount = 0;
-        } else if (event.command_args.trim() === "clear") {
+        } else if (event.args.trim() === "clear") {
           Log("info", "skip clear command");
           skipCount = 0;
         }

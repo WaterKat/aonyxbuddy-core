@@ -206,13 +206,13 @@ function main() {
 
   function ParseCommand(event: StreamEvents.Types.TStreamEvent) {
     if (event.type !== "command") return;
-    if (event.command_identifier !== command_identifier) return;
+    if (event.identifier !== command_identifier) return;
     if (
-      event.command_group !== command_group &&
-      event.command_group !== "aonyxbuddy"
+      event.group !== command_group &&
+      event.group !== "aonyxbuddy"
     )
       return;
-    const command = event.command_action.toLocaleLowerCase();
+    const command = event.action.toLocaleLowerCase();
     switch (command) {
       case "debug":
         Log("log", "Muted:", isMuted);
@@ -221,7 +221,7 @@ function main() {
         break;
       case "say":
         Log("info", "say command called");
-        InsertToSpeechQueue(event.command_args);
+        InsertToSpeechQueue(event.args);
         break;
       case "mute":
         Log("info", "mute called");
@@ -233,16 +233,16 @@ function main() {
         break;
       case "skip":
         Log("info", "skip command called");
-        if (event.command_args.trim().length < 1) {
+        if (event.args.trim().length < 1) {
           Log("info", "skip arg is empty, therefore using 1 as default");
           SkipSpeech(1);
-        } else if (!isNaN(+event.command_args.trim())) {
+        } else if (!isNaN(+event.args.trim())) {
           Log("info", "skip arg is number");
-          SkipSpeech(Math.max(0, +event.command_args));
-        } else if (event.command_args.trim() === "all") {
+          SkipSpeech(Math.max(0, +event.args));
+        } else if (event.args.trim() === "all") {
           Log("info", "skip all command");
           SkipAllSpeech();
-        } else if (event.command_args.trim() === "clear") {
+        } else if (event.args.trim() === "clear") {
           Log("info", "skip clear command");
           skipCount = 0;
         }

@@ -4,7 +4,7 @@ import { EStreamEventType } from '../core/stream-events/types.js';
 import * as SETypes from './types.js';
 
 export default function TranslateStreamElementsEventToAonyxEvent(_event: any): Types.TStreamEvent | undefined {
-    function messageFromString(_message: string): Types.TChatMessage {
+    function messageFromString(_message: string): Types.TChat {
         return {
             text: _message ?? '',
             emotes: []
@@ -59,7 +59,7 @@ export default function TranslateStreamElementsEventToAonyxEvent(_event: any): T
                 aonyxEvent = {
                     ...base,
                     type: EStreamEventType.SUBSCRIBER,
-                    subscriber_length: seEvent.amount,
+                    length: seEvent.amount,
                     message: messageFromString(seEvent.message)
                 };
                 break;
@@ -70,7 +70,7 @@ export default function TranslateStreamElementsEventToAonyxEvent(_event: any): T
                         ...base,
                         username: seEvent.sender,
                         type: EStreamEventType.GIFT_BULK_SENT,
-                        gift_count: +seEvent.amount || 1
+                        count: +seEvent.amount || 1
                     }
                 } else if (+seEvent.isCommunityGift > 0) {
                     //bulk-received
@@ -78,7 +78,7 @@ export default function TranslateStreamElementsEventToAonyxEvent(_event: any): T
                         ...base,
                         username: seEvent.sender,
                         type: EStreamEventType.GIFT_BULK_RECEIVED,
-                        gift_receiver: seEvent.name
+                        receiver: seEvent.name
                     }
                 } else {
                     //single
@@ -86,7 +86,7 @@ export default function TranslateStreamElementsEventToAonyxEvent(_event: any): T
                         ...base,
                         username: seEvent.sender,
                         type: EStreamEventType.GIFT_SINGLE,
-                        gift_receiver: seEvent.name,
+                        receiver: seEvent.name,
                     }
                 }
                 break;
@@ -94,14 +94,14 @@ export default function TranslateStreamElementsEventToAonyxEvent(_event: any): T
                 aonyxEvent = {
                     ...base,
                     type: EStreamEventType.RAID,
-                    raid_count: +seEvent.amount || 0
+                    count: +seEvent.amount || 0
                 }
                 break;
             case 'cheer':
                 aonyxEvent = {
                     ...base,
                     type: EStreamEventType.CHEER,
-                    cheer_amount: seEvent.amount || 0,
+                    amount: seEvent.amount || 0,
                     message: messageFromString(seEvent.message)
                 }
                 break;

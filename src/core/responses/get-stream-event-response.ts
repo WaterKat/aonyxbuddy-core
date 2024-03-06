@@ -1,4 +1,4 @@
-import { TStreamEvent } from "../stream-events/types.js";
+import { EStreamEventType, TStreamEvent } from "../stream-events/types.js";
 import { GetRandomResponse, IResponseArray } from "./get-random-response.js";
 import { ISubstitutionMap, SubstuteAllInSubstitutionMap } from "./substitute-response-vars.js";
 
@@ -11,16 +11,27 @@ export function GetSubstitutionMapFromEvent(
     event: TStreamEvent
 ): ISubstitutionMap {
     return {
-        'nickname': event.nickname || event.username,
-        'subscriber.length': event.subscriber_length?.toString() || '',
-        'subscriber.plural': ((event.subscriber_length ?? 0) > 1) ? 's' : '',
-        'gift.receiver': event.gift_receiver || '',
-        'gift.count': event.gift_count?.toString() || '',
-        'raid.count': event.raid_count?.toString() || '',
-        'raid.plural': ((event.raid_count ?? 0) > 1) ? 's' : '',
-        'cheer.amount': event.cheer_amount?.toString() || '',
-        'cheer.plural': ((event.cheer_amount ?? 0) > 1) ? 's' : '',
-        'message.text': event.message?.text || '',
+        "nickname": event.nickname ?? event.username,
+        "subscriber.length": event.type === EStreamEventType.SUBSCRIBER ?
+            event.length.toString() : "",
+        "subscriber.plural": event.type === EStreamEventType.SUBSCRIBER ?
+            ((event.length ?? 0) > 1) ? "s" : "" : "",
+        "gift.receiver": event.type === EStreamEventType.GIFT_BULK_RECEIVED ?
+            event.receiver ?? "" : "",
+        "gift.count": event.type === EStreamEventType.GIFT_BULK_SENT ?
+            event.count.toString() ?? "" : "",
+        "raid.count": event.type === EStreamEventType.RAID ?
+            event.count.toString() ?? "" : "",
+        "raid.plural": event.type === EStreamEventType.RAID ?
+            ((event.count ?? 0) > 1) ? "s" : "" : "",
+        "cheer.amount": event.type === EStreamEventType.CHEER ?
+            event.amount.toString() || "" : "",
+        "cheer.plural": event.type === EStreamEventType.CHEER ?
+            ((event.amount ?? 0) > 1) ? "s" : "" : "",
+        "message.text": event.type === EStreamEventType.CHAT ||
+            event.type === EStreamEventType.CHAT_FIRST ||
+            event.type === EStreamEventType.CHEER ?
+            event.message.text ?? "" : "",
     };
 }
 

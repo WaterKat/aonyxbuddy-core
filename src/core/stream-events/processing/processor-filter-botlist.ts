@@ -5,7 +5,7 @@ import { TStreamEvent, EStreamEventType } from "../types.js";
  * botlist: the list of usernames to ignore
  * allow: the list of event types to allow for bots
  */
-export interface IProcessorIgnoreBotlistOptions {
+export interface IProcessorFilterBotlistOptions {
     botlist: string[],
     allow: EStreamEventType[]
 }
@@ -19,9 +19,9 @@ export interface IProcessorIgnoreBotlistOptions {
  * @returns an ignored event if the event is from the botlist and not allowed
  * otherwise the original event
  */
-export const ProcessorIgnoreBotlist = (
+export const ProcessorFilterBotlist = (
     event: TStreamEvent,
-    options: IProcessorIgnoreBotlistOptions
+    options: IProcessorFilterBotlistOptions
 ) => (
     options.botlist.includes(event.username) && 
     !options.allow.includes(event.type) ? 

@@ -92,10 +92,10 @@ export function ProcessCommand(
         type: EStreamEventType.COMMAND,
         username: event.username,
         nickname: event.nickname,
-        command_identifier: validIdentifier,
-        command_group: validIdentifier,
-        command_action: validAliasString,
-        command_args: aliasRemovedText,
+        identifier: validIdentifier,
+        group: validIdentifier,
+        action: validAliasString,
+        args: aliasRemovedText,
     }
 
     return newCommand;

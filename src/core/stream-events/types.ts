@@ -11,11 +11,11 @@ export enum EStreamEventType {
     RAID = 'raid',
     CHEER = 'cheer',
     CHAT = 'chat',
+    CHAT_FIRST = 'chat-first',
     COMMAND = 'command',
     REDEEM = 'redeem',
     IGNORE = 'ignore',
-    OTHER = 'other',
-    CHAT_FIRST = 'chat-first'
+    OTHER = 'other'
 }
 
 /**
@@ -41,7 +41,7 @@ export type TEmote = {
 /**
  * This type represents a chat message, and any emotes within it
  */
-export type TChatMessage = {
+export type TChat = {
     text: string,
     emotes: TEmote[]
 }
@@ -59,41 +59,41 @@ export type TStreamEvent = {
     type: EStreamEventType.FOLLOW
 } | {
     type: EStreamEventType.SUBSCRIBER
-    message: TChatMessage,
-    subscriber_length : number,
+    message: TChat,
+    length : number,
 } | {
     type: EStreamEventType.GIFT_SINGLE
-    gift_receiver : string,
+    receiver : string,
 } | {
     type: EStreamEventType.GIFT_BULK_SENT
-    gift_count: number,
+    count: number,
 } | {
     type: EStreamEventType.GIFT_BULK_RECEIVED
-    gift_receiver : string,
+    receiver : string,
 } | {
     type: EStreamEventType.RAID
-    raid_count : number,
+    count : number,
 } | {
     type: EStreamEventType.CHEER
-    message : TChatMessage,
-    cheer_amount : number,
+    message : TChat,
+    amount : number,
 } | {
     type: EStreamEventType.CHAT
-    message : TChatMessage,
+    message : TChat,
 } | {
     type: EStreamEventType.CHAT_FIRST
-    message : TChatMessage,
+    message : TChat,
 } | {
     type: EStreamEventType.COMMAND,
     //message : ChatMessage,
-    command_identifier : string,
-    command_group? : string,
-    command_action : string,
-    command_args : string,
+    identifier : string,
+    group? : string,
+    action : string,
+    args : string,
 } | {
     type: EStreamEventType.REDEEM
-    message: TChatMessage,
-    redeem_id : string,
+    message: TChat,
+    id : string,
 } | {
     type: EStreamEventType.OTHER
     original : TStreamEvent,

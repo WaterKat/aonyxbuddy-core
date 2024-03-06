@@ -4,7 +4,7 @@ export * as Manipulation from './old.manipulation/index.js';
 
 export { 
     TStreamEvent,
-    TChatMessage,
+    TChat as TChatMessage,
     TEmote,
     TPermissions,
     EStreamEventType

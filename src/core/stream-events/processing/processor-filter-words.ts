@@ -67,22 +67,24 @@ export const ProcessFilterWordsCaseSensitive = (
     event: TStreamEvent,
     options: IProcessFilterWordsOptions
 ) => (
-    event.type === EStreamEventType.CHAT ? <TStreamEvent>{
-        tstype: event.tstype,
-        type: event.type,
-        username: event.username,
-        nickname: event.nickname,
-        message: {
-            text: FilterWordArrayCaseSensitive(
-                options.wordsToFilter,
-                event.message.text,
-                options.replacement
-            ),
-            emotes: event.message.emotes.map(
-                (emote) => (<TEmote>{ type: emote.type, name: emote.name })
-            )
-        }
-    } : event
+    event.type === EStreamEventType.CHAT ||
+        event.type === EStreamEventType.CHAT_FIRST ||
+        event.type === EStreamEventType.CHEER ? <TStreamEvent>{
+            tstype: event.tstype,
+            type: event.type,
+            username: event.username,
+            nickname: event.nickname,
+            message: {
+                text: FilterWordArrayCaseSensitive(
+                    options.wordsToFilter,
+                    event.message.text,
+                    options.replacement
+                ),
+                emotes: event.message.emotes.map(
+                    (emote) => (<TEmote>{ type: emote.type, name: emote.name })
+                )
+            }
+        } : event
 );
 
 /**
@@ -97,20 +99,23 @@ export const ProcessFilterWordsCaseInsensitive = (
     event: TStreamEvent,
     options: IProcessFilterWordsOptions
 ) => (
-    event.type === EStreamEventType.CHAT ? <TStreamEvent>{
-        tstype: event.tstype,
-        type: event.type,
-        username: event.username,
-        nickname: event.nickname,
-        message: {
-            text: FilterWordArrayCaseInsensitive(
-                options.wordsToFilter,
-                event.message.text,
-                options.replacement
-            ),
-            emotes: event.message.emotes.map(
-                (emote) => (<TEmote>{ type: emote.type, name: emote.name })
-            )
-        }
-    } : event 
+    event.type === EStreamEventType.CHAT ||
+        event.type === EStreamEventType.CHAT_FIRST ||
+        event.type === EStreamEventType.CHEER ?
+        <TStreamEvent>{
+            tstype: event.tstype,
+            type: event.type,
+            username: event.username,
+            nickname: event.nickname,
+            message: {
+                text: FilterWordArrayCaseInsensitive(
+                    options.wordsToFilter,
+                    event.message.text,
+                    options.replacement
+                ),
+                emotes: event.message.emotes.map(
+                    (emote) => (<TEmote>{ type: emote.type, name: emote.name })
+                )
+            }
+        } : event
 );

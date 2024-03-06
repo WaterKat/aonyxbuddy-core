@@ -7,8 +7,8 @@ export {
     IProcessFilterBlacklistOptions
 } from "./processor-filter-blacklist.js";
 export {
-    ProcessorIgnoreBotlist,
-    IProcessorIgnoreBotlistOptions
+    ProcessorFilterBotlist as ProcessorIgnoreBotlist,
+    IProcessorFilterBotlistOptions as IProcessorIgnoreBotlistOptions
 } from "./processor-filter-botlist.js"
 export {
     ProcessorFilterCheermotes,
@@ -24,7 +24,9 @@ export {
 } from "./processor-filter-emojis.js"
 export {
     ProcessFilterPermissions,
-    IProcessFilterPermissionsOptions
+    IProcessFilterPermissionsOptions,
+    IUserPermissions,
+    EPermissionLevel,
 } from "./processor-filter-permissions.js"
 export {
     ProcessFilterWordsCaseSensitive,
@@ -33,9 +35,9 @@ export {
 } from "./processor-filter-words.js";
 export {
     ProcessCommand,
-    IProcessCommandOptions
+    IProcessCommandOptions,
 } from "./processor-get-command.js";
 export {
-    ProcessNicknames,
-    IProcessNicknamesOptions
+    ProcessGetNicknames as ProcessNicknames,
+    IProcessGetNicknamesOptions as IProcessNicknamesOptions
 } from "./processor-get-nickname.js";

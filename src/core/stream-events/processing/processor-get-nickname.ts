@@ -3,7 +3,7 @@ import { TStreamEvent } from "../types.js";
 /**
  * Options for processing a stream event with the ProcessNicknames function
  */
-export interface IProcessNicknamesOptions {
+export interface IProcessGetNicknamesOptions {
     nicknameMap: { [key: string]: string[] },
     getNumBetween01Func: () => number
 }
@@ -16,8 +16,8 @@ export interface IProcessNicknamesOptions {
  * @param options the options for processing the event
  * @returns the processed event
  */
-export const ProcessNicknames =
-    (event: TStreamEvent, options: IProcessNicknamesOptions) => {
+export const ProcessGetNicknames =
+    (event: TStreamEvent, options: IProcessGetNicknamesOptions) => {
         const deepCopy = JSON.parse(JSON.stringify(event)) as TStreamEvent;
         return ({
             ...deepCopy,

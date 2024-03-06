@@ -25,16 +25,19 @@ export const ProcessorFilterEmojis = (
     event: TStreamEvent,
     options: IProcessFilterEmojisOptions
 ): TStreamEvent => (
-    event.type === EStreamEventType.CHAT ? {
-        tstype: event.tstype,
-        type: event.type,
-        username: event.username,
-        nickname: event.nickname,
-        message: {
-            text: event.message.text.replace(EmojiRegex, options.replacement),
-            emotes: event.message.emotes.map(
-                (emote) => (<TEmote>{ type: emote.type, name: emote.name })
-            )
-        }
-    } : event
+    event.type === EStreamEventType.CHAT ||
+        event.type === EStreamEventType.CHAT_FIRST ||
+        event.type === EStreamEventType.CHEER ?
+        <TStreamEvent>{
+            tstype: event.tstype,
+            type: event.type,
+            username: event.username,
+            nickname: event.nickname,
+            message: {
+                text: event.message.text.replace(EmojiRegex, options.replacement),
+                emotes: event.message.emotes.map(
+                    (emote) => (<TEmote>{ type: emote.type, name: emote.name })
+                )
+            }
+        } : event
 );

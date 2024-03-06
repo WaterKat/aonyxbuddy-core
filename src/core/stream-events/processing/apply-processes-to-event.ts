@@ -1,32 +1,42 @@
 import { TStreamEvent } from "../types.js";
 import {
+    ProcessorFilterBlacklist,
+    IProcessFilterBlacklistOptions
+} from "./processor-filter-blacklist.js";
+import {
+    ProcessorFilterBotlist,
+    IProcessorFilterBotlistOptions
+} from "./processor-filter-botlist.js";
+import {
     ProcessFilterWordsCaseSensitive,
-    ProcessFilterWordsCaseInsensitive
+    ProcessFilterWordsCaseInsensitive,
+    IProcessFilterWordsOptions
 } from "./processor-filter-words.js";
 import {
     ProcessCommand,
     IProcessCommandOptions
 } from "./processor-get-command.js"
 import {
-    ProcessNicknames,
-    IProcessNicknamesOptions
+    ProcessGetNicknames,
+    IProcessGetNicknamesOptions
 } from "./processor-get-nickname.js";
-import { 
-    ProcessorFilterBlacklist,
-    IProcessFilterBlacklistOptions
-} from "./processor-filter-blacklist.js";
-import { 
+import {
     ProcessorFilterEmojis,
     IProcessFilterEmojisOptions
 } from "./processor-filter-emojis.js";
-import { 
-    ProcessorIgnoreBotlist,
-    IProcessorIgnoreBotlistOptions
-} from "./processor-filter-botlist.js";
 import {
     ProcessFilterPermissions,
     IProcessFilterPermissionsOptions
 } from "./processor-filter-permissions.js";
+import {
+     ProcessorFilterCheermotes,
+     IProcessorFilterCheermotesOptions
+ } from "./processor-filter-cheermotes.js";
+ import { 
+    ProcessFilterCondition,
+    IProcessFilterConditionOptions
+ } from "./processor-filter-condition.js";
+
 
 /**
  * Options for processing a stream event. For use when constructing the 
@@ -61,14 +71,16 @@ const ApplyEventProcessor = (
  * Options for processing a stream event
  */
 export interface IProcessEventOptions {
-    filterCaseSensitive?: string[],
-    filterCaseInsensitive?: string[],
-    processCommandOptions?: IProcessCommandOptions,
-    processNicknamesOptions?: IProcessNicknamesOptions,
-    processFilterBlacklistOptions?: IProcessFilterBlacklistOptions,
-    processFilterEmojisOptions?: IProcessFilterEmojisOptions,
-    processIgnoreBotlistOptions?: IProcessorIgnoreBotlistOptions,
-    processFilterPermissionsOptions?: IProcessFilterPermissionsOptions
+    FilterWordsCaseInsensitiveOptions?: IProcessFilterWordsOptions,
+    FilterWordsCaseSensitiveOptions?: IProcessFilterWordsOptions,
+    CommandOptions?: IProcessCommandOptions,
+    GetNicknameOptions?: IProcessGetNicknamesOptions,
+    FilterBlacklistOptions?: IProcessFilterBlacklistOptions,
+    FilterEmojisOptions?: IProcessFilterEmojisOptions,
+    FilterBotlistOptions?: IProcessorFilterBotlistOptions,
+    FilterPermissionsOptions?: IProcessFilterPermissionsOptions,
+    FilterCheermotesOptions?: IProcessorFilterCheermotesOptions,
+    FilterConditionOptions?: IProcessFilterConditionOptions
 }
 
 /**
@@ -85,35 +97,43 @@ export const ProcessEvent = (
     const filters = [
         {
             func: ProcessorFilterBlacklist,
-            funcOptions: options.processFilterBlacklistOptions
+            funcOptions: options.FilterBlacklistOptions
         },
         {
             func: ProcessCommand,
-            funcOptions: options.processCommandOptions
+            funcOptions: options.CommandOptions
         },
         {
-            func: ProcessorIgnoreBotlist,
-            funcOptions: options.processIgnoreBotlistOptions
+            func: ProcessorFilterBotlist,
+            funcOptions: options.FilterBotlistOptions
         },
         {
             func: ProcessFilterWordsCaseSensitive,
-            funcOptions: options.filterCaseSensitive
+            funcOptions: options.FilterWordsCaseSensitiveOptions
         },
         {
             func: ProcessFilterWordsCaseInsensitive,
-            funcOptions: options.filterCaseInsensitive
+            funcOptions: options.FilterWordsCaseInsensitiveOptions
         },
         {
             func: ProcessorFilterEmojis,
-            funcOptions: options.processFilterEmojisOptions
+            funcOptions: options.FilterEmojisOptions
         },
         {
-            func: ProcessNicknames,
-            funcOptions: options.processNicknamesOptions
-        }, 
+            func: ProcessorFilterCheermotes,
+            funcOtions: options.FilterCheermotesOptions
+        },
+        {
+            func: ProcessGetNicknames,
+            funcOptions: options.GetNicknameOptions
+        },
         {
             func: ProcessFilterPermissions,
-            funcOptions: options.processFilterPermissionsOptions   
+            funcOptions: options.FilterPermissionsOptions
+        },
+        {
+            func: ProcessFilterCondition,
+            funcOptions: options.FilterConditionOptions
         }
     ];
     return filters.reduce(
