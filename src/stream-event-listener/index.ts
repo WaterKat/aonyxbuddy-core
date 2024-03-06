@@ -12,7 +12,7 @@ export default function GetAonyxBuddyStreamEventListener(callback: (event: TStre
 
             if (_eventData.detail.tstype !== EStreamEventType.TS_TYPE) return;
 
-            console.log(_eventData);
+//            console.log(_eventData);
 
             callback(_eventData.detail);
         }
