@@ -1,6 +1,8 @@
 import { TStreamEvent, EStreamEventType } from '../core/stream-events/types.js';
 
-export default function GetAonyxBuddyStreamEventListener(callback: (event: TStreamEvent) => void): void | Error {
+export function GetAonyxBuddyStreamEventListener(callback: (
+    event: TStreamEvent) => void
+): void | Error {
     if (!window) {
         return new Error('Window not found, this can only run in a browser');
     }
@@ -12,9 +14,11 @@ export default function GetAonyxBuddyStreamEventListener(callback: (event: TStre
 
             if (_eventData.detail.tstype !== EStreamEventType.TS_TYPE) return;
 
-//            console.log(_eventData);
+            //            console.log(_eventData);
 
             callback(_eventData.detail);
         }
     );
 }
+
+export default GetAonyxBuddyStreamEventListener;
