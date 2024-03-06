@@ -96,6 +96,10 @@ export const ProcessEvent = (
 ) => {
     const filters = [
         {
+            func: ProcessFilterCondition,
+            funcOptions: options.FilterConditionOptions
+        },
+        {
             func: ProcessorFilterBlacklist,
             funcOptions: options.FilterBlacklistOptions
         },
@@ -130,10 +134,6 @@ export const ProcessEvent = (
         {
             func: ProcessFilterPermissions,
             funcOptions: options.FilterPermissionsOptions
-        },
-        {
-            func: ProcessFilterCondition,
-            funcOptions: options.FilterConditionOptions
         }
     ];
     return filters.reduce(

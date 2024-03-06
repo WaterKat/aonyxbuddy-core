@@ -1,6 +1,6 @@
 export * as Types from './types.js';
-export * as Detection from './old.detection/index.js';
-export * as Manipulation from './old.manipulation/index.js';
+//export * as Detection from './old.detection/index.js';
+//export * as Manipulation from './old.manipulation/index.js';
 
 export { 
     TStreamEvent,

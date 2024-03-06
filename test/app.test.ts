@@ -166,12 +166,87 @@ const AddResponse = (response: string) => {
 
 import { GetStreamEventResponse } from "../src/core/responses/index.js";
 import {
-    ClientConfigExample
+    ClientConfigExample as config
 } from "../src/config/iclient-config-fariaorion.test.js";
+import { 
+    IUserPermissions,
+    EPermissionLevel,
+    ProcessEvent
+} from "../src/core/stream-events/processing/index.js";
 
-GetAonyxBuddyStreamEventListener((event) => {
+GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
+    const permissions: IUserPermissions = {
+        [rawEvent.username]: rawEvent.permissions ?
+          rawEvent.permissions.streamer ? EPermissionLevel.STREAMER :
+            rawEvent.permissions.moderator ? EPermissionLevel.MODERATOR :
+              rawEvent.permissions.vip ? EPermissionLevel.VIP :
+                rawEvent.permissions.subscriber ? EPermissionLevel.SUBSCRIBER :
+                  rawEvent.permissions.follower ? EPermissionLevel.FOLLOWER :
+                    EPermissionLevel.CHATTER
+          : EPermissionLevel.CHATTER
+      };
+  
+      const event: TStreamEvent =
+        ProcessEvent(rawEvent, {
+          FilterWordsCaseInsensitiveOptions: {
+            wordsToFilter: config.blockedWords,
+            replacement: "ploop"
+          },
+          FilterWordsCaseSensitiveOptions: {
+            wordsToFilter: [],
+            replacement: "ploop"
+          },
+          CommandOptions: {
+            identifiers: ["!aonyxbuddy"],
+            actions: ["debug", "say", "mute", "unmute", "skip"]
+          },
+          GetNicknameOptions: {
+            nicknameMap: config.nicknames,
+            getNumBetween01Func: () => Math.random()
+          },
+          FilterBlacklistOptions: {
+            blacklist: config.blacklist
+          },
+          FilterEmojisOptions: {
+            replacement: ""
+          },
+          FilterBotlistOptions: {
+            botlist: config.botlist,
+            allow: [EStreamEventType.COMMAND]
+          },
+          FilterPermissionsOptions: {
+            permissionRequirements: {
+              [EStreamEventType.TS_TYPE]: EPermissionLevel.CHATTER,
+              [EStreamEventType.CHAT]: EPermissionLevel.CHATTER,
+              [EStreamEventType.CHAT_FIRST]:
+                EPermissionLevel.FOLLOWER,
+              [EStreamEventType.CHEER]: EPermissionLevel.CHATTER,
+              [EStreamEventType.SUBSCRIBER]:
+                EPermissionLevel.CHATTER,
+              [EStreamEventType.FOLLOW]: EPermissionLevel.CHATTER,
+              [EStreamEventType.RAID]: EPermissionLevel.CHATTER,
+              [EStreamEventType.GIFT_BULK_RECEIVED]:
+                EPermissionLevel.CHATTER,
+              [EStreamEventType.GIFT_BULK_SENT]:
+                EPermissionLevel.CHATTER,
+              [EStreamEventType.GIFT_SINGLE]:
+                EPermissionLevel.CHATTER,
+              [EStreamEventType.COMMAND]: EPermissionLevel.MODERATOR,
+              [EStreamEventType.REDEEM]: EPermissionLevel.CHATTER,
+              [EStreamEventType.IGNORE]: EPermissionLevel.CHATTER,
+              [EStreamEventType.OTHER]: EPermissionLevel.CHATTER,
+            },
+            permissions: permissions
+          },
+          FilterCheermotesOptions: {
+            replacement: " "
+          },
+          FilterConditionOptions: {
+            condition: true,
+          }
+        });
     const response = GetStreamEventResponse(
-        ClientConfigExample.responses["voice"],
+        config.responses["voice"],
         event
     );
     if (response.length > 0) {

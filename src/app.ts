@@ -26,7 +26,9 @@ import { GetAonyxBuddyInstance } from "./index.js";
 
 import {
   ProcessCommand,
-  IProcessCommandOptions
+  IProcessCommandOptions,
+  EPermissionLevel,
+  IUserPermissions
 } from "./core/stream-events/processing/index.js";
 
 function main() {
@@ -217,15 +219,87 @@ function main() {
 
   //Stream Events
   function OnEventReceived(rawEvent: StreamEvents.Types.TStreamEvent) {
-    let streamEvent = rawEvent;
-    streamEvent = StreamEvents.Manipulation
-      .ProcessFilterWordsCaseInsensitive(
-        streamEvent,
-        {
+    const permissions: IUserPermissions = {
+      [rawEvent.username]: rawEvent.permissions ?
+        rawEvent.permissions.streamer ? EPermissionLevel.STREAMER :
+          rawEvent.permissions.moderator ? EPermissionLevel.MODERATOR :
+            rawEvent.permissions.vip ? EPermissionLevel.VIP :
+              rawEvent.permissions.subscriber ? EPermissionLevel.SUBSCRIBER :
+                rawEvent.permissions.follower ? EPermissionLevel.FOLLOWER :
+                  EPermissionLevel.CHATTER
+        : EPermissionLevel.CHATTER
+    };
+
+    const event: StreamEvents.TStreamEvent =
+      StreamEvents.ProcessEvent(rawEvent, {
+        FilterWordsCaseInsensitiveOptions: {
           wordsToFilter: config.blockedWords,
           replacement: "ploop"
+        },
+        FilterWordsCaseSensitiveOptions: {
+          wordsToFilter: [],
+          replacement: "ploop"
+        },
+        CommandOptions: {
+          identifiers: ["!aonyxbuddy", `${command_identifier}${command_group}`],
+          actions: ["debug", "say", "mute", "unmute", "skip"]
+        },
+        GetNicknameOptions: {
+          nicknameMap: config.nicknames,
+          getNumBetween01Func: () => Math.random()
+        },
+        FilterBlacklistOptions: {
+          blacklist: config.blacklist
+        },
+        FilterEmojisOptions: {
+          replacement: ""
+        },
+        FilterBotlistOptions: {
+          botlist: config.botlist,
+          allow: [StreamEvents.EStreamEventType.COMMAND]
+        },
+        FilterPermissionsOptions: {
+          permissionRequirements: {
+            [StreamEvents.EStreamEventType.TS_TYPE]: EPermissionLevel.CHATTER,
+            [StreamEvents.EStreamEventType.CHAT]: EPermissionLevel.CHATTER,
+            [StreamEvents.EStreamEventType.CHAT_FIRST]:
+              EPermissionLevel.FOLLOWER,
+            [StreamEvents.EStreamEventType.CHEER]: EPermissionLevel.CHATTER,
+            [StreamEvents.EStreamEventType.SUBSCRIBER]:
+              EPermissionLevel.CHATTER,
+            [StreamEvents.EStreamEventType.FOLLOW]: EPermissionLevel.CHATTER,
+            [StreamEvents.EStreamEventType.RAID]: EPermissionLevel.CHATTER,
+            [StreamEvents.EStreamEventType.GIFT_BULK_RECEIVED]:
+              EPermissionLevel.CHATTER,
+            [StreamEvents.EStreamEventType.GIFT_BULK_SENT]:
+              EPermissionLevel.CHATTER,
+            [StreamEvents.EStreamEventType.GIFT_SINGLE]:
+              EPermissionLevel.CHATTER,
+            [StreamEvents.EStreamEventType.COMMAND]: EPermissionLevel.MODERATOR,
+            [StreamEvents.EStreamEventType.REDEEM]: EPermissionLevel.CHATTER,
+            [StreamEvents.EStreamEventType.IGNORE]: EPermissionLevel.CHATTER,
+            [StreamEvents.EStreamEventType.OTHER]: EPermissionLevel.CHATTER,
+          },
+          permissions: permissions
+        },
+        FilterCheermotesOptions: {
+          replacement: " "
+        },
+        FilterConditionOptions: {
+          condition: !(mutedFrame > 0),
         }
-      );
+      });
+
+    /*
+    let streamEvent = rawEvent;
+    /*    streamEvent = StreamEvents.Manipulation
+          .ProcessFilterWordsCaseInsensitive(
+            streamEvent,
+            {
+              wordsToFilter: config.blockedWords,
+              replacement: "ploop"
+            }
+          );
     //streamEvent = StreamEvents.Manipulation.ParseCommand(streamEvent, true);
     streamEvent = ProcessCommand(streamEvent, {
       identifiers: ["!aonyxbuddy", `${command_identifier}${command_group}`],
@@ -258,13 +332,14 @@ function main() {
       streamEvent,
       ParseOther
     );
-    console.info("RawEvent:", streamEvent);
-    if (streamEvent.type === "other") {
-      ParseOther(streamEvent);
-    } else if (streamEvent.type === "command") {
-      ParseCommand(streamEvent);
+    */
+//    console.info("RawEvent:", streamEvent);
+    if (event.type === "other") {
+      ParseOther(event);
+    } else if (event.type === "command") {
+      ParseCommand(event);
     } else {
-      ParseEvent(streamEvent);
+      ParseEvent(event);
     }
 
     aonyxbuddy.TextQueue.Skip(1);
