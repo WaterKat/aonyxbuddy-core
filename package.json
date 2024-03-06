@@ -15,7 +15,7 @@
     "gifuct-js": "^2.1.2"
   },
   "scripts": {
-    "build:dev": "mkdir -p ./build && cp ./test/* ./build/ && bun build ./src/app.js --outfile ./build/app.js && echo \"//# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js\" >> ./build/app.js",
+    "build:dev": "mkdir -p ./build && cp ./test/* ./build/ && bun build ./test/*.ts --outdir ./build/&& bun build ./src/app.js --outfile ./build/app.js && echo \"//# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js\" >> ./build/app.js",
     "serve": "bun ./tools/serve.ts"
   }
 }
