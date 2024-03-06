@@ -164,6 +164,15 @@ const AddResponse = (response: string) => {
     responsesContainer.insertBefore(p, responsesContainer.firstChild);
 }
 
+import { GetStreamEventResponse } from "../src/core/responses/index.js";
+import {
+    ClientConfigExample
+} from "../src/config/iclient-config-fariaorion.test.js";
+
 GetAonyxBuddyStreamEventListener((event) => {
-    AddResponse(JSON.stringify(event));
+    const response = GetStreamEventResponse(
+        ClientConfigExample.responses["voice"],
+        event
+    );
+    AddResponse(response);
 });
