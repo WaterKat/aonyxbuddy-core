@@ -174,5 +174,7 @@ GetAonyxBuddyStreamEventListener((event) => {
         ClientConfigExample.responses["voice"],
         event
     );
-    AddResponse(response);
+    if (response.length > 0) {
+        AddResponse(response);
+    }
 });
