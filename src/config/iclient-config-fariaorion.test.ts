@@ -140,7 +140,7 @@ export const ClientConfigExample: IClientConfig = {
                 "Attention star beans! ${nickname} and ${raid.count} raider${raid.plural} are incoming!"
             ],
             cheer: [
-                "${nickname}, thank you for the bit${cheer.plural}! ${nickname} says:"
+                "${nickname}, thank you for the ${cheer.amount} bit${cheer.plural}! ${nickname} says:"
             ],
             chat: [],
             command: [],
