@@ -246,8 +246,12 @@ GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
           }
         });
     const response = GetStreamEventResponse(
-        config.responses["voice"],
-        event
+        event,
+        {
+          responses: config.responses["voice"],
+          key: event.type,
+          randomBetween01Func: () => Math.random()
+        }
     );
     if (response.length > 0) {
         AddResponse(response);

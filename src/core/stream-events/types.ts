@@ -51,7 +51,7 @@ export type TChat = {
  */
 export type TStreamEvent = {
     tstype: EStreamEventType.TS_TYPE,
-    type : Exclude<EStreamEventType, EStreamEventType.TS_TYPE>,
+    type: Exclude<EStreamEventType, EStreamEventType.TS_TYPE>,
     username: string,
     nickname?: string,
     permissions?: TPermissions,
@@ -60,47 +60,71 @@ export type TStreamEvent = {
 } | {
     type: EStreamEventType.SUBSCRIBER
     message: TChat,
-    length : number,
+    length: number,
 } | {
     type: EStreamEventType.GIFT_SINGLE
-    receiver : string,
+    receiver: string,
 } | {
     type: EStreamEventType.GIFT_BULK_SENT
     count: number,
 } | {
     type: EStreamEventType.GIFT_BULK_RECEIVED
-    receiver : string,
+    receiver: string,
 } | {
     type: EStreamEventType.RAID
-    count : number,
+    count: number,
 } | {
     type: EStreamEventType.CHEER
-    message : TChat,
-    amount : number,
+    message: TChat,
+    amount: number,
 } | {
     type: EStreamEventType.CHAT
-    message : TChat,
+    message: TChat,
 } | {
     type: EStreamEventType.CHAT_FIRST
-    message : TChat,
+    message: TChat,
 } | {
     type: EStreamEventType.COMMAND,
     //message : ChatMessage,
-    identifier : string,
-    group? : string,
-    action : string,
-    args : string,
+    identifier: string,
+    group?: string,
+    action: string,
+    args: string,
 } | {
     type: EStreamEventType.REDEEM
     message: TChat,
-    id : string,
+    id: string,
 } | {
     type: EStreamEventType.OTHER
-    original : TStreamEvent,
-    other : {
-        [key: string] : string
+    original: TStreamEvent,
+    other: {
+        [key: string]: string
     }
 } | {
     type: EStreamEventType.IGNORE,
     reason: string
 })
+
+export interface TMessageEvent {
+    message: TChat
+}
+
+export const GetTMessageEvent = (
+    event: TStreamEvent
+): TMessageEvent | undefined => (
+    IsTMessageStreamEvent(event) ? event as TMessageEvent : undefined
+)
+
+export const IsTMessageStreamEvent = (
+    event: TStreamEvent
+): boolean => (
+    event.type in
+    [
+        EStreamEventType.CHAT,
+        EStreamEventType.CHAT_FIRST,
+        EStreamEventType.CHEER,
+        EStreamEventType.REDEEM,
+        EStreamEventType.SUBSCRIBER
+    ]
+)
+

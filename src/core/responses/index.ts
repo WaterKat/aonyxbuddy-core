@@ -1,7 +1,7 @@
 export {
     GetRandomResponse,
     GetRandomIndex,
-    type IResponseArray
+    type IRandomResponseOptions as IResponseArray
 } from "./get-random-response.js";
 
 export {

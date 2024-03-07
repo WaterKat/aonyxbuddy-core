@@ -1,8 +1,10 @@
 /**
- * A dictionary that contains response arrays for different keys
+ * Interface for optins for GetRandomResponse
  */
-export interface IResponseArray {
-    [key: string]: string[]
+export interface IRandomResponseOptions {
+    responses: { [key: string]: string[] },
+    key: string
+    randomBetween01Func: () => number
 }
 
 /**
@@ -23,10 +25,12 @@ export function GetRandomIndex(array: Array<any>) {
  * @returns the random response from the responses array for the given key
  */
 export function GetRandomResponse(
-    responses: IResponseArray, key: string
+    options: IRandomResponseOptions
 ): string {
-    if (!responses[key]) return "";
-    if (responses[key].length < 1) return "";
-    return responses[key][GetRandomIndex(responses[key])];
+    if (!options.responses[options.key]) return "";
+    if (options.responses[options.key].length < 1) return "";
+    return options.responses[options.key][
+        GetRandomIndex(options.responses[options.key])
+    ];
 }
 
