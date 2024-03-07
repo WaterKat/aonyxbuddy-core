@@ -18,7 +18,7 @@ export const ProcessorFilterBlacklist = (
     event: TStreamEvent,
     options: IProcessFilterBlacklistOptions
 ): TStreamEvent => (
-    options.blacklist.includes(event.username) ? <TStreamEvent>{
+    options.blacklist.includes(event.username) ? {
         tstype: event.tstype,
         type: EStreamEventType.IGNORE,
         username: event.username,

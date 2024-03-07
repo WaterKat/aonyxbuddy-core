@@ -1,4 +1,4 @@
-import { EStreamEventType, GetTMessageEvent, IsTMessageStreamEvent, TMessageEvent, TStreamEvent } from "../stream-events/types.js";
+import { EStreamEventType, GetTMessageEvent, IsTMessageEvent, TMessageEvent, TStreamEvent } from "../stream-events/types.js";
 import { GetRandomResponse, IRandomResponseOptions } from "./get-random-response.js";
 import { ISubstitutionMap, SubstuteAllInSubstitutionMap } from "./substitute-response-vars.js";
 
@@ -28,7 +28,7 @@ export function GetSubstitutionMapFromEvent(
             event.amount.toString() || "" : "",
         "cheer.plural": event.type === EStreamEventType.CHEER ?
             ((event.amount ?? 0) > 1) ? "s" : "" : "",
-        "message.text": IsTMessageStreamEvent(event) ?
+        "message.text": IsTMessageEvent(event) ?
             (event as TMessageEvent).message.text ?? "" : ""
     };
 }

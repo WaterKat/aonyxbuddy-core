@@ -105,26 +105,12 @@ export type TStreamEvent = {
     reason: string
 })
 
-export interface TMessageEvent {
+export type TMessageEvent = TStreamEvent & {
     message: TChat
 }
 
-export const GetTMessageEvent = (
+export const IsTMessageEvent = (
     event: TStreamEvent
-): TMessageEvent | undefined => (
-    IsTMessageStreamEvent(event) ? event as TMessageEvent : undefined
-)
-
-export const IsTMessageStreamEvent = (
-    event: TStreamEvent
-): boolean => (
-    event.type in
-    [
-        EStreamEventType.CHAT,
-        EStreamEventType.CHAT_FIRST,
-        EStreamEventType.CHEER,
-        EStreamEventType.REDEEM,
-        EStreamEventType.SUBSCRIBER
-    ]
-)
+): event is TMessageEvent =>
+    (typeof (event as TMessageEvent).message !== "undefined")
 

@@ -246,7 +246,7 @@ function main() {
         },
         GetNicknameOptions: {
           nicknameMap: config.nicknames,
-          getNumBetween01Func: () => Math.random()
+          randomBetween01Func: () => Math.random()
         },
         FilterBlacklistOptions: {
           blacklist: config.blacklist

@@ -1,4 +1,4 @@
-import { TStreamEvent, EStreamEventType } from "../types.js";
+import { TStreamEvent, EStreamEventType, IsTMessageEvent, TMessageEvent } from "../types.js";
 
 /**
  * The regex to match any twitch cheermotes
@@ -21,20 +21,19 @@ export interface IProcessorFilterCheermotesOptions {
 export const ProcessorFilterCheermotes = (
     event: TStreamEvent,
     options: IProcessorFilterCheermotesOptions
-): TStreamEvent => (
-    event.type === EStreamEventType.CHEER ?
-        {
-            tstype: event.tstype,
-            type: EStreamEventType.CHEER,
-            username: event.username,
-            nickname: event.nickname,
-            amount: event.amount,
-            message: {
-                text: event.message.text.replace(EmojiRegex, options.replacement),
-                emotes: event.message.emotes.map(
-                    (emote) => ({ type: emote.type, name: emote.name })
-                )
-            }
-        } : event
-);
+): TStreamEvent => {
+    if (!IsTMessageEvent(event)) return event;
 
+    const copy = JSON.parse(JSON.stringify(event)) as TMessageEvent;
+    const newMessageEvent = {
+        ...copy,
+        message: {
+            text: event.message.text.replace(EmojiRegex, options.replacement),
+            emotes: event.message.emotes.map(
+                (emote) => ({ type: emote.type, name: emote.name })
+            )
+        }
+    }
+
+    return newMessageEvent;
+};

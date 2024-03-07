@@ -1,4 +1,4 @@
-import { TEmote, TStreamEvent, EStreamEventType } from "../types";
+import { TEmote, TStreamEvent, EStreamEventType, IsTMessageEvent, TMessageEvent } from "../types";
 
 /**
  * The regex to match standard emojis
@@ -24,20 +24,19 @@ export interface IProcessFilterEmojisOptions {
 export const ProcessorFilterEmojis = (
     event: TStreamEvent,
     options: IProcessFilterEmojisOptions
-): TStreamEvent => (
-    event.type === EStreamEventType.CHAT ||
-        event.type === EStreamEventType.CHAT_FIRST ||
-        event.type === EStreamEventType.CHEER ?
-        <TStreamEvent>{
-            tstype: event.tstype,
-            type: event.type,
-            username: event.username,
-            nickname: event.nickname,
-            message: {
-                text: event.message.text.replace(EmojiRegex, options.replacement),
-                emotes: event.message.emotes.map(
-                    (emote) => (<TEmote>{ type: emote.type, name: emote.name })
-                )
-            }
-        } : event
-);
+): TStreamEvent => {
+    if (!IsTMessageEvent(event)) return event;
+
+    const copy = JSON.parse(JSON.stringify(event)) as TMessageEvent;
+    const newMessageEvent = {
+        ...copy,
+        message: {
+            text: event.message.text.replace(EmojiRegex, options.replacement),
+            emotes: event.message.emotes.map(
+                (emote) => (<TEmote>{ type: emote.type, name: emote.name })
+            )
+        }
+    }
+
+    return newMessageEvent;
+};

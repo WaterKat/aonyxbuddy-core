@@ -22,8 +22,8 @@ export interface IProcessFilterConditionOptions {
 export const ProcessFilterCondition = (
     event: TStreamEvent,
     options: IProcessFilterConditionOptions
-) => (
-    options.condition ? event : <TStreamEvent>{
+) : TStreamEvent => (
+    options.condition ? event : {
         tstype: event.tstype,
         type: EStreamEventType.IGNORE,
         username: event.username,

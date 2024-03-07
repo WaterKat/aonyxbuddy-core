@@ -22,13 +22,13 @@ export interface IProcessorFilterBotlistOptions {
 export const ProcessorFilterBotlist = (
     event: TStreamEvent,
     options: IProcessorFilterBotlistOptions
-) => (
-    options.botlist.includes(event.username) && 
-    !options.allow.includes(event.type) ? 
-    <TStreamEvent>{
-        tstype: EStreamEventType.TS_TYPE,
-        username: event.username,
-        type: EStreamEventType.IGNORE,
-        reason: "botlist"
-    } : event
+): TStreamEvent => (
+    options.botlist.includes(event.username) &&
+        !options.allow.includes(event.type) ?
+        {
+            tstype: EStreamEventType.TS_TYPE,
+            username: event.username,
+            type: EStreamEventType.IGNORE,
+            reason: "botlist"
+        } : event
 );

@@ -5,7 +5,7 @@ import { TStreamEvent } from "../types.js";
  */
 export interface IProcessGetNicknamesOptions {
     nicknameMap: { [key: string]: string[] },
-    getNumBetween01Func: () => number
+    randomBetween01Func: () => number
 }
 
 /**
@@ -26,7 +26,7 @@ export const ProcessGetNicknames =
                     options.nicknameMap[event.username].length > 0 ?
                     options.nicknameMap[event.username]
                     [Math.floor(
-                        options.getNumBetween01Func() *
+                        options.randomBetween01Func() *
                         options.nicknameMap[event.username].length
                     )]
                     : event.username

@@ -1,4 +1,4 @@
-import { TStreamEvent, EStreamEventType } from "../types.js";
+import { TStreamEvent, EStreamEventType, IsTMessageEvent } from "../types.js";
 
 /**
  * Process Command options for the ProcessCommand function, 
@@ -39,9 +39,7 @@ export function ProcessCommand(
     options: IProcessCommandOptions
 ): TStreamEvent {
 
-    if (event.type !== EStreamEventType.CHAT) {
-        return event;
-    }
+    if (!IsTMessageEvent(event)) return event;
 
     const cleanedText = event.message.text
         .replace(WhitespacesRegex, " ")

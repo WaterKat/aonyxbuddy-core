@@ -114,7 +114,7 @@ test("ProcessNickname", () => {
         nicknameMap: {
             "testuser": ["testuser", "testy", "test"]
         },
-        getNumBetween01Func: () => 0.5
+        randomBetween01Func: () => 0.5
     };
 
     const resultA = ProcessGetNicknames(eventA, optionsA);
@@ -136,7 +136,7 @@ test("ProcessNickname", () => {
         nicknameMap: {
             "testuser": ["testuser", "testy", "test"]
         },
-        getNumBetween01Func: () => 0.9
+        randomBetween01Func: () => 0.9
     };
 
     const resultB = ProcessGetNicknames(eventB, optionsB);
@@ -157,7 +157,7 @@ test("ProcessNickname", () => {
         nicknameMap: {
             "anotherNickname": ["notright", "notrighty1", "notrighty2"]
         },
-        getNumBetween01Func: () => 0.9
+        randomBetween01Func: () => 0.9
     };
 
     const resultC = ProcessGetNicknames(eventC, optionsC);
@@ -203,7 +203,7 @@ test("ProcessCommands", () => {
             nicknameMap: {
                 "adminuser": ["adminuserA", "adminuserB", "adminuserC"]
             },
-            getNumBetween01Func: () => 0.5
+            randomBetween01Func: () => 0.5
         },
         FilterPermissionsOptions: {
             permissionRequirements: {
