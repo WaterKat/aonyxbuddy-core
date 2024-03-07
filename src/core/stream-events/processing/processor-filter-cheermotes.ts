@@ -21,15 +21,14 @@ export interface IProcessorFilterCheermotesOptions {
 export const ProcessorFilterCheermotes = (
     event: TStreamEvent,
     options: IProcessorFilterCheermotesOptions
-) => (
-    event.type === EStreamEventType.CHAT ||
-        event.type === EStreamEventType.CHAT_FIRST ||
-        event.type === EStreamEventType.CHEER ?
-        <TStreamEvent>{
+): TStreamEvent => (
+    event.type === EStreamEventType.CHEER ?
+        {
             tstype: event.tstype,
-            type: event.type,
+            type: EStreamEventType.CHEER,
             username: event.username,
             nickname: event.nickname,
+            amount: event.amount,
             message: {
                 text: event.message.text.replace(EmojiRegex, options.replacement),
                 emotes: event.message.emotes.map(
