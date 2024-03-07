@@ -22,7 +22,6 @@ if (typeof window.EStreamEventType === "undefined") {
 */
 
 function SendEvent(event: TStreamEvent) {
-    console.log("SendEvent", event);
     const newEvent = new CustomEvent(EStreamEventType.TS_TYPE, {
         detail: event,
     });
@@ -245,6 +244,9 @@ GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
             condition: true,
           }
         });
+    
+        console.log("Event:", rawEvent, event);
+
     const response = GetStreamEventResponse(
         event,
         {
