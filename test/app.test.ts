@@ -245,7 +245,7 @@ GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
           }
         });
     
-        console.log("Event:", rawEvent, event);
+        console.log("Raw:", rawEvent, "Processed: ", event);
 
     const response = GetStreamEventResponse(
         event,
