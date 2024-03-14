@@ -12,9 +12,6 @@ export function GetAonyxBuddyInstance(
   rendererParams?: RendererParams
 ) {
 
-
-
-
   const tts = GetTextToSpeech(config.tts);
   const speechAmplitudeVariable: IVariableContainer = rendererParams ? rendererParams["mouth"] : { value: 0 };
   const textqueue = GetTextQueue(tts, speechAmplitudeVariable);

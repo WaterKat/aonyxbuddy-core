@@ -170,8 +170,16 @@ import {
 import {
   IUserPermissions,
   EPermissionLevel,
-  ProcessEvent
-} from "../src/core/stream-events/processing/index.js";
+  ProcessEvent,
+  CustomProcessFirstChat,
+  IProcessFirstChatOptions,
+  StatefulProcessIgnoreRaid,
+  IIgnoreRaidState
+} from "../src/core/stream-events/index.js";
+
+let firstChatOptions : IProcessFirstChatOptions = {
+  chatters: []
+}
 
 GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
   const permissions: IUserPermissions = {
@@ -185,7 +193,7 @@ GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
       : EPermissionLevel.CHATTER
   };
 
-  const event: TStreamEvent =
+  const processedEvent: TStreamEvent =
     ProcessEvent(rawEvent, {
       FilterWordsCaseInsensitiveOptions: {
         wordsToFilter: config.blockedWords,
@@ -245,13 +253,20 @@ GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
       }
     });
 
-  console.log("Raw:", rawEvent, "Processed: ", event);
+  let { event: impureProcessedEvent, options: newFirstChatOptions } = CustomProcessFirstChat(
+    processedEvent,
+    firstChatOptions
+  );
+  firstChatOptions = newFirstChatOptions;
+  
+
+  console.log("Raw:", rawEvent, "Processed: ", impureProcessedEvent);
 
   const response = GetStreamEventResponse(
-    event,
+    impureProcessedEvent,
     {
       responses: config.responses["voice"],
-      key: event.type,
+      key: impureProcessedEvent.type,
       randomBetween01Func: () => Math.random()
     }
   );

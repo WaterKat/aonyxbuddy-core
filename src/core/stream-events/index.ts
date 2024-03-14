@@ -10,29 +10,8 @@ export {
     EStreamEventType
 } from './types.js';
 
-export {
-    ProcessEvent,
-    IProcessEventOptions,
-    ProcessorFilterBlacklist,
-    IProcessFilterBlacklistOptions,
-    ProcessorIgnoreBotlist,
-    IProcessorIgnoreBotlistOptions,
-    ProcessorFilterCheermotes,
-    IProcessorFilterCheermotesOptions,
-    ProcessFilterCondition,
-    IProcessFilterConditionOptions,
-    ProcessorFilterEmojis,
-    IProcessFilterEmojisOptions,
-    ProcessFilterPermissions,
-    IProcessFilterPermissionsOptions,
-    ProcessFilterWordsCaseSensitive,
-    ProcessFilterWordsCaseInsensitive,
-    IProcessFilterWordsOptions,
-    ProcessCommand,
-    IProcessCommandOptions,
-    ProcessNicknames,
-    IProcessNicknamesOptions
-} from "./processing/index.js"
+export * from "./processing/index.js"
+export * from "./custom-processing/index.js";
 
 import { ProcessEvent } from './processing/index.js';
 export default ProcessEvent;

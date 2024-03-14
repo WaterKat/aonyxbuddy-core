@@ -33,16 +33,14 @@ export const ClientConfigExample: IClientConfig = {
     },
     nicknames: {
         'waterkattv': ['water kat', 'the cat'],
-        'fariaorion': ['faria'],
+        'fariaorion': ["Star Demon Cat of the Cosmic Nebula"],
         'alexr118': ['alex'],
         'cupidjpeg': ['cupid'],
-        'ssptaicho': ['thai cho']
+        'ssptaicho': ['thai cho'],
+        "horrorqueenharley": ["My siren queen of the sea"],
     },
     tts: { voice: 'Matthew' },
     responses: {
-        "chat-first-custom": {
-            "fariaorion" : ["Hey look who it is, the eepy star demon cat!"]
-        },
         voice: {
             follow: [
                 "Thanks for following, ${nickname}! Dive into the digital dreamscape!",
