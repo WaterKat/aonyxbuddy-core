@@ -1,20 +1,16 @@
 import { EStreamEventType, TStreamEvent } from "../types.js";
 
 /**
- * Options provided to the CustomProcessFirstChat function. includes an array of 
- * chatters to check against for the first chat event.
+ * Arguments for StatefulProcessFirstChat function, includes the event to
+ * process, the options for the process first chat function, and the state 
+ * for the process first chat function
  */
-export interface IProcessFirstChatOptions {
-    chatters: string[];
-}
-
-/**
- * Response from the CustomProcessFirstChat function, includes the processed 
- * event and modified options based on whether or not the event was processed.
- */
-export interface IProcessFirstEventResponse {
+export interface IStatefulFirstEventArgs {
     event: TStreamEvent,
-    options: IProcessFirstChatOptions
+    options: {},
+    state: {
+        chatters: string[]
+    }
 }
 
 /**
@@ -27,24 +23,27 @@ export interface IProcessFirstEventResponse {
  * @returns The processed event and modified options based on whether or not the
  * event was processed
  */
-export const CustomProcessFirstChat = (
-    event: TStreamEvent,
-    options: IProcessFirstChatOptions
-): IProcessFirstEventResponse => {
+export const StatefulProcessFirstChat = ({
+    event,
+    options,
+    state
+}: IStatefulFirstEventArgs): IStatefulFirstEventArgs => {
     if (event.type !== EStreamEventType.CHAT) {
         return {
             event: event,
-            options: options
+            options: options,
+            state: state
         }
     }
-    if (options.chatters.includes(event.username)) {
+    if (state.chatters.includes(event.username)) {
         return {
             event: event,
-            options: options
+            options: options,
+            state: state
         }
     } else {
         return {
-            event: <TStreamEvent>{
+            event: {
                 tstype: EStreamEventType.TS_TYPE,
                 type: EStreamEventType.CHAT_FIRST,
                 username: event.username,
@@ -58,8 +57,9 @@ export const CustomProcessFirstChat = (
                     }))
                 }
             },
-            options: {
-                chatters: options.chatters.concat([event.username])
+            options: options,
+            state: {
+                chatters: state.chatters.concat([event.username])
             }
         }
     }

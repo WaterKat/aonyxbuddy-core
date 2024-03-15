@@ -22,9 +22,10 @@ export interface IStatefulIgnoreRaidArgs {
  * not within the ignore time.
  * @param event the event to process, will not process if not a raid event and 
  * will not process if the event is outside the ignore time * 
- * @param options the options for the process ignore raid function, includes the
- * last raid time, the time in seconds to ignore raids, and an array of event
- * types to ignore
+ * @param options the options for the process ignore raid function, includes the 
+ * time in seconds to ignore raids, and an array of event types to ignore
+ * @param state the state for the process ignore raid function, includes the last
+ * raid time
  * @returns The processed event and modified options based on whether or not the
  * event caused a state change
  */

@@ -171,7 +171,7 @@ import {
   IUserPermissions,
   EPermissionLevel,
   ProcessEvent,
-  CustomProcessFirstChat,
+  StatefulProcessFirstChat,
   IProcessFirstChatOptions,
   StatefulProcessIgnoreRaid,
   IIgnoreRaidState
@@ -253,9 +253,9 @@ GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
       }
     });
 
-  let { event: impureProcessedEvent, options: newFirstChatOptions } = CustomProcessFirstChat(
+  let { event: impureProcessedEvent, options: newFirstChatOptions } = StatefulProcessFirstChat(
     processedEvent,
-    firstChatOptions
+    firstChatOptions //TODO
   );
   firstChatOptions = newFirstChatOptions;
   
