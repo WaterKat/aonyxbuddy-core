@@ -28,7 +28,8 @@ export interface IStatefulIgnoreRaidArgs {
  * raid time
  * @returns The processed event and modified options based on whether or not the
  * event caused a state change
- */
+ */ 
+/*
 export const StatefulProcessIgnoreRaid = (
     { event, options, state }: IStatefulIgnoreRaidArgs
 ): IStatefulIgnoreRaidArgs => (
@@ -41,8 +42,7 @@ export const StatefulProcessIgnoreRaid = (
             }
         }
         : event.type in options.ignore ?
-            (state.lastRaid.getSeconds() - new Date().getSeconds())
-                < options.ignoreTimeInSeconds ?
+            (new Date().getTime() - state.lastRaid.getTime()) / 1000 < options.ignoreTimeInSeconds ?
                 {
                     event: {
                         tstype: event.tstype,
@@ -55,4 +55,33 @@ export const StatefulProcessIgnoreRaid = (
                 }
                 : { event: event, options: options, state: state }
             : { event: event, options: options, state: state }
-);
+); 
+*/
+export function StatefulProcessIgnoreRaid({ event, options, state }: IStatefulIgnoreRaidArgs): IStatefulIgnoreRaidArgs {
+    if (event.type === EStreamEventType.RAID) {
+        return {
+            event: event,
+            options: options,
+            state: {
+                lastRaid: new Date()
+            }
+        };
+    } else if (options.ignore.includes(event.type)) {
+        if ((new Date().getTime() - state.lastRaid.getTime()) / 1000 < options.ignoreTimeInSeconds) {
+            return {
+                event: {
+                    tstype: event.tstype,
+                    type: EStreamEventType.IGNORE,
+                    username: event.username,
+                    reason: "ignore raid"
+                },
+                options: options,
+                state: state
+            };
+        } else {
+            return { event: event, options: options, state: state };
+        }
+    } else {
+        return { event: event, options: options, state: state };
+    }
+}

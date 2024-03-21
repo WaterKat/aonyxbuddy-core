@@ -172,13 +172,33 @@ import {
   EPermissionLevel,
   ProcessEvent,
   StatefulProcessFirstChat,
-  IProcessFirstChatOptions,
+  IStatefulFirstEventArgs,
   StatefulProcessIgnoreRaid,
-  IIgnoreRaidState
+  IStatefulIgnoreRaidArgs
 } from "../src/core/stream-events/index.js";
 
-let firstChatOptions : IProcessFirstChatOptions = {
-  chatters: []
+let impureProcessedEvent: TStreamEvent = {} as any;
+
+let firstChatOptions: IStatefulFirstEventArgs = {
+  event: {} as any,
+  options: {},
+  state: {
+    chatters: []
+  }
+}
+
+let raidOptions: IStatefulIgnoreRaidArgs = {
+  event: {} as any,
+  options: {
+    ignoreTimeInSeconds: 30,
+    ignore: [
+      EStreamEventType.CHAT_FIRST,
+      EStreamEventType.FOLLOW
+    ]
+  },
+  state: {
+    lastRaid: new Date(0)
+  }
 }
 
 GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
@@ -253,14 +273,12 @@ GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
       }
     });
 
-  let { event: impureProcessedEvent, options: newFirstChatOptions } = StatefulProcessFirstChat(
-    processedEvent,
-    firstChatOptions //TODO
-  );
-  firstChatOptions = newFirstChatOptions;
-  
-
-  console.log("Raw:", rawEvent, "Processed: ", impureProcessedEvent);
+  // impure
+  firstChatOptions.event = processedEvent;
+  firstChatOptions = StatefulProcessFirstChat(firstChatOptions);
+  raidOptions.event = firstChatOptions.event;
+  raidOptions = StatefulProcessIgnoreRaid(raidOptions);
+  impureProcessedEvent = raidOptions.event;
 
   const response = GetStreamEventResponse(
     impureProcessedEvent,
