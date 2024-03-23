@@ -29,34 +29,6 @@ export interface IStatefulIgnoreRaidArgs {
  * @returns The processed event and modified options based on whether or not the
  * event caused a state change
  */ 
-/*
-export const StatefulProcessIgnoreRaid = (
-    { event, options, state }: IStatefulIgnoreRaidArgs
-): IStatefulIgnoreRaidArgs => (
-    event.type === EStreamEventType.RAID ?
-        {
-            event: event,
-            options: options,
-            state: {
-                lastRaid: new Date()
-            }
-        }
-        : event.type in options.ignore ?
-            (new Date().getTime() - state.lastRaid.getTime()) / 1000 < options.ignoreTimeInSeconds ?
-                {
-                    event: {
-                        tstype: event.tstype,
-                        type: EStreamEventType.IGNORE,
-                        username: event.username,
-                        reason: "ignore raid"
-                    },
-                    options: options,
-                    state: state
-                }
-                : { event: event, options: options, state: state }
-            : { event: event, options: options, state: state }
-); 
-*/
 export function StatefulProcessIgnoreRaid({ event, options, state }: IStatefulIgnoreRaidArgs): IStatefulIgnoreRaidArgs {
     if (event.type === EStreamEventType.RAID) {
         return {
