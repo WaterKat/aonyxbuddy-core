@@ -1,6 +1,6 @@
 //import * as StreamCharacters from '@aonyxbuddy/stream-characters';
 import * as StreamEvents from '../core/stream-events/index.js';
-import * as SpriteRendering from '../ui/sprite-rendering/index.js';
+import * as SpriteRendering from '../ui/sprite-rendering/legacy/index.js';
 import * as TextToSpeech from '../ui/text-to-speech/index.js';
 
 export interface IClientConfig {
