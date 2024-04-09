@@ -176,6 +176,12 @@ import {
   StatefulProcessIgnoreRaid,
   IStatefulIgnoreRaidArgs
 } from "../src/core/stream-events/index.js";
+import {
+  GetImageBitmaps
+} from "../src/ui/sprite-rendering/fetch-resources.js";
+import {
+  ClearCanvas, DrawImageBitmap
+} from "../src/ui/sprite-rendering/canvas.js";
 
 let impureProcessedEvent: TStreamEvent = {} as any;
 
@@ -293,3 +299,36 @@ GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
     AddResponse(response);
   }
 });
+
+const canvasFetch =
+  document.getElementById("ab_fetch_canvas") as HTMLCanvasElement;
+const ctx = canvasFetch.getContext("2d") as CanvasRenderingContext2D;
+const imageURL = [
+  "https://www.adorama.com/alc/wp-content/uploads/2021/05/bird-wings-flying-feature.gif",
+  "https://i0.wp.com/www.printmag.com/wp-content/uploads/2021/02/4cbe8d_f1ed2800a49649848102c68fc5a66e53mv2.gif?fit=476%2C280&ssl=1",
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/200px-Rotating_earth_%28large%29.gif",
+];
+const images = GetImageBitmaps({ urls: imageURL, delay: 100 });
+
+let index = 0;
+(async function drawLoop() {
+  const awaitedImages = await images;
+  if (!awaitedImages) return;
+
+  ClearCanvas({
+    ctx: ctx,
+  })
+  DrawImageBitmap({
+    ctx: ctx,
+    bitmap: awaitedImages[index].bitmap
+  });
+
+  index += 1;
+  index %= awaitedImages.length;
+
+  await new Promise<void>(
+    resolve => setTimeout(resolve, awaitedImages[index].delay)
+  );
+
+  requestAnimationFrame(drawLoop);
+})();

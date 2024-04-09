@@ -19,6 +19,7 @@ interface ICreateCanvasOptions {
 export function CreateCanvas(
     options: ICreateCanvasOptions
 ): HTMLCanvasElement {
+    /** side effect: canvas dom element is added to document */
     const canvas = document.createElement('canvas');
     canvas.width = options.size.x;
     canvas.height = options.size.y;
@@ -35,10 +36,10 @@ export function CreateCanvas(
  * Options required for the rendering of images on a canvas context
  * contains dimensions and image data
  */
-interface IDrawImageOptions {
+interface IDrawImageBitmapOptions {
     ctx: CanvasRenderingContext2D,
     bitmap: ImageBitmap,
-    dimensions: {
+    dimensions?: {
         sx?: number,
         sy?: number,
         sw?: number,
@@ -54,19 +55,21 @@ interface IDrawImageOptions {
  * Renders an image on the given context.
  * @param options contains, context, image, and dimension data
  */
-export function DrawImage(options: IDrawImageOptions): void {
-    const sx: number = options.dimensions.sx ?? 0;
-    const sy: number = options.dimensions.sy ?? 0;
-    const sw: number = options.dimensions.sw
+export function DrawImageBitmap(options: IDrawImageBitmapOptions): void {
+    const dimensions = options.dimensions ?? {};
+    const sx: number = dimensions.sx ?? 0;
+    const sy: number = dimensions.sy ?? 0;
+    const sw: number = dimensions.sw
         ?? options.bitmap.width;
-    const sh: number = options.dimensions.sh
+    const sh: number = dimensions.sh
         ?? options.bitmap.height;
-    const dx: number = options.dimensions.dx ?? 0;
-    const dy: number = options.dimensions.dy ?? 0;
-    const dw: number = options.dimensions.dw
+    const dx: number = dimensions.dx ?? 0;
+    const dy: number = dimensions.dy ?? 0;
+    const dw: number = dimensions.dw
         ?? options.ctx.canvas.clientWidth;
-    const dh: number = options.dimensions.dh
+    const dh: number = dimensions.dh
         ?? options.ctx.canvas.clientWidth;
+    /** side effect: new bitmap is drawn on canvas */
     options.ctx.drawImage(options.bitmap, sx, sy, sw, sh, dx, dy, dw, dh);
 }
 
@@ -75,7 +78,7 @@ export function DrawImage(options: IDrawImageOptions): void {
  */
 interface IClearCanvasOptions {
     ctx: CanvasRenderingContext2D,
-    dimensions: {
+    dimensions?: {
         x?: number,
         y?: number,
         w?: number,
@@ -88,9 +91,11 @@ interface IClearCanvasOptions {
  * of portion to be cleared.
  */
 export function ClearCanvas(options: IClearCanvasOptions): void {
-    const x: number = options.dimensions.x ?? 0;
-    const y: number = options.dimensions.y ?? 0;
-    const w: number = options.dimensions.w ?? options.ctx.canvas.clientWidth;
-    const h: number = options.dimensions.h ?? options.ctx.canvas.clientHeight;
+    const dimensions = options.dimensions ?? {};
+    const x: number = dimensions.x ?? 0;
+    const y: number = dimensions.y ?? 0;
+    const w: number = dimensions.w ?? options.ctx.canvas.clientWidth;
+    const h: number = dimensions.h ?? options.ctx.canvas.clientHeight;
+    /** side effect: canvas is cleared */
     options.ctx.clearRect(x, y, w, h);
 }
