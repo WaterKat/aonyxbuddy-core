@@ -34,7 +34,7 @@ export const ConvertLegacySpritesToRenderData = (
         default: 0
     },
     urls: typeof sprites[key] === "string" ? [sprites[key]]
-        : sprites[key].map(url => url),
+        : (sprites[key] as string[]).map(url => url),
     bitmaps: []
 }));
 

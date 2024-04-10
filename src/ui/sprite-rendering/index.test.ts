@@ -1,5 +1,5 @@
 import { CreateCanvas } from "./canvas.js";
-import { IRendererData, IRenderOptions, RenderParams } from "./renderer.js";
+import { IRendererData, IRenderParams, RenderParams } from "./renderer.js";
 
 const config = {
     canvas: {

@@ -1,5 +1,5 @@
 import { ClearCanvas, DrawImageBitmap } from "./canvas.js";
-import { GetImageBitmap } from "./fetch-resources.js";
+import { GetImageBitmaps, IBitmapBundle } from "./fetch-resources.js";
 
 /** mathematical clamp function */
 const Clamp = (a: number, b: number, v: number) => Math.min(b, Math.max(a, v));
@@ -18,8 +18,9 @@ export interface IRendererData {
         max: number,
         default: number
     },
+    delay: number,
     urls?: string[],
-    bitmaps: ImageBitmap[]
+    bitmaps: IBitmapBundle[]
 }
 
 /**
@@ -34,21 +35,47 @@ export interface IRendererParam {
 /**
  * The options for rendering the bitmaps. The context is the canvas rendering
  */
-export interface IRenderOptions {
+export interface IRenderParams {
     ctx: CanvasRenderingContext2D,
     renderDatas: IRendererData[],
     params: IRendererParam[]
 }
 
 /**
+ * side effect: changes the bitmap array value within each renderData object in
+ * renderDatas.
+ * 
+ * Uses the fetch resources packages to get bitmaps from the provided urls 
+ * or base64 strings. If the fetch function fails at any point, that renderData
+ * will have an empty array as it bitmaps array
+ * @param params the IRenderParams object that contains the field renderDatas
+ * which is an array of IRendereData.
+ */
+export async function PopulateIRenderParams(params: IRenderParams) {
+    const bitmapDatas = await Promise.all(params.renderDatas.map(renderData =>
+        GetImageBitmaps({
+            urls: renderData.urls ?? [],
+            delay: renderData.delay
+        })
+    ));
+    /** side effect: edits bitmap values with new bitmaps*/
+    params.renderDatas.forEach((renderData, index) => {
+        renderData.bitmaps = bitmapDatas[index] ?? []
+    });
+}
+
+/**
+ * side effect: changes the images being displayed on the provided canvas 
+ * context "ctx"
+ * 
  * Renders the bitmaps based on the parameters and the render data. The bitmaps
  * are drawn in the order they are provided in the render data.
- * @param options the options for rendering the bitmaps; the context, the
+ * @param renderParams the options for rendering the bitmaps; the context, the
  * render data and the parameters
  */
-export function RenderParams(options: IRenderOptions) {
-    const renderBitmaps = options.renderDatas.map(renderInfo => {
-        const inputParam = options.params.find(
+export function RenderParams(renderParams: IRenderParams) {
+    const renderBitmaps = renderParams.renderDatas.map(renderInfo => {
+        const inputParam = renderParams.params.find(
             param => param.name === renderInfo.name
         );
         const delta = Clamp(renderInfo.paramInfo.min, renderInfo.paramInfo.max,
@@ -59,7 +86,7 @@ export function RenderParams(options: IRenderOptions) {
         const index = Math.floor(renderInfo.bitmaps.length * delta)
         return {
             name: renderInfo.name,
-            bitmap: renderInfo.bitmaps[
+            bitmapBundle: renderInfo.bitmaps[
                 index < renderInfo.bitmaps.length ?
                     index :
                     renderInfo.bitmaps.length - 1
@@ -68,8 +95,32 @@ export function RenderParams(options: IRenderOptions) {
     });
 
     /** side effect: canvas is cleared then each bitmap is drawn */
-    ClearCanvas({ ctx: options.ctx })
-    renderBitmaps.forEach(renderBitmap => {
-        DrawImageBitmap({ ctx: options.ctx, bitmap: renderBitmap.bitmap });
+    ClearCanvas({ ctx: renderParams.ctx })
+    renderBitmaps.forEach(bitmapData => {
+        DrawImageBitmap({
+            ctx: renderParams.ctx,
+            bitmap: bitmapData.bitmapBundle.bitmap
+        });
     });
+}
+
+/**
+ * side effect: changes the images being displayed on the provided canvas 
+ * context "ctx"
+ * 
+ * Renders the bitmaps based on the defaults of the render data provided. 
+ * This rendering function ignores the "params" array within the IRenderParams
+ * provided.
+ * @param renderParams the options for rendering the bitmaps; the context, the
+ * render data and the parameters
+ */
+export function RenderDefaults(renderParams: IRenderParams) {
+    const defaultRenderParams : IRendererParam[] = renderParams.renderDatas.map(
+        renderData => ({
+            name: renderData.name,
+            value: renderData.paramInfo.default
+        })
+    );
+
+    RenderParams({ ...renderParams, params: defaultRenderParams });
 }

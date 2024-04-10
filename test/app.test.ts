@@ -1,4 +1,6 @@
-import { EStreamEventType, TStreamEvent } from "../src/core/stream-events/types.js";
+import {
+  EStreamEventType, TStreamEvent
+} from "../src/core/stream-events/types.js";
 
 /*
 if (typeof window.EStreamEventType === "undefined") {
@@ -28,13 +30,16 @@ function SendEvent(event: TStreamEvent) {
   window.dispatchEvent(newEvent);
 }
 
-const usernameInput = document.getElementById("ab_username") as HTMLInputElement;
+const usernameInput = document
+  .getElementById("ab_username") as HTMLInputElement;
 const GetUsername = () => usernameInput.value;
 
-const receiverInput = document.getElementById("ab_receiver") as HTMLInputElement;
+const receiverInput = document
+  .getElementById("ab_receiver") as HTMLInputElement;
 const GetReceiver = () => receiverInput.value;
 
-const chatInput = document.getElementById("ab_message") as HTMLInputElement;
+const chatInput = document
+  .getElementById("ab_message") as HTMLInputElement;
 const GetChat = () => chatInput.value;
 
 // Send follow event
@@ -180,8 +185,11 @@ import {
   GetImageBitmaps
 } from "../src/ui/sprite-rendering/fetch-resources.js";
 import {
-  ClearCanvas, DrawImageBitmap
+  ClearCanvas, CreateCanvas, DrawImageBitmap
 } from "../src/ui/sprite-rendering/canvas.js";
+import {
+  IRenderParams, PopulateIRenderParams, RenderDefaults, RenderParams
+} from "../src/ui/sprite-rendering/renderer.js";
 
 let impureProcessedEvent: TStreamEvent = {} as any;
 
@@ -304,9 +312,12 @@ const canvasFetch =
   document.getElementById("ab_fetch_canvas") as HTMLCanvasElement;
 const ctx = canvasFetch.getContext("2d") as CanvasRenderingContext2D;
 const imageURL = [
-  "https://www.adorama.com/alc/wp-content/uploads/2021/05/bird-wings-flying-feature.gif",
-  "https://i0.wp.com/www.printmag.com/wp-content/uploads/2021/02/4cbe8d_f1ed2800a49649848102c68fc5a66e53mv2.gif?fit=476%2C280&ssl=1",
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_%28large%29.gif/200px-Rotating_earth_%28large%29.gif",
+  "https://www.adorama.com/alc/wp-content/uploads/2021/05/bird-wings-flying-" +
+  "feature.gif",
+  "https://i0.wp.com/www.printmag.com/wp-content/uploads/2021/02/4cbe8d_f1ed" +
+  "2800a49649848102c68fc5a66e53mv2.gif?fit=476%2C280&ssl=1",
+  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_" +
+  "%28large%29.gif/200px-Rotating_earth_%28large%29.gif",
 ];
 const images = GetImageBitmaps({ urls: imageURL, delay: 100 });
 
@@ -331,4 +342,64 @@ let index = 0;
   );
 
   requestAnimationFrame(drawLoop);
+})();
+
+const testConfig = {
+  size: {
+    x: 256,
+    y: 256,
+  },
+  antialiasing: false
+}
+
+const testCanvas = CreateCanvas(testConfig);
+const testContext = testCanvas.getContext("2d") as CanvasRenderingContext2D;
+
+const testRenderOptions: IRenderParams = {
+  ctx: testContext,
+  renderDatas: [{
+    name: "idle",
+    paramInfo: {
+      min: 0,
+      max: 1,
+      default: 0
+    },
+    delay: 100,
+    urls: ["https://i0.wp.com/dianaurban.com/wp-content/uploads/2017/07/01-cat-stretching-feet.gif?resize=500%2C399&ssl=1",
+      "https://hips.hearstapps.com/pop.h-cdn.co/assets/17/24/640x320/landscape-1497533116-not-dead.gif",
+      "https://media1.giphy.com/media/82nxC1u2BC8VU1wiZq/200w.gif?cid=6c09b952ew6pbep2vg9jzkab7aki8zfkoxh9rgkxt6udn04e&ep=v1_gifs_search&rid=200w.gif&ct=g"
+    ],
+    bitmaps: []
+  }],
+  params: [{
+    name: "idle",
+    value: 0
+  }]
+};
+
+
+
+(async function secondFunc() {
+  document.body.appendChild(testCanvas);
+
+  /** side effect: changes bitmap values within testRenderOptions */
+  await PopulateIRenderParams(testRenderOptions);
+
+  console.info("testRenderOptions: ", testRenderOptions);
+
+  /** side effect: changes the image values within the canvas context */
+  RenderDefaults(testRenderOptions);
+
+  async function renderLoop() {
+    testRenderOptions.params[0].value = 
+      Math.sin(new Date().getTime() / 1000) / 2 + 0.5;
+    RenderParams(testRenderOptions);
+
+    await new Promise<void>(resolve => setTimeout(resolve, 10));
+
+    requestAnimationFrame(renderLoop);
+  }
+
+  renderLoop();
+
 })();

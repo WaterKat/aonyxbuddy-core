@@ -27,7 +27,7 @@ export async function GetImageBitmaps(
     try {
         const blobs = (await Promise.all(
             params.urls.map(url => GetBlob(url))
-        )).filter(blob => blob !== undefined);
+        )).filter(blob => blob !== undefined) as Blob[];
 
         if (blobs.length < 1) return undefined;
 
@@ -45,9 +45,12 @@ export async function GetImageBitmaps(
             }
         })))
         console.log("bitmaps: ", bitmaps);
-        const filtered = bitmaps.filter(bitmap => bitmap !== undefined).flat();
+        const filtered = bitmaps
+            .filter(bitmap => bitmap !== undefined)
+            .flat() as IBitmapBundle[];
         return filtered;
     } catch (e) {
+        console.warn(e);
         return undefined;
     }
 }
@@ -140,7 +143,7 @@ export async function GetGIFAsImageBitmaps(
 
         return bitmapBundle;
     } catch (e) {
-        console.log("error caught: ", e);
+        console.warn(e);
         return undefined;
     }
 }
@@ -157,6 +160,7 @@ export async function GetImageBlobFromURL(
         const response = await fetch(url);
         return await response.blob();
     } catch (e) {
+        console.warn(e);
         return undefined;
     }
 }
@@ -186,6 +190,7 @@ export async function GetImageBlobFromBase64(
         const byteArray = new Uint8Array(byteNumbers);
         return new Blob([byteArray], { type: dataType });
     } catch (e) {
+        console.warn(e);
         return undefined
     }
 }
@@ -216,6 +221,7 @@ export async function GetBlob(data: string): Promise<Blob | undefined> {
         }
         return blob;
     } catch (e) {
+        console.warn(e);
         return undefined;
     }
 }
@@ -233,6 +239,7 @@ export async function GetImageBitmap(
         const bitmap = await createImageBitmap(blob);
         return bitmap;
     } catch (e) {
+        console.warn(e);
         return undefined;
     }
 }
