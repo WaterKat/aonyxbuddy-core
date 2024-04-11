@@ -16,6 +16,10 @@ export type SpriteRenderingConfig = IRenderConfiguration & {
 };
 
 /**
+ * side effect: modifies the provided configuration, creates and appends a 
+ * canvas to the document body, and renders the default sprites from the 
+ * configuration if successful.
+ * 
  * Initializes the renderer with the given configuration
  * @param rawConfig the configuration for rendering the sprites
  * @returns the canvas, the context, and the processed configuration if 
