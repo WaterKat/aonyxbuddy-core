@@ -1,21 +1,10 @@
 /// <reference lib="dom" />
 
-import * as SpriteRendering from "./ui/sprite-rendering/legacy/index.js";
 import * as StreamEvents from "./core/stream-events/index.js";
 import * as TextToSpeech from "./ui/text-to-speech/index.js";
 import * as StreamEventParser from "./stream-event-parser/index.js";
 import StreamElements from "./stream-elements/index.js";
 
-/*
-import { 
-  ClientConfigExample as config 
-} from './config/iclient-config-cupidjpeg.test.js';
-*/
-/*
-import {
-  ClientConfigExample as config 
-} from './config/iclient-config-waterkattv.test.js';
-*/
 import {
   ClientConfigExample as config
 } from "./config/iclient-config-fariaorion.test.js";
@@ -30,23 +19,27 @@ import {
   EPermissionLevel,
   IUserPermissions
 } from "./core/stream-events/processing/index.js";
+import { CreateCanvas } from "./ui/sprite-rendering/canvas.js";
+import { ConvertLegacyConfiguration } from "./ui/sprite-rendering/legacy-support.js";
+import { PopulateIRenderParams } from "./ui/sprite-rendering/renderer.js";
 
 function main() {
   let skipCount = 0;
 
-  const params = {
-    mouth: {
-      value: 0
-    }
-  }
+  const mouthParam = {
+    name: "mouth",
+    value: 0
+  };
 
-  setInterval(() => {
-    console.log(params.mouth.value);
-  }, 100);
+  const aonyxbuddy = GetAonyxBuddyInstance(config, mouthParam);
 
-  const aonyxbuddy = GetAonyxBuddyInstance(config, params);
+  //!``````````````````````````````````````````````````````````````````````````
 
-  //!```````````````````````````````````````````````````````````````````````````````````````
+  const convertedConfig = ConvertLegacyConfiguration(config.spriteRendering);
+  
+  const canvas = CreateCanvas(convertedConfig.canvas);
+  document.body.appendChild(canvas);
+  PopulateIRenderParams(); // TODO
 
   //Sprite Renderer
   //  let talkingFrame = 0;
@@ -55,7 +48,7 @@ function main() {
   function Render(renderer: SpriteRendering.Types.IRenderer) {
     renderer.ClearCanvas();
     const speakingFrame = Math.floor(
-      renderer.sprites["talking"].bitmap.length * params.mouth.value
+      renderer.sprites["talking"].bitmap.length * mouthParam.mouth.value
     );
     renderer.RenderSprite("base", idleFrame);
     renderer.RenderSprite("mute", mutedFrame);
@@ -290,7 +283,7 @@ function main() {
         }
       });
 
-      
+
 
     /*
     let streamEvent = rawEvent;
@@ -335,7 +328,7 @@ function main() {
       ParseOther
     );
     */
-//    console.info("RawEvent:", streamEvent);
+    //    console.info("RawEvent:", streamEvent);
     if (event.type === "other") {
       ParseOther(event);
     } else if (event.type === "command") {

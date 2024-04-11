@@ -188,8 +188,9 @@ import {
   ClearCanvas, CreateCanvas, DrawImageBitmap
 } from "../src/ui/sprite-rendering/canvas.js";
 import {
-  IRenderParams, PopulateIRenderParams, RenderDefaults, RenderParams
+  IRenderConfiguration, PopulateIRenderParams, RenderDefaults, RenderParams
 } from "../src/ui/sprite-rendering/renderer.js";
+import { InitializeRenderer } from "../src/ui/sprite-rendering/entry.js";
 
 let impureProcessedEvent: TStreamEvent = {} as any;
 
@@ -308,6 +309,7 @@ GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
   }
 });
 
+/*
 const canvasFetch =
   document.getElementById("ab_fetch_canvas") as HTMLCanvasElement;
 const ctx = canvasFetch.getContext("2d") as CanvasRenderingContext2D;
@@ -343,6 +345,7 @@ let index = 0;
 
   requestAnimationFrame(drawLoop);
 })();
+*/
 
 const testConfig = {
   size: {
@@ -355,8 +358,7 @@ const testConfig = {
 const testCanvas = CreateCanvas(testConfig);
 const testContext = testCanvas.getContext("2d") as CanvasRenderingContext2D;
 
-const testRenderOptions: IRenderParams = {
-  ctx: testContext,
+const testRenderOptions: IRenderConfiguration = {
   renderDatas: [
     {
       name: "idle",
@@ -409,7 +411,7 @@ const testRenderOptions: IRenderParams = {
   await PopulateIRenderParams(testRenderOptions);
 
   /** side effect: changes the image values within the canvas context */
-  RenderDefaults(testRenderOptions);
+  RenderDefaults(testContext, testRenderOptions);
 
   async function renderLoop() {
     testRenderOptions.params.forEach(param => {
@@ -417,7 +419,7 @@ const testRenderOptions: IRenderParams = {
       param.value = param.value > 1 ? param.value - 1 : param.value;
     });
 
-    RenderParams(testRenderOptions);
+    RenderParams(testContext, testRenderOptions);
 
     await new Promise<void>(resolve => setTimeout(resolve, 100));
 
@@ -425,5 +427,25 @@ const testRenderOptions: IRenderParams = {
   }
 
   renderLoop();
+
+})();
+
+
+(async () => {
+  const renderingData = await InitializeRenderer(config.spriteRendering);
+
+  if (!renderingData) return;
+
+  async function RenderLoop() {
+    if (!renderingData) return;
+
+    RenderParams(renderingData.ctx, renderingData.config);
+
+    await new Promise<void>(resolve => setTimeout(resolve, 100));
+
+    requestAnimationFrame(RenderLoop);
+  }
+
+  RenderLoop();
 
 })();

@@ -2,7 +2,7 @@
  * Options for the CreateCanvas function. Contains style options for the html 
  * element.
  */
-interface ICreateCanvasOptions {
+export interface ICreateCanvasOptions {
     size: {
         x: number,
         y: number

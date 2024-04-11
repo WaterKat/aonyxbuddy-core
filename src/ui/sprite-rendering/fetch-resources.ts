@@ -72,6 +72,7 @@ export async function GetGIFAsImageBitmaps(
         const width = gif.lsd.width;
         const height = gif.lsd.height;
 
+        /** imperative pure */
         const offscreenCanvas = new OffscreenCanvas(width, height);
         const offscreenContext = offscreenCanvas
             .getContext('2d') as OffscreenCanvasRenderingContext2D
@@ -88,6 +89,7 @@ export async function GetGIFAsImageBitmaps(
                 offscreenContext.getImageData(0, 0, width, height)
             );
         }));
+        /** */
 
         const bitmapBundle = imageBitmaps.map((bitmap, index) => ({
             bitmap,

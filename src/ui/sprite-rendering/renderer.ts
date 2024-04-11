@@ -35,8 +35,7 @@ export interface IRendererParam {
 /**
  * The options for rendering the bitmaps. The context is the canvas rendering
  */
-export interface IRenderParams {
-    ctx: CanvasRenderingContext2D,
+export interface IRenderConfiguration {
     renderDatas: IRendererData[],
     params: IRendererParam[]
 }
@@ -48,18 +47,20 @@ export interface IRenderParams {
  * Uses the fetch resources packages to get bitmaps from the provided urls 
  * or base64 strings. If the fetch function fails at any point, that renderData
  * will have an empty array as it bitmaps array
- * @param params the IRenderParams object that contains the field renderDatas
+ * @param config the IRenderParams object that contains the field renderDatas
  * which is an array of IRendereData.
  */
-export async function PopulateIRenderParams(params: IRenderParams) {
-    const bitmapDatas = await Promise.all(params.renderDatas.map(renderData =>
+export async function PopulateIRenderParams(
+    config: IRenderConfiguration
+) {
+    const bitmapDatas = await Promise.all(config.renderDatas.map(renderData =>
         GetImageBitmaps({
             urls: renderData.urls ?? [],
             delay: renderData.delay
         })
     ));
     /** side effect: edits bitmap values with new bitmaps*/
-    params.renderDatas.forEach((renderData, index) => {
+    config.renderDatas.forEach((renderData, index) => {
         renderData.bitmaps = bitmapDatas[index] ?? []
     });
 }
@@ -73,7 +74,10 @@ export async function PopulateIRenderParams(params: IRenderParams) {
  * @param renderParams the options for rendering the bitmaps; the context, the
  * render data and the parameters
  */
-export function RenderParams(renderParams: IRenderParams) {
+export function RenderParams(
+    ctx: CanvasRenderingContext2D,
+    renderParams: IRenderConfiguration
+) {
     const renderBitmaps = renderParams.renderDatas.map(renderInfo => {
         const inputParam = renderParams.params.find(
             param => param.name === renderInfo.name
@@ -95,10 +99,10 @@ export function RenderParams(renderParams: IRenderParams) {
     });
 
     /** side effect: canvas is cleared then each bitmap is drawn */
-    ClearCanvas({ ctx: renderParams.ctx })
+    ClearCanvas({ ctx: ctx })
     renderBitmaps.forEach(bitmapData => {
         DrawImageBitmap({
-            ctx: renderParams.ctx,
+            ctx: ctx,
             bitmap: bitmapData.bitmapBundle.bitmap
         });
     });
@@ -114,13 +118,16 @@ export function RenderParams(renderParams: IRenderParams) {
  * @param renderParams the options for rendering the bitmaps; the context, the
  * render data and the parameters
  */
-export function RenderDefaults(renderParams: IRenderParams) {
-    const defaultRenderParams : IRendererParam[] = renderParams.renderDatas.map(
+export function RenderDefaults(
+    ctx: CanvasRenderingContext2D,
+    renderParams: IRenderConfiguration
+) {
+    const defaultRenderParams: IRendererParam[] = renderParams.renderDatas.map(
         renderData => ({
             name: renderData.name,
             value: renderData.paramInfo.default
         })
     );
 
-    RenderParams({ ...renderParams, params: defaultRenderParams });
+    RenderParams(ctx, { ...renderParams, params: defaultRenderParams });
 }
