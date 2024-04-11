@@ -346,8 +346,8 @@ let index = 0;
 
 const testConfig = {
   size: {
-    x: 256,
-    y: 256,
+    x: 400,
+    y: 600,
   },
   antialiasing: false
 }
@@ -357,22 +357,45 @@ const testContext = testCanvas.getContext("2d") as CanvasRenderingContext2D;
 
 const testRenderOptions: IRenderParams = {
   ctx: testContext,
-  renderDatas: [{
-    name: "idle",
-    paramInfo: {
-      min: 0,
-      max: 1,
-      default: 0
+  renderDatas: [
+    {
+      name: "idle",
+      paramInfo: {
+        min: 0,
+        max: 1,
+        default: 0
+      },
+      delay: 100,
+      urls: ["https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/base.gif"],
+      bitmaps: []
     },
-    delay: 100,
-    urls: ["https://i0.wp.com/dianaurban.com/wp-content/uploads/2017/07/01-cat-stretching-feet.gif?resize=500%2C399&ssl=1",
-      "https://hips.hearstapps.com/pop.h-cdn.co/assets/17/24/640x320/landscape-1497533116-not-dead.gif",
-      "https://media1.giphy.com/media/82nxC1u2BC8VU1wiZq/200w.gif?cid=6c09b952ew6pbep2vg9jzkab7aki8zfkoxh9rgkxt6udn04e&ep=v1_gifs_search&rid=200w.gif&ct=g"
-    ],
-    bitmaps: []
-  }],
+    {
+      name: "talk",
+      paramInfo: {
+        min: 0,
+        max: 1,
+        default: 0
+      },
+      delay: 100,
+      urls: [
+        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/0.png",
+        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/1.png",
+        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/2.png",
+        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/3.png",
+        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/4.png",
+        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/5.png",
+        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/6.png",
+        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/7.png",
+        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/8.png",
+        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/9.png"
+      ],
+      bitmaps: []
+    }],
   params: [{
     name: "idle",
+    value: 0
+  },{
+    name: "talk",
     value: 0
   }]
 };
@@ -385,17 +408,18 @@ const testRenderOptions: IRenderParams = {
   /** side effect: changes bitmap values within testRenderOptions */
   await PopulateIRenderParams(testRenderOptions);
 
-  console.info("testRenderOptions: ", testRenderOptions);
-
   /** side effect: changes the image values within the canvas context */
   RenderDefaults(testRenderOptions);
 
   async function renderLoop() {
-    testRenderOptions.params[0].value = 
-      Math.sin(new Date().getTime() / 1000) / 2 + 0.5;
+    testRenderOptions.params.forEach(param => {
+      param.value += 0.1;
+      param.value = param.value > 1 ? param.value - 1 : param.value;
+    });
+
     RenderParams(testRenderOptions);
 
-    await new Promise<void>(resolve => setTimeout(resolve, 10));
+    await new Promise<void>(resolve => setTimeout(resolve, 100));
 
     requestAnimationFrame(renderLoop);
   }

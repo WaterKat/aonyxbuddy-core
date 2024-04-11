@@ -43,8 +43,7 @@ export async function GetImageBitmaps(
             } else {
                 return undefined;
             }
-        })))
-        console.log("bitmaps: ", bitmaps);
+        })));
         const filtered = bitmaps
             .filter(bitmap => bitmap !== undefined)
             .flat() as IBitmapBundle[];
@@ -70,75 +69,29 @@ export async function GetGIFAsImageBitmaps(
         const gif = parseGIF(arrayBuffer);
         const frames = decompressFrames(gif, true);
 
-        const { width, height } = frames.map(frame => ({
-            width: frame.dims.left + frame.dims.width,
-            height: frame.dims.top + frame.dims.height
-        })).reduce(({ width, height }, size) => ({
-            width: Math.max(width, size.width),
-            height: Math.max(height, size.height)
-        }), { width: 0, height: 0 });
+        const width = gif.lsd.width;
+        const height = gif.lsd.height;
 
-        const frameDelays = frames.map(frame => frame.delay);
+        const offscreenCanvas = new OffscreenCanvas(width, height);
+        const offscreenContext = offscreenCanvas
+            .getContext('2d') as OffscreenCanvasRenderingContext2D
 
-        /** contain transparency, even gif compressions optimization */
-        const partialPixelDatas = frames.map(frame => {
-            const pixels: number[][][] = Array.from({ length: height },
-                () => Array.from({ length: width }, () => [0, 0, 0, 0]));
-
-            frame.pixels.forEach((pixel, index) => {
-                const x = (frame.dims.left + (index % frame.dims.width));
-                const y = (frame.dims.top + Math.floor(index / frame.dims.width));
-                const color = frame.colorTable[pixel];
-                if (frame.transparentIndex === undefined
-                    || pixel !== frame.transparentIndex) {
-                    pixels[y][x] = [...color, 255];
-                }
-            });
-
-            return pixels;
-        });
-
-        /** accumulate changes */
-        const pixels: number[][][] = Array.from({ length: height },
-            () => Array.from({ length: width }, () => [0, 0, 0, 0]));
-
-        const accumulatedPixelDatas = partialPixelDatas.map(partialPixels => {
-            return partialPixels.map((row, y) => {
-                return row.map((color, x) => {
-                    if (color[3] === 0) {
-                        return pixels[y][x];
-                    } else {
-                        pixels[y][x] = color;
-                        return color;
-                    }
-                });
-            });
-        });
-
-        /** */
-
-        const intDatas = accumulatedPixelDatas.map(frame => {
-            const pixelArray = frame.map(row => row.flat()).flat();
-            const arr = new Uint8ClampedArray(width * height * 4);
-            arr.set(pixelArray);
-            return arr;
-        });
-
-        const imageDatas = intDatas.map(pixelData => {
-            return new ImageData(
-                pixelData,
-                width,
-                height
+        const imageBitmaps = await Promise.all(frames.map(async frame => {
+            const imageData = new ImageData(
+                frame.patch, frame.dims.width, frame.dims.height
             );
-        });
-
-        const imageBitmaps = await Promise.all(
-            imageDatas.map(imageData => createImageBitmap(imageData))
-        );
+            const bitmap = await createImageBitmap(imageData);
+            offscreenContext.drawImage(
+                bitmap, frame.dims.left, frame.dims.top
+            );
+            return createImageBitmap(
+                offscreenContext.getImageData(0, 0, width, height)
+            );
+        }));
 
         const bitmapBundle = imageBitmaps.map((bitmap, index) => ({
             bitmap,
-            delay: frameDelays[index]
+            delay: frames[index].delay
         }));
 
         return bitmapBundle;
