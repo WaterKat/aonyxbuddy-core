@@ -1,10 +1,24 @@
 import { GetVoiceAudioBuffer } from "./get-voice-audio-buffer.js";
-import { 
-    GetAudioBufferSourceNode, 
-    PlayAudioBufferSourceNode, 
-    StopAudioBufferSourceNode 
+import {
+    GetAudioBufferAmplitude,
+    GetAudioBufferSourceNode,
+    PlayAudioBufferSourceNode,
+    StopAudioBufferSourceNode
 } from "./audio-buffer-source-node.js";
-import { ITextToSpeechWrapper, ITextToSpeechOptions } from "./types.js";
+import {  ITextToSpeechOptions } from "./types.js";
+
+/** 
+ * The object interface of a TextToSpeech service within aonyxbuddy, similar
+ * to a class
+ */
+export interface ITextToSpeechWrapper {
+    context: AudioContext;
+    analyzer: AnalyserNode;
+    GetAmplitude: () => number;
+    Speak: (text: string, onStop?: () => void) =>
+        Promise<AudioBufferSourceNode | undefined>;
+    Stop: () => void;
+}
 
 /**
  * Provides a wrapper for text to speech functions, specifically starting and
@@ -14,28 +28,35 @@ import { ITextToSpeechWrapper, ITextToSpeechOptions } from "./types.js";
  * @returns the wrapper for the text to speech function, used to start and stop
  * speech
  */
-export function GetTextToSpeech(options: ITextToSpeechOptions) : ITextToSpeechWrapper {
+export function GetTextToSpeech(
+    options: ITextToSpeechOptions
+): ITextToSpeechWrapper {
     const context = options.context ?? new AudioContext();
     const analyzer = context.createAnalyser();
-    const sourceNodes : AudioBufferSourceNode[] = [];
+    const sourceNodes: AudioBufferSourceNode[] = [];
 
     analyzer.connect(context.destination);
-    
-    const wrapper : ITextToSpeechWrapper= {
+
+    const wrapper: ITextToSpeechWrapper = {
         context: context,
         analyzer: analyzer,
+        GetAmplitude: () => GetAudioBufferAmplitude(analyzer),
         Speak: async (text: string, onStop?: () => void) => {
             //* If Empty text then just run callback, ignore the rest
             if (text.trim().length < 1) {
-                if (onStop){
+                if (onStop) {
                     onStop();
                 }
                 return;
             }
 
-            const audioBuffer = await GetVoiceAudioBuffer(text, options.voice, context);
+            const audioBuffer = await GetVoiceAudioBuffer(
+                text, options.voice, context
+            );
             if (!audioBuffer) return;
-            const audioBufferSourceNode = GetAudioBufferSourceNode(audioBuffer, context, analyzer);
+            const audioBufferSourceNode = GetAudioBufferSourceNode(
+                audioBuffer, context, analyzer
+            );
             sourceNodes.push(audioBufferSourceNode);
             PlayAudioBufferSourceNode(context, audioBufferSourceNode, onStop);
             return audioBufferSourceNode;
@@ -48,6 +69,6 @@ export function GetTextToSpeech(options: ITextToSpeechOptions) : ITextToSpeechWr
             }
         }
     };
-    
+
     return wrapper;
 }

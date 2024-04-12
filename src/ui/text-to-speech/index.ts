@@ -1,6 +1,4 @@
-export * as Types from './types.js';
-export * as Audio from './audio-buffer-source-node.js';
-
-import { GetTextToSpeech } from './tts.js';
-export { GetTextToSpeech } from './tts.js';
-export default GetTextToSpeech;
+export * from "./audio-buffer-source-node.js";
+export * from "./get-voice-audio-buffer.js";
+export * from "./tts.js";
+export * from "./types.js";

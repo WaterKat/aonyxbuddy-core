@@ -160,13 +160,6 @@ import {
   StatefulProcessIgnoreRaid,
   IStatefulIgnoreRaidArgs
 } from "../src/core/stream-events/index.js";
-import {
-  CreateCanvas
-} from "../src/ui/sprite-rendering/canvas.js";
-import {
-  IRenderConfiguration, PopulateIRenderParams, RenderDefaults, RenderParams
-} from "../src/ui/sprite-rendering/renderer.js";
-import { InitializeRenderer } from "../src/ui/sprite-rendering/entry.js";
 
 let impureProcessedEvent: TStreamEvent = {} as any;
 
@@ -285,7 +278,29 @@ GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
   }
 });
 
-
+/**
+ * Sprite Rendering Example
+ * 
+ * This example demonstrates how to render sprites on a canvas using the
+ * sprite-rendering module.
+ * 
+ * The sprite-rendering module is a wrapper around the canvas rendering API
+ * that simplifies the process of rendering sprites on a canvas. The user
+ * provides a configuration with urls that represent the sprites to be rendered
+ * and a delta between the provided min and max, and the module will render the
+ * sprite that is closest to the provided delta.
+ * 
+ * Each sprite array has it's own configuration, and the user can provide
+ * individual deltas for each sprite array. The module will render the sprite
+ * that is closest to the provided delta for each sprite array, in order from
+ * the first sprite array to the last. 
+ * * Note: this means that the last sprite will be rendered last, and will be 
+ * * on top of the other sprites.
+ */
+import {
+  InitializeRenderer,
+  RenderParams
+} from "../src/ui/sprite-rendering/index.js";
 
 (async () => {
   const renderingData = await InitializeRenderer(config.spriteRendering);

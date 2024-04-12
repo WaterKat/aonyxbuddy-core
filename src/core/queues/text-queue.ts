@@ -1,5 +1,5 @@
 import { GetTextToSpeech, Audio } from "../../ui/text-to-speech/index";
-import { ITextToSpeechWrapper } from "../../ui/text-to-speech/types.js";
+import { ITextToSpeechWrapper } from "../../ui/text-to-speech/index.js";
 
 type Speech = ReturnType<typeof GetTextToSpeech>;
 
