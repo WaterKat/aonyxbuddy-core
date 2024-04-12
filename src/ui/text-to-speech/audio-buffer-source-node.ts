@@ -12,16 +12,11 @@
  */
 export function GetAudioBufferSourceNode(
     audioBuffer: AudioBuffer,
-    audioContext?: AudioContext,
-    audioAnalyzerNode?: AnalyserNode
+    audioContext: AudioContext,
+    audioAnalyzerNode: AnalyserNode
 ): AudioBufferSourceNode {
-    const context = audioContext ?? new AudioContext();
-    const analyzer = audioAnalyzerNode ?? (() => {
-        const node = context.createAnalyser();
-        node.connect(context.destination);
-        return node;
-    })();
-
+    const context = audioContext;
+    const analyzer = audioAnalyzerNode;
     const audioBufferSourceNode = context.createBufferSource();
     audioBufferSourceNode.buffer = audioBuffer;
     audioBufferSourceNode.connect(analyzer);
@@ -86,7 +81,10 @@ export function GetAudioBufferAmplitude(
     const floatData = Array.from(byteData).map(n => (n - 128) / 128);
 
     // Calculate Peak Amplitude
-    const peak = Math.max(...floatData.map(Math.abs));
+    const peak = floatData.reduce((a, b) => { 
+        const a_abs = Math.abs(a);
+        return a_abs > b ? a_abs : b 
+    }, 0);
 
     return peak;
 }

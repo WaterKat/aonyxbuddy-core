@@ -1,46 +1,54 @@
-import { StreamElementsVoiceID } from "./types.js";
-//import Log from "../../log.js";
+/** 
+ * A string type that is a tested valid voice id for use with stream elements
+ *  text to speech 
+ */
+export type StreamElementsVoiceID =
+    'Salli' |
+    'Matthew' |
+    'Kimberly' |
+    'Kendra' |
+    'Justin' |
+    'Joey' |
+    'Joanna' |
+    'Ivy' |
+    'Emma' |
+    'Brian' |
+    'Amy';
+
+const DefaultStreamElementsVoiceID: StreamElementsVoiceID = "Brian";
 
 /**
- * 
+ * Will generate an audio buffer that speaks the text given using the voice
+ * model specified by the voiceID. The audio buffer will be normalized to the
+ * loudest point in the buffer.
  * @param text the text to be be generated as speech
- * @param voiceID the voice identifier for stream elements, will change the
- * voice model used to speak the text
- * @param audioContext optional, assigning an audio context here prevents the
- * creation of a new audio context (try to provide yours)
- * @returns the audio buffer that speaks the text given, or undefined if the
- * request failed
+ * @param voiceID the voice identifier for stream elements
+ * @param audioContext the audio context to use for decoding the audio buffer
+ * @returns a normalized audio buffer that contains the speech of the text
+ * provided. If the request fails, undefined will be returned instead.
  */
 export async function GetVoiceAudioBuffer(
-    text: string, voiceID: StreamElementsVoiceID, audioContext?: AudioContext
+    audioContext: AudioContext,
+    text: string,
+    voiceID?: StreamElementsVoiceID
 ): Promise<AudioBuffer | undefined> {
-    // if the text is empty, don't bother
-    if (!text || text.length < 1) {
-        Log(
-            'warn',
-            'empty text provided to text to speech buffer request, ignoring...'
-        );
-        return;
-    }
+    if (!text || text.length < 1) return undefined;
 
-    // the uri to the stream elements api for text to speech generation
-    const url: string =
+    const uri: string =
         `https://api.streamelements.com/kappa/v2/speech` +
-        `?voice=${voiceID}&text=${encodeURIComponent(text.trim())}`;
+        `?voice=${voiceID ?? DefaultStreamElementsVoiceID}` +
+        `&text=${encodeURIComponent(text.trim())}`;
 
     try {
-        // fetch the resources from the api and extract the audio buffer
-        const response: Response = await fetch(url);
+        const response: Response = await fetch(uri);
         const arrayBuffer: ArrayBuffer = await response.arrayBuffer();
-        const audioBuffer: AudioBuffer =
-            await (audioContext ?? new AudioContext())
-                .decodeAudioData(arrayBuffer);
+        const audioBuffer: AudioBuffer = await audioContext
+            .decodeAudioData(arrayBuffer);
         const normalizedBuffer: AudioBuffer =
             NormalizeAudioBuffer(audioBuffer, audioContext);
         return normalizedBuffer;
     } catch (e) {
-        // on failure return undefined but log the error
-        Log('warn', `text to speech buffer request failed for ${text}: `, e);
+        console.warn(`text to speech buffer request failed for ${text}: `);
         return undefined;
     }
 }
@@ -55,15 +63,15 @@ export async function GetVoiceAudioBuffer(
  * buffer
  */
 export function NormalizeAudioBuffer(
-    audioBuffer: AudioBuffer, audioContext?: AudioContext
+    audioBuffer: AudioBuffer, audioContext: AudioContext
 ): AudioBuffer {
-    const numberOfChannels = audioBuffer.numberOfChannels;
-    const newAudioBuffer = (audioContext ?? new AudioContext())
-        .createBuffer(
-            numberOfChannels, audioBuffer.length, audioBuffer.sampleRate
-        );
+    const newAudioBuffer = audioContext.createBuffer(
+        audioBuffer.numberOfChannels,
+        audioBuffer.length,
+        audioBuffer.sampleRate
+    );
 
-    for (let channel = 0; channel < numberOfChannels; channel++) {
+    for (let channel = 0; channel < audioBuffer.numberOfChannels; channel++) {
         const channelData = audioBuffer.getChannelData(channel);
         let maxVal = 0;
 
