@@ -2,27 +2,6 @@ import {
   EStreamEventType, TStreamEvent
 } from "../src/core/stream-events/types.js";
 
-/*
-if (typeof window.EStreamEventType === "undefined") {
-    window.EStreamEventType = {
-        TS_TYPE: "al-aonyxbuddy-data",
-        FOLLOW: "follow",
-        SUBSCRIBER: "subscriber",
-        GIFT_SINGLE: "gift-single",
-        GIFT_BULK_SENT: "gift-bulk-sent",
-        GIFT_BULK_RECEIVED: "gift-bulk-received",
-        RAID: "raid",
-        CHEER: "cheer",
-        CHAT: "chat",
-        CHAT_FIRST: "chat-first",
-        COMMAND: "command",
-        REDEEM: "redeem",
-        IGNORE: "ignore",
-        OTHER: "other",
-    };
-}
-*/
-
 function SendEvent(event: TStreamEvent) {
   const newEvent = new CustomEvent(EStreamEventType.TS_TYPE, {
     detail: event,
@@ -182,10 +161,7 @@ import {
   IStatefulIgnoreRaidArgs
 } from "../src/core/stream-events/index.js";
 import {
-  GetImageBitmaps
-} from "../src/ui/sprite-rendering/fetch-resources.js";
-import {
-  ClearCanvas, CreateCanvas, DrawImageBitmap
+  CreateCanvas
 } from "../src/ui/sprite-rendering/canvas.js";
 import {
   IRenderConfiguration, PopulateIRenderParams, RenderDefaults, RenderParams
@@ -309,126 +285,6 @@ GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
   }
 });
 
-/*
-const canvasFetch =
-  document.getElementById("ab_fetch_canvas") as HTMLCanvasElement;
-const ctx = canvasFetch.getContext("2d") as CanvasRenderingContext2D;
-const imageURL = [
-  "https://www.adorama.com/alc/wp-content/uploads/2021/05/bird-wings-flying-" +
-  "feature.gif",
-  "https://i0.wp.com/www.printmag.com/wp-content/uploads/2021/02/4cbe8d_f1ed" +
-  "2800a49649848102c68fc5a66e53mv2.gif?fit=476%2C280&ssl=1",
-  "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Rotating_earth_" +
-  "%28large%29.gif/200px-Rotating_earth_%28large%29.gif",
-];
-const images = GetImageBitmaps({ urls: imageURL, delay: 100 });
-
-let index = 0;
-(async function drawLoop() {
-  const awaitedImages = await images;
-  if (!awaitedImages) return;
-
-  ClearCanvas({
-    ctx: ctx,
-  })
-  DrawImageBitmap({
-    ctx: ctx,
-    bitmap: awaitedImages[index].bitmap
-  });
-
-  index += 1;
-  index %= awaitedImages.length;
-
-  await new Promise<void>(
-    resolve => setTimeout(resolve, awaitedImages[index].delay)
-  );
-
-  requestAnimationFrame(drawLoop);
-})();
-*/
-
-const testConfig = {
-  size: {
-    x: 400,
-    y: 600,
-  },
-  antialiasing: false
-}
-
-const testCanvas = CreateCanvas(testConfig);
-const testContext = testCanvas.getContext("2d") as CanvasRenderingContext2D;
-
-const testRenderOptions: IRenderConfiguration = {
-  renderDatas: [
-    {
-      name: "idle",
-      paramInfo: {
-        min: 0,
-        max: 1,
-        default: 0
-      },
-      delay: 100,
-      urls: ["https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/base.gif"],
-      bitmaps: []
-    },
-    {
-      name: "talk",
-      paramInfo: {
-        min: 0,
-        max: 1,
-        default: 0
-      },
-      delay: 100,
-      urls: [
-        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/0.png",
-        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/1.png",
-        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/2.png",
-        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/3.png",
-        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/4.png",
-        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/5.png",
-        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/6.png",
-        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/7.png",
-        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/8.png",
-        "https://www.aonyxlimited.com/resources/aonyxbuddy/sprites/chuck/mouth/9.png"
-      ],
-      bitmaps: []
-    }],
-  params: [{
-    name: "idle",
-    value: 0
-  },{
-    name: "talk",
-    value: 0
-  }]
-};
-
-
-
-(async function secondFunc() {
-  document.body.appendChild(testCanvas);
-
-  /** side effect: changes bitmap values within testRenderOptions */
-  await PopulateIRenderParams(testRenderOptions);
-
-  /** side effect: changes the image values within the canvas context */
-  RenderDefaults(testContext, testRenderOptions);
-
-  async function renderLoop() {
-    testRenderOptions.params.forEach(param => {
-      param.value += 0.1;
-      param.value = param.value > 1 ? param.value - 1 : param.value;
-    });
-
-    RenderParams(testContext, testRenderOptions);
-
-    await new Promise<void>(resolve => setTimeout(resolve, 100));
-
-    requestAnimationFrame(renderLoop);
-  }
-
-  renderLoop();
-
-})();
 
 
 (async () => {
