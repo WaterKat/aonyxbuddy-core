@@ -6,7 +6,7 @@ import {
     StopAudioBufferSourceNode
 } from "./audio-buffer-source-node.js";
 
-import { 
+import {
     StreamElementsVoiceID
 } from "./get-voice-audio-buffer.js";
 
@@ -60,7 +60,7 @@ export function CreateTextToSpeech(
             }
 
             const audioBuffer = await GetVoiceAudioBuffer(
-                context, text, options.voice, 
+                context, text, options.voice,
             );
             if (!audioBuffer) return;
             const audioBufferSourceNode = GetAudioBufferSourceNode(

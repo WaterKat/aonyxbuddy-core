@@ -1,7 +1,8 @@
-import { GetTextToSpeech, Audio } from "../../ui/text-to-speech/index";
-import { ITextToSpeechWrapper } from "../../ui/text-to-speech/index.js";
+import {
+  CreateTextToSpeech, ITextToSpeechWrapper, GetAudioBufferAmplitude
+} from "../../ui/text-to-speech/index.js";
 
-type Speech = ReturnType<typeof GetTextToSpeech>;
+type Speech = ReturnType<typeof CreateTextToSpeech>;
 
 type SpeechTaskState =
   | "waiting"
@@ -15,26 +16,28 @@ export interface IVariableContainer {
   value: number
 }
 
-export function GetTextQueue(tts: ITextToSpeechWrapper, variableWrapper?: IVariableContainer) {
+export function GetTextQueue(
+  tts: ITextToSpeechWrapper, variableWrapper?: IVariableContainer
+) {
   const TIMEOUT_BETWEEN_TASKS = 0.25;
   const VARIABLE_DELAY = 1000 / 24;
 
-  let enabled : boolean = true;
-  let taskQueue : Array<ISpeechTask> = [];
+  let enabled: boolean = true;
+  let taskQueue: Array<ISpeechTask> = [];
   let running: boolean = false;
-  let interval : ReturnType<typeof setInterval> = setInterval(()=>{}, Infinity);
+  let interval: ReturnType<typeof setInterval> = setInterval(() => { }, Infinity);
 
-  function Stop () { 
-    enabled = false; 
+  function Stop() {
+    enabled = false;
     taskQueue = [];
     running = false;
     if (interval) clearInterval(interval);
   }
 
   function Append(text: string) {
-    taskQueue.push({text});
+    taskQueue.push({ text });
     TryRunningQueue();
-  }; 
+  };
 
   function TryRunningQueue() {
     if (running) return;
@@ -42,16 +45,16 @@ export function GetTextQueue(tts: ITextToSpeechWrapper, variableWrapper?: IVaria
     if (!activeTask) return;
     running = true;
     tts.Speak(activeTask.text, () => { running = false; });
-      if (variableWrapper) {
+    if (variableWrapper) {
       interval = setInterval(() => {
         if (!enabled || !running) {
           clearInterval(interval);
-          
+
           TryRunningQueue();
           return;
         }
-        variableWrapper.value = Audio.GetAudioBufferAmplitude(tts.analyzer);
-      }, VARIABLE_DELAY );
+        variableWrapper.value = GetAudioBufferAmplitude(tts.analyzer);
+      }, VARIABLE_DELAY);
     }
   }
 
@@ -71,7 +74,7 @@ export function GetTextQueue(tts: ITextToSpeechWrapper, variableWrapper?: IVaria
       running = false;
       tts.Stop();
     }
-    while (currentCount > 0){
+    while (currentCount > 0) {
       const skippedTask = taskQueue.pop();
       if (skippedTask) {
         currentCount -= 1;
@@ -85,7 +88,7 @@ export function GetTextQueue(tts: ITextToSpeechWrapper, variableWrapper?: IVaria
   return {
     Stop,
     Append,
-    IsRunning, 
+    IsRunning,
     Skip,
     taskQueue
   }

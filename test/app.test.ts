@@ -318,5 +318,4 @@ import {
   }
 
   RenderLoop();
-
 })();
