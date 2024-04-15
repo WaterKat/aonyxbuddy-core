@@ -3,11 +3,14 @@ import { Types } from "../../core/stream-events/index.js";
 import EventTranslator from "./event-translator.js";
 //^?
 
-export default function ListenForStreamElementsEvents(
+export function ListenForStreamElementsEvents(
     callback: (event: Types.TStreamEvent) => void
 ) {
     if (!window) {
-        return new Error("Window not found, this can only run in a browser");
+        console.warn(
+            new Error("Window not found, this can only run in a browser")
+        );
+        return undefined;
     }
 
     function OnEvent(_eventData: any) {
