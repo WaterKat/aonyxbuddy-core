@@ -35,7 +35,7 @@ import {
   IUserPermissions
 } from "./core/stream-events/processing/index.js";
 
-async function main() {
+async function CreateAonyxBuddy() {
   /**
    * AudioQueue initialization
    * Renderer initialization
@@ -128,7 +128,13 @@ async function main() {
 
   audioQueue.PlayQueue();
 
-  return;
+  return {
+    Stop: () => {
+      active = false;
+      clearInterval(paramUpdateLoop);
+      audioQueue.StopAndClearQueue();
+    }
+  }
 
   //!``````````````````````````````````````````````````````````````````````````
 
@@ -447,6 +453,6 @@ async function main() {
 document.body.style.margin = "0 0";
 document.body.style.padding = "0 0";
 
-main();
+CreateAonyxBuddy();
 
 //# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js
