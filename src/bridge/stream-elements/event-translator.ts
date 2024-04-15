@@ -1,12 +1,12 @@
-import { Types } from '../core/stream-events/index.js';
-import { EStreamEventType } from '../core/stream-events/types.js';
+import { Types } from "../../core/stream-events/index.js";
+import { EStreamEventType } from "../../core/stream-events/types.js";
 
-import * as SETypes from './types.js';
+import * as SETypes from "./types.js";
 
 export default function TranslateStreamElementsEventToAonyxEvent(_event: any): Types.TStreamEvent | undefined {
     function messageFromString(_message: string): Types.TChat {
         return {
-            text: _message ?? '',
+            text: _message ?? "",
             emotes: []
         }
     }
@@ -25,9 +25,9 @@ export default function TranslateStreamElementsEventToAonyxEvent(_event: any): T
             permissions : {
                 chatter : true,
                 follower : false,
-                subscriber : seMessage.data.tags.subscriber === '1',
-                vip : seMessage.data.tags.vip === '1',
-                moderator : seMessage.data.tags.mod === '1',
+                subscriber : seMessage.data.tags.subscriber === "1",
+                vip : seMessage.data.tags.vip === "1",
+                moderator : seMessage.data.tags.mod === "1",
                 streamer : seMessage.data.channel === seMessage.data.nick
             }
         }
@@ -36,9 +36,9 @@ export default function TranslateStreamElementsEventToAonyxEvent(_event: any): T
 
     function translateOther(_event: any): Types.TStreamEvent | undefined {
         //Gift Parsing
-        if (_event.type === 'subscriber') {
+        if (_event.type === "subscriber") {
             if (_event.bulkGifted || _event.isCommunityGift || _event.gifted) {
-                _event.type = 'gift';
+                _event.type = "gift";
             }
         }
 
@@ -49,13 +49,13 @@ export default function TranslateStreamElementsEventToAonyxEvent(_event: any): T
             username: seEvent.name,
         }
         switch (seEvent.type) {
-            case 'follower':
+            case "follower":
                 aonyxEvent = {
                     ...base,
                     type: EStreamEventType.FOLLOW
                 };
                 break;
-            case 'subscriber':
+            case "subscriber":
                 aonyxEvent = {
                     ...base,
                     type: EStreamEventType.SUBSCRIBER,
@@ -63,7 +63,7 @@ export default function TranslateStreamElementsEventToAonyxEvent(_event: any): T
                     message: messageFromString(seEvent.message)
                 };
                 break;
-            case 'gift':
+            case "gift":
                 if (+seEvent.bulkGifted > 0) {
                     //bulk-sent
                     aonyxEvent = {
@@ -90,14 +90,14 @@ export default function TranslateStreamElementsEventToAonyxEvent(_event: any): T
                     }
                 }
                 break;
-            case 'raid':
+            case "raid":
                 aonyxEvent = {
                     ...base,
                     type: EStreamEventType.RAID,
                     count: +seEvent.amount || 0
                 }
                 break;
-            case 'cheer':
+            case "cheer":
                 aonyxEvent = {
                     ...base,
                     type: EStreamEventType.CHEER,
@@ -105,7 +105,7 @@ export default function TranslateStreamElementsEventToAonyxEvent(_event: any): T
                     message: messageFromString(seEvent.message)
                 }
                 break;
-            //case 'chat':
+            //case "chat":
             //break;
             default:
                 return undefined
@@ -115,7 +115,7 @@ export default function TranslateStreamElementsEventToAonyxEvent(_event: any): T
         return aonyxEvent;
     }
 
-    if (_event.type !== 'message') {
+    if (_event.type !== "message") {
         return translateOther(_event);
     } else {
         return translateMessage(_event);
