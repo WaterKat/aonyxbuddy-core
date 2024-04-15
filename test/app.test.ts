@@ -297,20 +297,38 @@ GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
  * * Note: this means that the last sprite will be rendered last, and will be 
  * * on top of the other sprites.
  */
+
+/*
 import {
   InitializeRenderer,
   RenderParams
 } from "../src/ui/sprite-rendering/index.js";
 
-(async () => {
-  const renderingData = await InitializeRenderer(config.spriteRendering);
+const spriteRendering = (async () => {
+  let loopEnabled = true;
 
-  if (!renderingData) return;
+  const renderingData = {
+    populatedConfig: await InitializeRenderer(config.spriteRendering),
+    Stop: () => loopEnabled = false
+  };
+
+  if (!renderingData.populatedConfig) return;
 
   async function RenderLoop() {
-    if (!renderingData) return;
+    if (!renderingData.populatedConfig) return;
+    if (!loopEnabled) return;
 
-    RenderParams(renderingData.ctx, renderingData.config);
+    renderingData.populatedConfig.config.params.map(
+      (params, index) => {
+        params.value += 0.1;
+        if (params.value > 1)
+          params.value -= 1;
+      });
+
+    RenderParams(
+      renderingData.populatedConfig.ctx,
+      renderingData.populatedConfig.config
+    );
 
     await new Promise<void>(resolve => setTimeout(resolve, 100));
 
@@ -318,4 +336,13 @@ import {
   }
 
   RenderLoop();
+
+  return renderingData;
 })();
+
+setTimeout(async () => {
+  const renderingData = await spriteRendering;
+  if (!renderingData) return;
+  renderingData.Stop();
+}, 5000);
+*/

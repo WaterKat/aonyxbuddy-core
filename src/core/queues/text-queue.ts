@@ -53,7 +53,7 @@ export function GetTextQueue(
           TryRunningQueue();
           return;
         }
-        variableWrapper.value = GetAudioBufferAmplitude(tts.analyzer);
+//        variableWrapper.value = GetAudioBufferAmplitude(tts.analyzer);
       }, VARIABLE_DELAY);
     }
   }

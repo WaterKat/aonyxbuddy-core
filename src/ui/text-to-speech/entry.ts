@@ -1,4 +1,4 @@
-import { GetVoiceAudioBuffer } from "./get-voice-audio-buffer.js";
+import { GetStreamElementsVoiceAudioBuffer } from "../audio/fetch-buffer.js";
 import {
     GetAudioBufferAmplitude,
     GetAudioBufferSourceNode,
@@ -7,8 +7,9 @@ import {
 } from "./audio-buffer-source-node.js";
 
 import {
-    StreamElementsVoiceID
-} from "./get-voice-audio-buffer.js";
+    StreamElementsVoiceID,
+    DefaultStreamElementsVoiceID
+} from "../audio/fetch-buffer.js";
 
 /** an options interface for use with TextToSpeech */
 export interface ITextToSpeechOptions {
@@ -20,13 +21,14 @@ export interface ITextToSpeechOptions {
  * The object interface of a TextToSpeech service within aonyxbuddy, similar
  * to a class
  */
-export interface ITextToSpeechWrapper {
-    context: AudioContext;
-    analyzer: AnalyserNode;
-    GetAmplitude: () => number;
+export type ITextToSpeechWrapper = {
+    context: AudioContext,
+    analyzer: AnalyserNode,
+    configuration: ITextToSpeechOptions,
+    GetAmplitude: () => number,
     Speak: (text: string, onStop?: () => void) =>
-        Promise<AudioBufferSourceNode | undefined>;
-    Stop: () => void;
+        Promise<AudioBufferSourceNode | undefined>,
+    Stop: () => void
 }
 
 /**
@@ -49,6 +51,10 @@ export function CreateTextToSpeech(
     const wrapper: ITextToSpeechWrapper = {
         context: context,
         analyzer: analyzer,
+        configuration: {
+            voice: options.voice ?? DefaultStreamElementsVoiceID,
+            context: context
+        },
         GetAmplitude: () => GetAudioBufferAmplitude(analyzer),
         Speak: async (text: string, onStop?: () => void) => {
             //* If Empty text then just run callback, ignore the rest
@@ -56,10 +62,10 @@ export function CreateTextToSpeech(
                 if (onStop) {
                     onStop();
                 }
-                return;
+                return undefined;
             }
 
-            const audioBuffer = await GetVoiceAudioBuffer(
+            const audioBuffer = await GetStreamElementsVoiceAudioBuffer(
                 context, text, options.voice,
             );
             if (!audioBuffer) return;

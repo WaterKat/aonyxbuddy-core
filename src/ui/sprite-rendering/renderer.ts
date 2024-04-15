@@ -99,7 +99,7 @@ export function RenderParams(
     });
 
     /** side effect: canvas is cleared then each bitmap is drawn */
-    ClearCanvas({ ctx: ctx })
+    ClearCanvas(ctx)
     renderBitmaps.forEach(bitmapData => {
         DrawImageBitmap({
             ctx: ctx,

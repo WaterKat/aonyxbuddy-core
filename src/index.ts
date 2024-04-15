@@ -18,7 +18,7 @@ export function GetAonyxBuddyInstance(
   const textqueue = GetTextQueue(tts, speechAmplitudeVariable);
 
   return {
-    TextToSpeech: tts,
+   // TextToSpeech: tts,
     TextQueue: textqueue,
   };
 }

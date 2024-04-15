@@ -76,8 +76,7 @@ export function DrawImageBitmap(options: IDrawImageBitmapOptions): void {
 /**
  * Options used for the clear canvas function
  */
-interface IClearCanvasOptions {
-    ctx: CanvasRenderingContext2D,
+type IClearCanvasOptions = {
     dimensions?: {
         x?: number,
         y?: number,
@@ -87,15 +86,20 @@ interface IClearCanvasOptions {
 }
 
 /**
- * @param options options used for the clear canvas options. includes dimensions
- * of portion to be cleared.
+ * Clears the canvas with the given context and options
+ * @param ctx the context of the canvas to be cleared
+ * @param options the options for clearing the canvas
  */
-export function ClearCanvas(options: IClearCanvasOptions): void {
-    const dimensions = options.dimensions ?? {};
+export function ClearCanvas(
+    ctx: CanvasRenderingContext2D,
+    options?: IClearCanvasOptions
+): void {
+    const dimensions = options?.dimensions ?? {};
     const x: number = dimensions.x ?? 0;
     const y: number = dimensions.y ?? 0;
-    const w: number = dimensions.w ?? options.ctx.canvas.clientWidth;
-    const h: number = dimensions.h ?? options.ctx.canvas.clientHeight;
+    const w: number = dimensions.w ?? ctx.canvas.clientWidth;
+    const h: number = dimensions.h ?? ctx.canvas.clientHeight;
+
     /** side effect: canvas is cleared */
-    options.ctx.clearRect(x, y, w, h);
+    ctx.clearRect(x, y, w, h);
 }

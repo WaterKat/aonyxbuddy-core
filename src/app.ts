@@ -1,7 +1,22 @@
 /// <reference lib="dom" />
 
+import {
+  CreateCanvas,
+  ConvertLegacyConfiguration,
+  PopulateIRenderParams,
+  RenderDefaults,
+  InitializeRenderer,
+  RenderParams,
+  ClearCanvas
+} from "./ui/sprite-rendering/index.js";
+
+import {
+  CreateAudioQueue, GetAudioFromURL, GetStreamElementsVoiceAudioBuffer
+} from "./ui/audio/index.js";
+
+// * old imports after this point
+
 import * as StreamEvents from "./core/stream-events/index.js";
-import * as TextToSpeech from "./ui/text-to-speech/index.js";
 import * as StreamEventParser from "./stream-event-parser/index.js";
 import StreamElements from "./stream-elements/index.js";
 
@@ -19,32 +34,111 @@ import {
   EPermissionLevel,
   IUserPermissions
 } from "./core/stream-events/processing/index.js";
-import { CreateCanvas } from "./ui/sprite-rendering/canvas.js";
-import { ConvertLegacyConfiguration } from "./ui/sprite-rendering/legacy-support.js";
-import { PopulateIRenderParams } from "./ui/sprite-rendering/renderer.js";
 
-function main() {
-  let skipCount = 0;
+async function main() {
+  /**
+   * AudioQueue initialization
+   * Renderer initialization
+   */
+  const { audioQueue, renderer } = {
+    audioQueue: await CreateAudioQueue({ fftSize: 32 }),
+    renderer: await InitializeRenderer(config.spriteRendering)
+  }
 
-  const mouthParam = {
-    name: "mouth",
-    value: 0
-  };
+  if (!renderer || !audioQueue) {
+    console.error("Failed to initialize renderer or audioQueue. Exiting.");
+    return;
+  }
 
-  const aonyxbuddy = GetAonyxBuddyInstance(config, mouthParam);
+  const talkingParam = renderer.config.params.find(
+    param => param.name === "talking"
+  );
+
+  const muteParam = renderer.config.params.find(
+    param => param.name === "mute"
+  );
+
+  /**
+   * The rendering loops for aonyxbuddy
+   */
+  let active = true;
+
+  let mouthMax = 0;
+  let freqMax: number[] = [0];
+  const paramUpdateLoop = setInterval(() => {
+    if (!talkingParam || !active) {
+      clearInterval(paramUpdateLoop);
+      return;
+    }
+    /** older simpler version */
+    //    talkingParam.value = audioQueue.GetAmplitude();
+
+    /** newer version gives better vowel/cosonant visuals */
+    const frequencies = audioQueue.GetFrequencyData();
+    if (frequencies.length > freqMax.length) {
+      freqMax = new Array(frequencies.length).fill(0);
+    }
+    freqMax = frequencies.map((f, i) => Math.max(f, freqMax[i]));
+    frequencies.forEach((f, i) => f /= freqMax[i]);
+
+    const amplitude = Math.abs(frequencies.reduce((a, b, index) => {
+      const weight = index < frequencies.length / 4 ? 1 : -1;
+      return a + (b * weight);
+    }, 0));
+
+    mouthMax = Math.max(amplitude, mouthMax);
+
+    /** assign param */
+    talkingParam.value = amplitude / mouthMax;
+
+  }, 1000 / config.spriteRendering.defaultFPS);
+
+  function RenderLoop() {
+    if (!renderer || !active) {
+      return;
+    }
+    RenderParams(renderer.ctx, renderer.config);
+
+    if (config.spriteRendering.defaultFPS > 0) {
+      setTimeout(() => {
+        requestAnimationFrame(RenderLoop);
+      }, 1000 / config.spriteRendering.defaultFPS);
+    } else {
+      requestAnimationFrame(RenderLoop);
+    }
+  }
+  RenderLoop();
+
+  audioQueue.QueueAudioBuffer(
+    GetAudioFromURL(audioQueue.context, "./brian.mp3")
+  );
+  audioQueue.QueueAudioBuffer(
+    GetAudioFromURL(audioQueue.context, "./astateoftrance.mp3")
+  );
+
+
+  /* 
+    audioQueue.QueueAudioBuffer(
+      GetStreamElementsVoiceAudioBuffer(
+        audioQueue.context,
+        "the quick brown fox jumps over the lazy dog, he Uint8Array typed array represents an array of 8-bit unsigned integers. The contents are initialized to 0 . Once established, you can reference elements in the array using the object's methods, or using standard array index syntax (that is, using bracket notation).Sep 6, 2023",
+        config.tts.voice
+      ));
+  */
+
+  audioQueue.PlayQueue();
+
+  return;
 
   //!``````````````````````````````````````````````````````````````````````````
 
-  const convertedConfig = ConvertLegacyConfiguration(config.spriteRendering);
-  
-  const canvas = CreateCanvas(convertedConfig.canvas);
-  document.body.appendChild(canvas);
-  PopulateIRenderParams(); // TODO
+  const aonyxbuddy = GetAonyxBuddyInstance(config);
 
-  //Sprite Renderer
-  //  let talkingFrame = 0;
+  let skipCount = 0;
+
+  /*
   let idleFrame = 0;
-
+  
   function Render(renderer: SpriteRendering.Types.IRenderer) {
     renderer.ClearCanvas();
     const speakingFrame = Math.floor(
@@ -56,7 +150,7 @@ function main() {
       Render(renderer);
     });
   }
-
+  
   function FlipBaseImage(renderer: SpriteRendering.Types.IRenderer) {
     idleFrame++;
     idleFrame %= renderer.sprites["base"].bitmap.length;
@@ -64,7 +158,7 @@ function main() {
       FlipBaseImage(renderer);
     }, renderer.sprites["base"].delay[idleFrame]);
   }
-
+  
   const renderer = SpriteRendering.default(config.spriteRendering).then(
     (renderer) => {
       if (renderer instanceof Error) throw renderer;
@@ -72,19 +166,20 @@ function main() {
       if (renderer.sprites["base"].bitmap.length > 0) FlipBaseImage(renderer);
     }
   );
+  */
 
   let mutedFrame = 0;
   /*
     //* Mute
     let isMuted = false;
     let mutedFrame = 0;
-
+  
     function SetMuted() {
       isMuted = true;
       mutedFrame = 1;
       SkipAllSpeech();
     }
-
+  
     function SetUnmuted() {
       isMuted = false;
       mutedFrame = 0;
