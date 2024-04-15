@@ -7,8 +7,8 @@ export function GetAonyxBuddyStreamEventListener(callback: (
         return new Error('Window not found, this can only run in a browser');
     }
 
-    window.addEventListener(EStreamEventType.TS_TYPE,
-        function (_eventData: any) {
+    function OnEvent(_eventData: any) {
+        {
             //console.log('Stream Event Listener', _eventData);
             if (!_eventData || !_eventData.detail) return;
 
@@ -18,7 +18,13 @@ export function GetAonyxBuddyStreamEventListener(callback: (
 
             callback(_eventData.detail);
         }
-    );
-}
 
-export default GetAonyxBuddyStreamEventListener;
+        window.addEventListener(EStreamEventType.TS_TYPE, OnEvent);
+
+        return {
+            RemoveListener: () =>
+                window.removeEventListener(EStreamEventType.TS_TYPE, OnEvent)
+        };
+    }
+
+    export default GetAonyxBuddyStreamEventListener;
