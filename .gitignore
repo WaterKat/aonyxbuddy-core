@@ -26,3 +26,4 @@
 /**/*.env
 /**/*.mp3
 /**/old.*
+/**/example-configs
