@@ -1,6 +1,8 @@
 import { ProcessEventOptions } from "./template.js";
-import { EStreamEventType } from "./types.js";
-import { EPermissionLevel } from "./processing/filter-permissions.js";
+import { EStreamEventType as EType } from "./types.js";
+import { 
+    EPermissionLevel as EPermission 
+} from "./processing/filter-permissions.js";
 
 /**
  * The legacy configuration type, containing the canvas size, antialiasing
@@ -69,33 +71,28 @@ export function ConvertLegacyProcessorConfig(
         },
         botlistOptions: {
             botlist: config.botlist,
-            allow: [EStreamEventType.COMMAND]
+            allow: [EType.COMMAND]
         },
         permissionsOptions: {
             permissionRequirements: {
-                [EStreamEventType.TS_TYPE]: EPermissionLevel.CHATTER,
-                [EStreamEventType.CHAT]: EPermissionLevel.CHATTER,
-                [EStreamEventType.CHAT_FIRST]:
-                    EPermissionLevel.FOLLOWER,
-                [EStreamEventType.CHEER]: EPermissionLevel.CHATTER,
-                [EStreamEventType.SUBSCRIBER]:
-                    EPermissionLevel.CHATTER,
-                [EStreamEventType.FOLLOW]: EPermissionLevel.CHATTER,
-                [EStreamEventType.RAID]: EPermissionLevel.CHATTER,
-                [EStreamEventType.GIFT_BULK_RECEIVED]:
-                    EPermissionLevel.CHATTER,
-                [EStreamEventType.GIFT_BULK_SENT]:
-                    EPermissionLevel.CHATTER,
-                [EStreamEventType.GIFT_SINGLE]:
-                    EPermissionLevel.CHATTER,
-                [EStreamEventType.COMMAND]: EPermissionLevel.MODERATOR,
-                [EStreamEventType.REDEEM]: EPermissionLevel.CHATTER,
-                [EStreamEventType.IGNORE]: EPermissionLevel.CHATTER,
-                [EStreamEventType.OTHER]: EPermissionLevel.CHATTER,
+                [EType.TS_TYPE]: EPermission.CHATTER,
+                [EType.CHAT]: EPermission.CHATTER,
+                [EType.CHAT_FIRST]: EPermission.FOLLOWER,
+                [EType.CHEER]: EPermission.CHATTER,
+                [EType.SUBSCRIBER]: EPermission.CHATTER,
+                [EType.FOLLOW]: EPermission.CHATTER,
+                [EType.RAID]: EPermission.CHATTER,
+                [EType.GIFT_BULK_RECEIVED]: EPermission.CHATTER,
+                [EType.GIFT_BULK_SENT]: EPermission.CHATTER,
+                [EType.GIFT_SINGLE]: EPermission.CHATTER,
+                [EType.COMMAND]: EPermission.MODERATOR,
+                [EType.REDEEM]: EPermission.CHATTER,
+                [EType.IGNORE]: EPermission.CHATTER,
+                [EType.OTHER]: EPermission.CHATTER,
             },
             permissions: {
-                [config.owner_id]: EPermissionLevel.STREAMER,
-                "aonyxbuddy": EPermissionLevel.MODERATOR
+                [config.owner_id]: EPermission.STREAMER,
+                "aonyxbuddy": EPermission.MODERATOR
             }
         },
         cheerOptions: {
