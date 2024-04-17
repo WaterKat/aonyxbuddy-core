@@ -1,7 +1,7 @@
 import { IClientConfig } from "./config/iclient-config.js";
 
-import { CreateTextToSpeech } from "./ui/text-to-speech/index.js";
-import { GetTextQueue, IVariableContainer } from "./core/queues/text-queue.js";
+//import { CreateTextToSpeech } from "./ui/text-to-speech/index.js";
+import { GetTextQueue, IVariableContainer } from "./core/old.queues/text-queue.js";
 
 interface RendererParams {
   name: string,
@@ -13,13 +13,13 @@ export function GetAonyxBuddyInstance(
   rendererParams?: RendererParams
 ) {
 
-  const tts = CreateTextToSpeech(config.tts);
+//  const tts = CreateTextToSpeech(config.tts);
   const speechAmplitudeVariable: IVariableContainer = rendererParams as IVariableContainer;
-  const textqueue = GetTextQueue(tts, speechAmplitudeVariable);
+//  const textqueue = GetTextQueue(tts, speechAmplitudeVariable);
 
   return {
    // TextToSpeech: tts,
-    TextQueue: textqueue,
+//    TextQueue: textqueue,
   };
 }
 

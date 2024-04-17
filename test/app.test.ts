@@ -135,8 +135,9 @@ const SendRedeem = (): TStreamEvent => ({
 });
 
 // Link Text
-import GetAonyxBuddyStreamEventListener
-  from "../src/stream-event-listener/index.js";
+import {
+  GetAonyxBuddyStreamEventListener
+} from "../src/bridge/stream-event-listener/index.js";
 
 const responsesContainer = document
   .getElementById("ab_responses_container") as HTMLDivElement;
@@ -154,11 +155,12 @@ import {
 import {
   IUserPermissions,
   EPermissionLevel,
-  ProcessEvent,
-  StatefulProcessFirstChat,
   IStatefulFirstEventArgs,
+  StatefulProcessFirstChat,
+  IStatefulIgnoreRaidArgs,
   StatefulProcessIgnoreRaid,
-  IStatefulIgnoreRaidArgs
+  GetProcessEventFunction,
+  ProcessEventOptions
 } from "../src/core/stream-events/index.js";
 
 let impureProcessedEvent: TStreamEvent = {} as any;
@@ -185,6 +187,73 @@ let raidOptions: IStatefulIgnoreRaidArgs = {
   }
 }
 
+const processEventOptions : ProcessEventOptions = {
+  caseInsensitiveOptions: {
+    wordsToFilter: config.blockedWords,
+    replacement: "ploop"
+  },
+  caseSensitiveOptions: {
+    wordsToFilter: [],
+    replacement: "ploop"
+  },
+  commandOptions: {
+    identifiers: ["!aonyxbuddy"],
+    actions: ["debug", "say", "mute", "unmute", "skip"]
+  },
+  nicknamesOptions: {
+    nicknameMap: config.nicknames,
+    randomBetween01Func: () => Math.random()
+  },
+  blacklistOptions: {
+    blacklist: config.blacklist
+  },
+  emojisOptions: {
+    filter: true,
+    replacement: ""
+  },
+  botlistOptions: {
+    botlist: config.botlist,
+    allow: [EStreamEventType.COMMAND]
+  },
+  permissionsOptions: {
+    permissionRequirements: {
+      [EStreamEventType.TS_TYPE]: EPermissionLevel.CHATTER,
+      [EStreamEventType.CHAT]: EPermissionLevel.CHATTER,
+      [EStreamEventType.CHAT_FIRST]:
+        EPermissionLevel.FOLLOWER,
+      [EStreamEventType.CHEER]: EPermissionLevel.CHATTER,
+      [EStreamEventType.SUBSCRIBER]:
+        EPermissionLevel.CHATTER,
+      [EStreamEventType.FOLLOW]: EPermissionLevel.CHATTER,
+      [EStreamEventType.RAID]: EPermissionLevel.CHATTER,
+      [EStreamEventType.GIFT_BULK_RECEIVED]:
+        EPermissionLevel.CHATTER,
+      [EStreamEventType.GIFT_BULK_SENT]:
+        EPermissionLevel.CHATTER,
+      [EStreamEventType.GIFT_SINGLE]:
+        EPermissionLevel.CHATTER,
+      [EStreamEventType.COMMAND]: EPermissionLevel.MODERATOR,
+      [EStreamEventType.REDEEM]: EPermissionLevel.CHATTER,
+      [EStreamEventType.IGNORE]: EPermissionLevel.CHATTER,
+      [EStreamEventType.OTHER]: EPermissionLevel.CHATTER,
+    },
+    permissions: {
+      "aonyxbuddy": EPermissionLevel.STREAMER,
+      "fariaorion": EPermissionLevel.MODERATOR,
+      "test": EPermissionLevel.FOLLOWER
+    }
+  },
+  cheerOptions: {
+    filter: true,
+    replacement: " "
+  },
+  conditionOptions: {
+    condition: true,
+  }
+};
+
+const ProcessEvent = GetProcessEventFunction(processEventOptions);
+
 GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
   const permissions: IUserPermissions = {
     [rawEvent.username]: rawEvent.permissions ?
@@ -197,65 +266,9 @@ GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
       : EPermissionLevel.CHATTER
   };
 
-  const processedEvent: TStreamEvent =
-    ProcessEvent(rawEvent, {
-      FilterWordsCaseInsensitiveOptions: {
-        wordsToFilter: config.blockedWords,
-        replacement: "ploop"
-      },
-      FilterWordsCaseSensitiveOptions: {
-        wordsToFilter: [],
-        replacement: "ploop"
-      },
-      CommandOptions: {
-        identifiers: ["!aonyxbuddy"],
-        actions: ["debug", "say", "mute", "unmute", "skip"]
-      },
-      GetNicknameOptions: {
-        nicknameMap: config.nicknames,
-        randomBetween01Func: () => Math.random()
-      },
-      FilterBlacklistOptions: {
-        blacklist: config.blacklist
-      },
-      FilterEmojisOptions: {
-        replacement: ""
-      },
-      FilterBotlistOptions: {
-        botlist: config.botlist,
-        allow: [EStreamEventType.COMMAND]
-      },
-      FilterPermissionsOptions: {
-        permissionRequirements: {
-          [EStreamEventType.TS_TYPE]: EPermissionLevel.CHATTER,
-          [EStreamEventType.CHAT]: EPermissionLevel.CHATTER,
-          [EStreamEventType.CHAT_FIRST]:
-            EPermissionLevel.FOLLOWER,
-          [EStreamEventType.CHEER]: EPermissionLevel.CHATTER,
-          [EStreamEventType.SUBSCRIBER]:
-            EPermissionLevel.CHATTER,
-          [EStreamEventType.FOLLOW]: EPermissionLevel.CHATTER,
-          [EStreamEventType.RAID]: EPermissionLevel.CHATTER,
-          [EStreamEventType.GIFT_BULK_RECEIVED]:
-            EPermissionLevel.CHATTER,
-          [EStreamEventType.GIFT_BULK_SENT]:
-            EPermissionLevel.CHATTER,
-          [EStreamEventType.GIFT_SINGLE]:
-            EPermissionLevel.CHATTER,
-          [EStreamEventType.COMMAND]: EPermissionLevel.MODERATOR,
-          [EStreamEventType.REDEEM]: EPermissionLevel.CHATTER,
-          [EStreamEventType.IGNORE]: EPermissionLevel.CHATTER,
-          [EStreamEventType.OTHER]: EPermissionLevel.CHATTER,
-        },
-        permissions: permissions
-      },
-      FilterCheermotesOptions: {
-        replacement: " "
-      },
-      FilterConditionOptions: {
-        condition: true,
-      }
-    });
+  const loggedEvent = ProcessEvent(rawEvent);
+  console.log(loggedEvent.getLogs());
+  const processedEvent: TStreamEvent = loggedEvent.getValue();
 
   // impure
   firstChatOptions.event = processedEvent;

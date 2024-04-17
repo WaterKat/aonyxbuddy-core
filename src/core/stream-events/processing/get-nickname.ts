@@ -1,11 +1,12 @@
+import { Logger } from "../logger-monad.js";
 import { TStreamEvent } from "../types.js";
 
 /**
  * Options for processing a stream event with the ProcessNicknames function
  */
-export interface IProcessGetNicknamesOptions {
+export interface NicknamesOptions {
     nicknameMap: { [key: string]: string[] },
-    randomBetween01Func: () => number
+    randomBetween01Func?: () => number
 }
 
 /**
@@ -16,19 +17,35 @@ export interface IProcessGetNicknamesOptions {
  * @param options the options for processing the event
  * @returns the processed event
  */
-export const ProcessGetNicknames =
-    (event: TStreamEvent, options: IProcessGetNicknamesOptions) => {
+export function GetNicknamesFunction(
+    options?: NicknamesOptions
+): (event: TStreamEvent) => Logger<TStreamEvent> {
+    if (
+        !options
+        || !options.nicknameMap
+        || Object.keys(options.nicknameMap).length === 0
+    ) {
+        return (event: TStreamEvent) => new Logger(
+            event,
+            ["options not defined or nicknameMap is empty"]
+        );
+    }
+    
+    const randFunc = options.randomBetween01Func ?? Math.random;
+
+    return function (event: TStreamEvent): Logger<TStreamEvent> {
         const deepCopy = JSON.parse(JSON.stringify(event)) as TStreamEvent;
-        return ({
+        return new Logger({
             ...deepCopy,
             nickname:
                 options.nicknameMap[event.username] &&
                     options.nicknameMap[event.username].length > 0 ?
                     options.nicknameMap[event.username]
                     [Math.floor(
-                        options.randomBetween01Func() *
+                        randFunc() *
                         options.nicknameMap[event.username].length
                     )]
                     : event.username
-        });
+        }, ["nickname assigned"]);
     }
+}

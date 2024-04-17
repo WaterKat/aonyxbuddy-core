@@ -13,20 +13,30 @@ import {
 import {
   CreateAudioQueue, GetAudioFromURL, GetStreamElementsVoiceAudioBuffer
 } from "./ui/audio/index.js";
+import { IClientConfig } from "./config/iclient-config.js";
+
+import {
+  ClientConfigExample
+} from "./config/iclient-config-fariaorion.test.js";
+
+import {
+  ListenForStreamElementsEvents,
+  GetAonyxBuddyStreamEventListener
+} from "./bridge/index.js";
+import { GetProcessEventFunction, TStreamEvent } from "./core/stream-events/index.js";
+
 
 // * old imports after this point
-
+/* 
 import * as StreamEvents from "./core/stream-events/index.js";
 import * as StreamEventParser from "./stream-event-parser/index.js";
 import StreamElements from "./stream-elements/index.js";
 
-import {
-  ClientConfigExample as config
-} from "./config/iclient-config-fariaorion.test.js";
+
 
 import Log from "./log.js";
 import GetAonyxBuddyStreamEventListener from "./stream-event-listener/index.js";
-import { GetAonyxBuddyInstance } from "./index.js";
+//import { GetAonyxBuddyInstance } from "./index.js";
 
 import {
   ProcessCommand,
@@ -34,8 +44,9 @@ import {
   EPermissionLevel,
   IUserPermissions
 } from "./core/stream-events/processing/index.js";
+*/
 
-async function CreateAonyxBuddy() {
+async function CreateAonyxBuddy(config: IClientConfig) {
   /**
    * AudioQueue initialization
    * Renderer initialization
@@ -58,7 +69,9 @@ async function CreateAonyxBuddy() {
     param => param.name === "mute"
   );
 
+
   /**
+   * * This is most stateful part of the code
    * The rendering loops for aonyxbuddy
    */
   let active = true;
@@ -109,23 +122,109 @@ async function CreateAonyxBuddy() {
   }
   RenderLoop();
 
+  /** event queues go here */
+  let promiseQueueRunning = false;
+  const promiseQueue: (() => Promise<void>)[] = [];
+
+  function RunPromiseQueue() {
+    if (promiseQueue.length > 0 && !promiseQueueRunning && active) {
+      promiseQueueRunning = true;
+      const speechFunction = promiseQueue.shift();
+      if (speechFunction) {
+        speechFunction().then(() => {
+          promiseQueueRunning = false;
+          RunPromiseQueue();
+        });
+      }
+    }
+  }
+
+  /**
+   * * These are the callbacks for event behaviour
+   */
+
+  const convertedConfig = ConvertLegacyConfiguration(config);
+  const ProcessEvent = GetProcessEventFunction(config);
+
+  function HandleEvent(event: TStreamEvent) {
+    if (!active)
+      return;
+
+    GetProcessEventFunction(config)(event);
+
+
+    const response = StreamEventParser.Parser.GetResponse(
+      config.responses,
+      event,
+      "voice"
+    );
+
+    if (response.length > 0) {
+      promiseQueue.push(() => {
+        return new Promise<void>((resolve) => {
+          audioQueue.QueueAudioBuffer(
+            GetStreamElementsVoiceAudioBuffer(
+              audioQueue.context,
+              response
+            )
+          );
+          audioQueue.PlayQueue();
+          resolve();
+        });
+      });
+      RunPromiseQueue();
+    }
+
+    if (
+      event.type === "chat-first" &&
+      event.original.type === "chat"
+    ) {
+      const customChatFirstResponse = StreamEventParser.Parser.GetResponse(
+        config.responses,
+        event.original,
+        "chat-first-custom",
+        event.username
+      );
+      const generalChatFirstResponse = StreamEventParser.Parser.GetResponse(
+        config.responses,
+        event.original,
+        "voice",
+        "chat-first"
+      );
+      promiseQueue.push(() => {
+        return new Promise<void>((resolve) => {
+          audioQueue.QueueAudioBuffer(
+            GetStreamElementsVoiceAudioBuffer(
+              audioQueue.context,
+              customChatFirstResponse.length > 0
+                ? customChatFirstResponse
+                : generalChatFirstResponse
+            )
+          );
+          audioQueue.PlayQueue();
+          resolve();
+        });
+      });
+      RunPromiseQueue();
+    }
+  }
+
+  const streamElementsListener = ListenForStreamElementsEvents(HandleEvent);
+  const aonyxListener = GetAonyxBuddyStreamEventListener(HandleEvent);
+
+  if (!streamElementsListener && !aonyxListener) {
+    console.error("Failed to initialize event listener. Exiting.");
+    return;
+  }
+
+  /** first messages go here */
+
   audioQueue.QueueAudioBuffer(
-    GetAudioFromURL(audioQueue.context, "./brian.mp3")
+    GetStreamElementsVoiceAudioBuffer(
+      audioQueue.context,
+      `A-onyx Buddy systems online. ${config.nickname}, is active.`
+    )
   );
-  audioQueue.QueueAudioBuffer(
-    GetAudioFromURL(audioQueue.context, "./astateoftrance.mp3")
-  );
-
-
-  /* 
-    audioQueue.QueueAudioBuffer(
-      GetStreamElementsVoiceAudioBuffer(
-        audioQueue.context,
-        "the quick brown fox jumps over the lazy dog, he Uint8Array typed array represents an array of 8-bit unsigned integers. The contents are initialized to 0 . Once established, you can reference elements in the array using the object's methods, or using standard array index syntax (that is, using bracket notation).Sep 6, 2023",
-        config.tts.voice
-      ));
-  */
-
   audioQueue.PlayQueue();
 
   return {
@@ -133,12 +232,14 @@ async function CreateAonyxBuddy() {
       active = false;
       clearInterval(paramUpdateLoop);
       audioQueue.StopAndClearQueue();
+      streamElementsListener?.RemoveListener();
+      aonyxListener?.RemoveListener();
     }
   }
 
   //!``````````````````````````````````````````````````````````````````````````
 
-  const aonyxbuddy = GetAonyxBuddyInstance(config);
+  //  const aonyxbuddy = GetAonyxBuddyInstance(config);
 
   let skipCount = 0;
 
@@ -172,7 +273,7 @@ async function CreateAonyxBuddy() {
       if (renderer.sprites["base"].bitmap.length > 0) FlipBaseImage(renderer);
     }
   );
-  */
+  
 
   let mutedFrame = 0;
   /*
@@ -190,7 +291,7 @@ async function CreateAonyxBuddy() {
       isMuted = false;
       mutedFrame = 0;
     }
-  */
+  
 
   //* StreamEventParser
 
@@ -428,7 +529,7 @@ async function CreateAonyxBuddy() {
       streamEvent,
       ParseOther
     );
-    */
+    
     //    console.info("RawEvent:", streamEvent);
     if (event.type === "other") {
       ParseOther(event);
@@ -446,13 +547,14 @@ async function CreateAonyxBuddy() {
 
   aonyxbuddy.TextQueue.Append(
     `'A-onyx Buddy systems online. ${config.nickname}, is active.'`
-  );
+  ); 
+  */
 }
 
 //* Preparing Body Styling
 document.body.style.margin = "0 0";
 document.body.style.padding = "0 0";
 
-CreateAonyxBuddy();
+CreateAonyxBuddy(ClientConfigExample);
 
 //# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js

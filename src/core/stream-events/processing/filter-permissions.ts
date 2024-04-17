@@ -1,3 +1,4 @@
+import { Logger } from "../logger-monad.js";
 import { TStreamEvent, EStreamEventType } from "../types.js";
 
 /**
@@ -51,40 +52,57 @@ export type TProcessorFilterPermissions =
  * @param permissionRequirements the permission requirements for each event type
  * @param permissions the permissions of the users
  */
-export interface IProcessFilterPermissionsOptions {
+export interface FilterPermissionsOptions {
     permissionRequirements: TProcessorFilterPermissions,
     permissions: IUserPermissions
 }
 
 /**
- * This function filters out events that require permissions that the user does
- * not have. If the user does not have the required permission level, the event
- * is ignored.
- * @param event the event to be processed 
+ * This function returns a function that filters events based on the
+ * permissions of the users. If the user does not have the required
+ * permission level, the event is ignored.
  * @param options the options that contain the permission requirements and the
  * permissions of the users
- * @returns the event if permissions are met, otherwise an ignored event
+ * @returns a function that filters events based on the permissions of the
+ * users
  */
-export const ProcessFilterPermissions = (
-    event: TStreamEvent,
-    options: IProcessFilterPermissionsOptions
-): TStreamEvent => {
-    const requiresPermissions = event.type in options.permissionRequirements;
-    if (!requiresPermissions)
-        return event;
-    const userPermissionLevel = GetPermissionLevel(
-        event.username,
-        options.permissions
-    );
-    const requiredPermissionLevel = options.permissionRequirements[event.type];
-    if (userPermissionLevel < requiredPermissionLevel) {
-        return <TStreamEvent>{
-            tstype: event.tstype,
-            username: event.username,
-            type: EStreamEventType.IGNORE,
-            reason: 'permissions'
+export function GetFilterPermissionsFunction(
+    options?: FilterPermissionsOptions
+): (event: TStreamEvent) => Logger<TStreamEvent> {
+    if (
+        !options
+        || !options.permissionRequirements
+        || !options.permissions
+    ) {
+        return (event: TStreamEvent) => new Logger(event,
+            ["options not defined"]
+        );
+    }
+
+    return function (event: TStreamEvent): Logger<TStreamEvent> {
+        const requiresPermissions =
+            event.type in options.permissionRequirements;
+
+        if (!requiresPermissions)
+            return new Logger(event, ["no permissions required"]);
+
+        const userPermissionLevel = GetPermissionLevel(
+            event.username,
+            options.permissions
+        );
+
+        const requiredPermissionLevel =
+            options.permissionRequirements[event.type];
+
+        if (userPermissionLevel < requiredPermissionLevel) {
+            return new Logger({
+                tstype: event.tstype,
+                username: event.username,
+                type: EStreamEventType.IGNORE,
+                reason: 'permissions'
+            }, ["permissions not met"]);
+        } else {
+            return new Logger(event, ["permissions met"]);
         }
-    } else {
-        return event;
     }
 }
