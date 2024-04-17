@@ -1,5 +1,9 @@
-import { EStreamEventType, IsTMessageEvent, TMessageEvent, TStreamEvent } from "../stream-events/types.js";
-import { GetRandomResponse, IRandomResponseOptions } from "./get-random-response.js";
+import { 
+    EStreamEventType, IsTMessageEvent, TMessageEvent, TStreamEvent
+} from "../stream-events/types.js";
+import {
+    GetRandomResponse, IRandomResponseOptions
+} from "./get-random-response.js";
 
 /**
  * Get a substitution map from a stream event for use with SubstituteStringVar
