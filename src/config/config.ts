@@ -1,5 +1,5 @@
 import { IClientConfig } from './iclient-config.js';
-import defaultConfig from './client-config-default.js';
+import defaultConfig from './default-config.js';
 
 declare const providedConfig : IClientConfig;
 

@@ -1,4 +1,4 @@
-export default [
+export const badwords = [
     "al-filtered-word",
     "dyke",
     "fag",

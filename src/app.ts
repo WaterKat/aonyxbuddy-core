@@ -1,5 +1,8 @@
 /// <reference lib="dom" />
 
+/** Your main configuration file type */
+import { IClientConfig, DefaultAonyxBuddyConfig } from "./config/index.js";
+
 import {
   InitializeRenderer,
   RenderParams,
@@ -9,12 +12,6 @@ import {
   CreateAudioQueue,
   GetStreamElementsVoiceAudioBuffer
 } from "./ui/audio/index.js";
-
-import { IClientConfig } from "./config/iclient-config.js";
-
-import {
-  ClientConfigExample
-} from "./config/iclient-config-fariaorion.test.js";
 
 import {
   ListenForStreamElementsEvents,
@@ -257,6 +254,11 @@ async function CreateAonyxBuddy(config: IClientConfig) {
   }
 }
 
-CreateAonyxBuddy(ClientConfigExample);
+declare const AonyxBuddyConfig: IClientConfig;
+
+CreateAonyxBuddy(
+  typeof AonyxBuddyConfig !== 'undefined' ?
+    AonyxBuddyConfig : DefaultAonyxBuddyConfig
+);
 
 //# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js

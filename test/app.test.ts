@@ -151,7 +151,7 @@ const AddResponse = (response: string) => {
 import { GetStreamEventResponse } from "../src/core/responses/index.js";
 import {
   ClientConfigExample as config
-} from "../src/config/iclient-config-fariaorion.test.js";
+} from "../src/config/example-configs/iclient-config-fariaorion.test.js";
 import {
   IUserPermissions,
   EPermissionLevel,
