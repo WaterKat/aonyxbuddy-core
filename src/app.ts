@@ -18,8 +18,11 @@ import {
 
 import {
   ListenForStreamElementsEvents,
+} from "./bridge/stream-elements/index.js";
+
+import {
   GetAonyxBuddyStreamEventListener
-} from "./bridge/index.js";
+} from "./bridge/stream-event-listener/index.js"
 
 import {
   EStreamEventType,
