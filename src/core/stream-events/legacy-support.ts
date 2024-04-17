@@ -58,7 +58,7 @@ export function ConvertLegacyProcessorConfig(
         },
         nicknamesOptions: {
             nicknameMap: config.nicknames,
-            randomBetween01Func: () => Math.random()
+            randomBetween01Func: Math.random
         },
         blacklistOptions: {
             blacklist: config.blacklist
