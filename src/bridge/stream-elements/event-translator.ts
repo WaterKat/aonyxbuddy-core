@@ -1,4 +1,5 @@
-import { Types } from "../../core/stream-events/index.js";
+
+import * as Types from "../../core/stream-events/index.js";
 import { EStreamEventType } from "../../core/stream-events/types.js";
 
 import * as SETypes from "./types.js";

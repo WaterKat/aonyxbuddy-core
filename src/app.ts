@@ -6,7 +6,7 @@ import {
 } from "./ui/sprite-rendering/index.js";
 
 import {
-  CreateAudioQueue, 
+  CreateAudioQueue,
   GetStreamElementsVoiceAudioBuffer
 } from "./ui/audio/index.js";
 
@@ -21,10 +21,14 @@ import {
   GetAonyxBuddyStreamEventListener
 } from "./bridge/index.js";
 
-import { 
-  GetProcessEventFunction, TStreamEvent 
+import {
+  GetProcessEventFunction, TStreamEvent
 } from "./core/stream-events/index.js";
-import { ConvertLegacyConfiguration, IsLegacyConfig } from "./core/stream-events/legacy-support.js";
+
+import {  
+  ConvertLegacyConfiguration, IsLegacyConfig 
+} from "./core/stream-events/legacy-support.js";
+
 import { GetStreamEventResponse } from "./core/index.js";
 
 
@@ -132,63 +136,30 @@ async function CreateAonyxBuddy(config: IClientConfig) {
     if (!active)
       return;
 
-    const event = ProcessEvent(raw);
+    const loggedEvent = ProcessEvent(raw);
+    const event = loggedEvent.getValue();
 
+    const response = GetStreamEventResponse(event, {
+      responses: config.responses["voice"],
+      key: event.type,
+      randomBetween01Func: Math.random
+    });
 
-    const response = GetStreamEventResponse
-      config.responses,
-      raw,
-      "voice"
-    );
+    if (response.length < 0)
+      return;
 
-    if (response.length > 0) {
-      promiseQueue.push(() => {
-        return new Promise<void>((resolve) => {
-          audioQueue.QueueAudioBuffer(
-            GetStreamElementsVoiceAudioBuffer(
-              audioQueue.context,
-              response
-            )
-          );
-          audioQueue.PlayQueue();
-          resolve();
-        });
-      });
-      RunPromiseQueue();
-    }
-
-    if (
-      raw.type === "chat-first" &&
-      raw.original.type === "chat"
-    ) {
-      const customChatFirstResponse = StreamEventParser.Parser.GetResponse(
-        config.responses,
-        raw.original,
-        "chat-first-custom",
-        raw.username
+    /** queue speech */
+    const speechPromise = new Promise<void>((resolve, reject) => {
+      audioQueue.QueueAudioBuffer(
+        GetStreamElementsVoiceAudioBuffer(
+          audioQueue.context,
+          response
+        )
       );
-      const generalChatFirstResponse = StreamEventParser.Parser.GetResponse(
-        config.responses,
-        raw.original,
-        "voice",
-        "chat-first"
-      );
-      promiseQueue.push(() => {
-        return new Promise<void>((resolve) => {
-          audioQueue.QueueAudioBuffer(
-            GetStreamElementsVoiceAudioBuffer(
-              audioQueue.context,
-              customChatFirstResponse.length > 0
-                ? customChatFirstResponse
-                : generalChatFirstResponse
-            )
-          );
-          audioQueue.PlayQueue();
-          resolve();
-        });
-      });
-      RunPromiseQueue();
-    }
+      audioQueue.PlayQueue().then(resolve).catch(reject);
+    });
+
+    RunPromiseQueue();
   }
 
   const streamElementsListener = ListenForStreamElementsEvents(HandleEvent);

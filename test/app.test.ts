@@ -359,3 +359,5 @@ setTimeout(async () => {
   renderingData.Stop();
 }, 5000);
 */
+
+//# sourceURL=browsertools://aonyxbuddy/test-page.js

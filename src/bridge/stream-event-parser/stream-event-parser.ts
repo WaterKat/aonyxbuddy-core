@@ -1,5 +1,5 @@
-import { Types } from '../core/stream-events/index.js';
-import { EStreamEventType } from '../core/stream-events/stream-events.js';
+import * as Types from '../../core/stream-events/index.js';
+import { EStreamEventType } from '../../core/stream-events/stream-events.js';
 import { IResponses } from './types';
 
 export function GetResponse(responses: IResponses, event: Types.TStreamEvent, key: string, typeOverride?: string){
