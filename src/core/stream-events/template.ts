@@ -8,8 +8,9 @@ import {
     GetFilterCaseInsensitiveFunction,
     GetFilterEmojisFunction, FilterEmojisOptions,
     GetFilterCheermotesFunction, FilterCheermotesOptions,
-    GetNicknamesFunction, NicknamesOptions,
-    GetFilterPermissionsFunction, FilterPermissionsOptions
+    GetValidateFunction, ValidateOptions,
+    GetFilterPermissionsFunction, FilterPermissionsOptions,
+    GetNicknamesFunction, NicknamesOptions
 } from "./processing/index.js";
 
 import {
@@ -20,6 +21,7 @@ import { TStreamEvent } from "./types";
 
 export type ProcessEventOptions = {
     conditionOptions?: FilterConditionOptions,
+    validateOptions?: ValidateOptions,
     blacklistOptions?: FilterBlacklistOptions,
     commandOptions?: ProcessCommandOptions,
     botlistOptions?: FilterBotlistOptions,
@@ -36,6 +38,7 @@ export function GetProcessEventFunction(
 ): (event: TStreamEvent) => Logger<TStreamEvent> {
     const filterCondition =
         GetFilterConditionFunction(options.conditionOptions);
+    const validateEvent = GetValidateFunction(options.validateOptions);
     const filterBlacklist =
         GetFilterBlacklistFunction(options.blacklistOptions);
     const processCommand = GetProcessCommandFunction(options.commandOptions);
@@ -52,7 +55,8 @@ export function GetProcessEventFunction(
 
     return function (event: TStreamEvent) {
         const loggedEvent = new Logger(event).log("ProcessEvent:\n")
-            .log("FilterCondition: ").map(filterCondition)
+//            .log("FilterCondition: ").map(filterCondition)
+            .log("ValidateEvent: ").map(validateEvent)
             .log("FilterBlacklist: ").map(filterBlacklist)
             .log("ProcessCommand: ").map(processCommand)
             .log("FilterBotlist: ").map(filterBotlist)

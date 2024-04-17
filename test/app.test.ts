@@ -267,7 +267,6 @@ GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
   };
 
   const loggedEvent = ProcessEvent(rawEvent);
-  console.log(loggedEvent.getLogs());
   const processedEvent: TStreamEvent = loggedEvent.getValue();
 
   // impure

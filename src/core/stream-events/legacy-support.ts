@@ -19,11 +19,11 @@ export interface ILegacyConfig {
  * Checks if the value is a legacy configuration object.
  * @param value the value to check if it is a object
  */
-export function IsLegacyConfig(
+export function IsLegacyEventProcessorConfig(
     value: any | ILegacyConfig
 ): value is ILegacyConfig {
     if (typeof value !== "object") return false;
-    if (typeof value.owner_id !== "object") return false;
+    if (typeof value.owner_id !== "string") return false;
     if (typeof value.nickname !== "string") return false;
     if (typeof value.nicknames !== "object") return false;
     if (typeof value.blacklist !== "object") return false;
@@ -37,7 +37,7 @@ export function IsLegacyConfig(
  * @param legacyConfig the legacy configuration to convert
  * @returns the new configuration type
  */
-export function ConvertLegacyConfiguration(
+export function ConvertLegacyProcessorConfig(
     config: ILegacyConfig
 ): ProcessEventOptions {
     const processEventOptions: ProcessEventOptions = {
@@ -45,13 +45,16 @@ export function ConvertLegacyConfiguration(
             wordsToFilter: config.blockedWords,
             replacement: ""
         },
+        validateOptions: {
+            lowercase: true
+        },
         caseSensitiveOptions: {
             wordsToFilter: [],
             replacement: ""
         },
         commandOptions: {
             identifiers: ["!aonyxbuddy", `!${config.nickname}`],
-            actions: ["debug", "say", "mute", "unmute", "skip"]
+            actions: ["debug", "say@:", "mute", "unmute", "skip@>"]
         },
         nicknamesOptions: {
             nicknameMap: config.nicknames,

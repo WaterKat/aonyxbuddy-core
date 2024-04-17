@@ -6,3 +6,4 @@ export * from "./filter-emojis.js";
 export * from "./filter-cheermotes.js"
 export * from "./get-nickname.js";
 export * from "./filter-permissions.js";
+export * from "./process-validate.js";

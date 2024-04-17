@@ -100,7 +100,7 @@ export function GetFilterPermissionsFunction(
                 username: event.username,
                 type: EStreamEventType.IGNORE,
                 reason: 'permissions'
-            }, ["permissions not met"]);
+            }, [`permissions not met by ${event.username} for ${event.type}`]);
         } else {
             return new Logger(event, ["permissions met"]);
         }
