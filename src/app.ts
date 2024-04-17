@@ -1,18 +1,15 @@
 /// <reference lib="dom" />
 
 import {
-  CreateCanvas,
-  ConvertLegacyConfiguration,
-  PopulateIRenderParams,
-  RenderDefaults,
   InitializeRenderer,
   RenderParams,
-  ClearCanvas
 } from "./ui/sprite-rendering/index.js";
 
 import {
-  CreateAudioQueue, GetAudioFromURL, GetStreamElementsVoiceAudioBuffer
+  CreateAudioQueue, 
+  GetStreamElementsVoiceAudioBuffer
 } from "./ui/audio/index.js";
+
 import { IClientConfig } from "./config/iclient-config.js";
 
 import {
@@ -23,28 +20,13 @@ import {
   ListenForStreamElementsEvents,
   GetAonyxBuddyStreamEventListener
 } from "./bridge/index.js";
-import { GetProcessEventFunction, TStreamEvent } from "./core/stream-events/index.js";
 
+import { 
+  GetProcessEventFunction, TStreamEvent 
+} from "./core/stream-events/index.js";
+import { ConvertLegacyConfiguration, IsLegacyConfig } from "./core/stream-events/legacy-support.js";
+import { GetStreamEventResponse } from "./core/index.js";
 
-// * old imports after this point
-/* 
-import * as StreamEvents from "./core/stream-events/index.js";
-import * as StreamEventParser from "./stream-event-parser/index.js";
-import StreamElements from "./stream-elements/index.js";
-
-
-
-import Log from "./log.js";
-import GetAonyxBuddyStreamEventListener from "./stream-event-listener/index.js";
-//import { GetAonyxBuddyInstance } from "./index.js";
-
-import {
-  ProcessCommand,
-  IProcessCommandOptions,
-  EPermissionLevel,
-  IUserPermissions
-} from "./core/stream-events/processing/index.js";
-*/
 
 async function CreateAonyxBuddy(config: IClientConfig) {
   /**
@@ -142,20 +124,20 @@ async function CreateAonyxBuddy(config: IClientConfig) {
   /**
    * * These are the callbacks for event behaviour
    */
+  const ProcessEvent = GetProcessEventFunction(
+    IsLegacyConfig(config) ? ConvertLegacyConfiguration(config) : config
+  );
 
-  const convertedConfig = ConvertLegacyConfiguration(config);
-  const ProcessEvent = GetProcessEventFunction(config);
-
-  function HandleEvent(event: TStreamEvent) {
+  function HandleEvent(raw: TStreamEvent) {
     if (!active)
       return;
 
-    GetProcessEventFunction(config)(event);
+    const event = ProcessEvent(raw);
 
 
-    const response = StreamEventParser.Parser.GetResponse(
+    const response = GetStreamEventResponse
       config.responses,
-      event,
+      raw,
       "voice"
     );
 
@@ -176,18 +158,18 @@ async function CreateAonyxBuddy(config: IClientConfig) {
     }
 
     if (
-      event.type === "chat-first" &&
-      event.original.type === "chat"
+      raw.type === "chat-first" &&
+      raw.original.type === "chat"
     ) {
       const customChatFirstResponse = StreamEventParser.Parser.GetResponse(
         config.responses,
-        event.original,
+        raw.original,
         "chat-first-custom",
-        event.username
+        raw.username
       );
       const generalChatFirstResponse = StreamEventParser.Parser.GetResponse(
         config.responses,
-        event.original,
+        raw.original,
         "voice",
         "chat-first"
       );
