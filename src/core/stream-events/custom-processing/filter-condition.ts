@@ -11,7 +11,7 @@ import {
  */
 export type FilterConditionOptions = {
     condition: boolean
-}]
+}
 
 /**
  * Takes in options and returns a function that processes an event by returning
