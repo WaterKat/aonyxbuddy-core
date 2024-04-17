@@ -53,7 +53,7 @@ export function ConvertLegacyProcessorConfig(
             replacement: ""
         },
         commandOptions: {
-            identifiers: ["!aonyxbuddy", `!${config.nickname}`],
+            identifiers: ["!aonyxbuddy", `!${config.nickname}`, "!!"],
             actions: ["debug", "say@:", "mute", "unmute", "skip@>"]
         },
         nicknamesOptions: {
