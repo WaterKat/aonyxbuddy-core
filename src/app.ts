@@ -256,9 +256,18 @@ async function CreateAonyxBuddy(config: IClientConfig) {
 
 declare const AonyxBuddyConfig: IClientConfig;
 
-CreateAonyxBuddy(
-  typeof AonyxBuddyConfig !== 'undefined' ?
-    AonyxBuddyConfig : DefaultAonyxBuddyConfig
-);
+if (typeof window !== 'undefined') {
+  console.log("AonyxBuddy created, refer to window.aonyxbuddy for access.");
+  (window as any)["aonyxbuddy"] = CreateAonyxBuddy(
+    typeof AonyxBuddyConfig !== 'undefined' ?
+      AonyxBuddyConfig : DefaultAonyxBuddyConfig
+  );
+} else {
+  console.warn("AonyxBuddy: No window object found.");
+  CreateAonyxBuddy(
+    typeof AonyxBuddyConfig !== 'undefined' ?
+      AonyxBuddyConfig : DefaultAonyxBuddyConfig
+  );
+}
 
 //# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js
