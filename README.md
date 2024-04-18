@@ -19,7 +19,7 @@ AonyxBuddy is a plugin for StreamElements that takes user-generated responses to
   - For example, `!aonyxbuddy say hello world!` can be used as well as `!sol say hello world!` if "sol" has been assigned as its name.
   - Commands:
     - "say": will speak the text following the command.
-        - it is possible to assign aliases in the configuration, allowing commands such as ```!: hello world!```
+        - it is possible to assign aliases in the configuration, allowing commands such as ```!!: hello world!```
         to work properly as an alias for ```!aonyxbuddy say hello world!```
     - "skip" followed by "$args": will have different behaviors:
       - none (no arguments): will cut off the current spoken message, or if none is being spoken, will skip the next incoming speech event.
