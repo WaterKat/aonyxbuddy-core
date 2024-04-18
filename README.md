@@ -45,7 +45,7 @@ const AonyxBuddyConfig = {
         'streamlabs',
         'kofistreambot',
     ],
-    blockedWords: badwords,
+    blockedWords: ["your", "bad", "words", "here"],
     spriteRendering: {
         canvas: {
             size: {
