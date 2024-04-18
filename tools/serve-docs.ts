@@ -1,4 +1,4 @@
-const PORT : number = 3000;
+const PORT : number = 3010;
 const HOSTNAME : string = 'localhost';
 
 const server = Bun.serve({

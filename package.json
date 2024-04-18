@@ -19,6 +19,7 @@
   "scripts": {
     "build:dev": "mkdir -p ./build && cp ./test/* ./build/ && bun build ./test/*.ts --outdir ./build/&& bun build ./src/app.js --outfile ./build/app.js && rm ./build/app.test.ts && echo \"//# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js\" >> ./build/app.js",
     "build": "bun build ./src/app.ts --minify --outfile ./build/app.js",
-    "serve": "bun ./tools/serve.ts"
+    "serve": "bun ./tools/serve.ts",
+    "serve:docs": "bun ./tools/serve-docs.ts"
   }
 }
