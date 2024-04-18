@@ -19,6 +19,9 @@
 # allow testing
 !/test/*.*
 
+# allow docs
+!/docs/*.*
+
 # ignore again
 /**/node_modules
 /**/out

@@ -8,7 +8,9 @@
   },
   "devDependencies": {
     "bun-types": "latest",
-    "standardized-audio-context-mock": "^9.6.34"
+    "jsdoc": "^4.0.2",
+    "standardized-audio-context-mock": "^9.6.34",
+    "tsdoc": "^0.0.4"
   },
   "dependencies": {
     "al-stream-elements-translator": "git@github.com:WaterKat/al-stream-elements-translator.git",
@@ -16,6 +18,7 @@
   },
   "scripts": {
     "build:dev": "mkdir -p ./build && cp ./test/* ./build/ && bun build ./test/*.ts --outdir ./build/&& bun build ./src/app.js --outfile ./build/app.js && rm ./build/app.test.ts && echo \"//# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js\" >> ./build/app.js",
+    "build": "bun build ./src/app.ts --minify --outfile ./build/app.js",
     "serve": "bun ./tools/serve.ts"
   }
 }
