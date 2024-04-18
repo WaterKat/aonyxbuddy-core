@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles.css" />
+    <title>AonyxBuddy Test Webpage</title>
+  </head>
+  <body>
+    <header>
+      <p class="header-text">Welcome to the AonyxBuddy Test Webpage</p>
+    </header>
+
+    <main>
+      <section>
+        <h2>Open console for more info</h2>
+      </section>
+
+      <br />
+
+      <div>
+        <label>Username: </label>
+        <input type="text" id="ab_username" value="AonyxBuddy" />
+        <label>Receiver: </label>
+        <input type="text" id="ab_receiver" value="WaterKat" />
+      </div>
+
+      <br />
+
+      <div>
+        <button id="ab_follow">FOLLOW</button>
+        <button id="ab_subscriber">SUBSCRIBER</button>
+        <button id="ab_gift_single">GIFT_SINGLE</button>
+        <button id="ab_gift_bulk_sent">GIFT_BULK_SENT</button>
+        <button id="ab_gift_bulk_received">GIFT_BULK_RECEIVED</button>
+        <button id="ab_raid">RAID</button>
+        <button id="ab_cheer">CHEER</button>
+        <!--button id="ab_chat">CHAT</button-->
+        <!--button id="ab_chat_first">CHAT_FIRST</button--> 
+        <!--button id="ab_command">COMMAND</button-->
+        <button id="ab_redeem">REDEEM</button>
+        <!--button id="ab_other">OTHER</button-->
+        <!--button id="ab_ignore">IGNORE</button-->
+      </div>
+
+      <br />
+
+      <div>
+        <label>Chat Message: </label>
+        <input type="text" id="ab_message" name="message-text" />
+        <button id="ab_chat">Send Chat</button>
+      </div>
+    </main>
+    <div class="scrollable-div" id="ab_responses_container">
+    </div>
+
+    <canvas id="ab_fetch_canvas" width="256" height="256"></canvas>
+
+    <footer>
+      <p class="footer-text">&copy; 2024 WaterKatTV</p>
+    </footer>
+
+    <script src="/config.js"></script>
+    <script src="/app.js" type="module" defer></script>
+    <script src="/app.test.js" type="module" defer></script>
+  </body>
+</html>

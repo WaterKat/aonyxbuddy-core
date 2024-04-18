@@ -1,0 +1,48 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+header {
+  left: 0;
+  top: 0;
+  width: 100%;
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+}
+.header-text {
+  font-size: 4vh;
+  text-align: center;
+}
+main {
+  left: 0;
+  bottom: 5%;
+  width: 100%;
+  height: 105%;
+  background-color: white;
+  color: black;
+}
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 5%;
+  width: 100%;
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+.scrollable-div {
+  width: 100%; /* Set your desired width */
+  height: 400px; /* Set your desired height */
+  border: 1px solid #ccc; /* Optional border for visual clarity */
+  overflow: auto; /* Enable scroll if content overflows */
+}
+
+.footer-text {
+  font-size: 2vh;
+  text-align: center;
+}

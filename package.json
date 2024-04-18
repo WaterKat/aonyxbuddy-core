@@ -1,0 +1,21 @@
+{
+  "name": "al-aonyxbuddy",
+  "private": true,
+  "module": "./src/index.ts",
+  "type": "module",
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "standardized-audio-context-mock": "^9.6.34"
+  },
+  "dependencies": {
+    "al-stream-elements-translator": "git@github.com:WaterKat/al-stream-elements-translator.git",
+    "gifuct-js": "^2.1.2"
+  },
+  "scripts": {
+    "build:dev": "mkdir -p ./build && cp ./test/* ./build/ && bun build ./test/*.ts --outdir ./build/&& bun build ./src/app.js --outfile ./build/app.js && rm ./build/app.test.ts && echo \"//# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js\" >> ./build/app.js",
+    "serve": "bun ./tools/serve.ts"
+  }
+}
