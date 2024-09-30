@@ -10,28 +10,25 @@ import {
 
 import {
   CreateAudioQueue,
-  GetStreamElementsVoiceAudioBuffer
+  GetStreamElementsVoiceAudioBuffer,
 } from "./ui/audio/index.js";
 
-import {
-  ListenForStreamElementsEvents,
-} from "./bridge/stream-elements/index.js";
+import { ListenForStreamElementsEvents } from "./bridge/stream-elements/index.js";
 
-import {
-  GetAonyxBuddyStreamEventListener
-} from "./bridge/stream-event-listener/index.js"
+import { GetAonyxBuddyStreamEventListener } from "./bridge/stream-event-listener/index.js";
 
 import {
   EStreamEventType,
-  GetProcessEventFunction, TStreamEvent
+  GetProcessEventFunction,
+  TStreamEvent,
 } from "./core/stream-events/index.js";
 
 import {
-  ConvertLegacyProcessorConfig, IsLegacyEventProcessorConfig
+  ConvertLegacyProcessorConfig,
+  IsLegacyEventProcessorConfig,
 } from "./core/stream-events/legacy-support.js";
 
 import { GetStreamEventResponse } from "./core/index.js";
-
 
 async function CreateAonyxBuddy(config: IClientConfig) {
   /**
@@ -40,8 +37,8 @@ async function CreateAonyxBuddy(config: IClientConfig) {
    */
   const { audioQueue, renderer } = {
     audioQueue: await CreateAudioQueue({ fftSize: 32 }),
-    renderer: await InitializeRenderer(config.spriteRendering)
-  }
+    renderer: await InitializeRenderer(config.spriteRendering),
+  };
 
   if (!renderer || !audioQueue) {
     console.error("Failed to initialize renderer or audioQueue. Exiting.");
@@ -49,13 +46,12 @@ async function CreateAonyxBuddy(config: IClientConfig) {
   }
 
   const talkingParam = renderer.config.params.find(
-    param => param.name === "talking"
+    (param) => param.name === "talking"
   );
 
   const muteParam = renderer.config.params.find(
-    param => param.name === "mute"
+    (param) => param.name === "mute"
   );
-
 
   /**
    * * This is most stateful part of the code
@@ -81,18 +77,19 @@ async function CreateAonyxBuddy(config: IClientConfig) {
       freqMax = new Array(frequencies.length).fill(0);
     }
     freqMax = frequencies.map((f, i) => Math.max(f, freqMax[i]));
-    frequencies.forEach((f, i) => f /= freqMax[i]);
+    frequencies.forEach((f, i) => (f /= freqMax[i]));
 
-    const amplitude = Math.abs(frequencies.reduce((a, b, index) => {
-      const weight = index < frequencies.length / 4 ? 1 : -1;
-      return a + (b * weight);
-    }, 0));
+    const amplitude = Math.abs(
+      frequencies.reduce((a, b, index) => {
+        const weight = index < frequencies.length / 4 ? 1 : -1;
+        return a + b * weight;
+      }, 0)
+    );
 
     mouthMax = Math.max(amplitude, mouthMax);
 
     /** assign param */
     talkingParam.value = amplitude / mouthMax;
-
   }, 1000 / config.spriteRendering.defaultFPS);
 
   function RenderLoop() {
@@ -133,11 +130,16 @@ async function CreateAonyxBuddy(config: IClientConfig) {
    * TODO Add stateful behaviour
    *  TODO (re)add mute feature
    */
-  const getProcessEventOptions = IsLegacyEventProcessorConfig(config) ?
-    ConvertLegacyProcessorConfig(config) : config
+  const getProcessEventOptions = IsLegacyEventProcessorConfig(config)
+    ? ConvertLegacyProcessorConfig(config)
+    : config;
   const ProcessEvent = GetProcessEventFunction(getProcessEventOptions);
 
-  console.log("ProcessEvent:", getProcessEventOptions, IsLegacyEventProcessorConfig(config));
+  console.log(
+    "ProcessEvent:",
+    getProcessEventOptions,
+    IsLegacyEventProcessorConfig(config)
+  );
 
   function HandleCommand(event: TStreamEvent) {
     console.log("Command:", event);
@@ -152,15 +154,18 @@ async function CreateAonyxBuddy(config: IClientConfig) {
       case "debug":
         break;
       case "say":
-        promiseQueue.push(() => new Promise<void>((resolve, reject) => {
-          audioQueue.QueueAudioBuffer(
-            GetStreamElementsVoiceAudioBuffer(
-              audioQueue.context,
-              event.args
-            )
-          );
-          audioQueue.PlayQueue().then(resolve).catch(reject);
-        }));
+        promiseQueue.push(
+          () =>
+            new Promise<void>((resolve, reject) => {
+              audioQueue.QueueAudioBuffer(
+                GetStreamElementsVoiceAudioBuffer(
+                  audioQueue.context,
+                  event.args
+                )
+              );
+              audioQueue.PlayQueue().then(resolve).catch(reject);
+            })
+        );
         RunPromiseQueue();
         break;
       case "skip":
@@ -179,44 +184,37 @@ async function CreateAonyxBuddy(config: IClientConfig) {
     }
   }
 
-
   function HandleEvent(raw: TStreamEvent) {
-    if (!active)
-      return;
+    if (!active) return;
 
     const loggedEvent = ProcessEvent(raw);
     const event = loggedEvent.getValue();
 
     console.log("Event:", event, loggedEvent.getLogs());
 
-    if (event.type === EStreamEventType.COMMAND)
-      return HandleCommand(event);
+    if (event.type === EStreamEventType.COMMAND) return HandleCommand(event);
 
     const response = GetStreamEventResponse(event, {
       responses: config.responses["voice"],
       key: event.type,
-      randomBetween01Func: Math.random
+      randomBetween01Func: Math.random,
     });
 
-    if (!response || response.length < 0)
-      return;
+    if (!response || response.length < 0) return;
 
     /** queue speech */
-    const speechFunc = () => new Promise<void>((resolve, reject) => {
-      audioQueue.QueueAudioBuffer(
-        GetStreamElementsVoiceAudioBuffer(
-          audioQueue.context,
-          response
-        )
-      );
-      audioQueue.PlayQueue().then(resolve).catch(reject);
-    });
+    const speechFunc = () =>
+      new Promise<void>((resolve, reject) => {
+        audioQueue.QueueAudioBuffer(
+          GetStreamElementsVoiceAudioBuffer(audioQueue.context, response)
+        );
+        audioQueue.PlayQueue().then(resolve).catch(reject);
+      });
 
     promiseQueue.push(speechFunc);
 
     RunPromiseQueue();
   }
-
 
   /** event listeners go here */
   const streamElementsListener = ListenForStreamElementsEvents(HandleEvent);
@@ -229,17 +227,16 @@ async function CreateAonyxBuddy(config: IClientConfig) {
 
   /** first messages go here */
 
-  const firstMessage = () => new Promise<void>((resolve, reject) => {
-    audioQueue.QueueAudioBuffer(
-      GetStreamElementsVoiceAudioBuffer(
-        audioQueue.context,
-        `A-onyx Buddy systems online. ${config.nickname}, is active.`
-      )
-    );
-    audioQueue.PlayQueue()
-      .then(resolve)
-      .catch(reject);
-  });
+  const firstMessage = () =>
+    new Promise<void>((resolve, reject) => {
+      audioQueue.QueueAudioBuffer(
+        GetStreamElementsVoiceAudioBuffer(
+          audioQueue.context,
+          `A-onyx Buddy systems online. ${config.nickname}, is active.`
+        )
+      );
+      audioQueue.PlayQueue().then(resolve).catch(reject);
+    });
   promiseQueue.push(firstMessage);
   RunPromiseQueue();
 
@@ -250,23 +247,25 @@ async function CreateAonyxBuddy(config: IClientConfig) {
       audioQueue.StopAndClearQueue();
       streamElementsListener?.RemoveListener();
       aonyxListener?.RemoveListener();
-    }
-  }
+    },
+  };
 }
 
 declare const AonyxBuddyConfig: IClientConfig;
 
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   console.log("AonyxBuddy created, refer to window.aonyxbuddy for access.");
   (window as any)["aonyxbuddy"] = CreateAonyxBuddy(
-    typeof AonyxBuddyConfig !== 'undefined' ?
-      AonyxBuddyConfig : DefaultAonyxBuddyConfig
+    typeof AonyxBuddyConfig !== "undefined"
+      ? AonyxBuddyConfig
+      : DefaultAonyxBuddyConfig
   );
 } else {
   console.warn("AonyxBuddy: No window object found.");
   CreateAonyxBuddy(
-    typeof AonyxBuddyConfig !== 'undefined' ?
-      AonyxBuddyConfig : DefaultAonyxBuddyConfig
+    typeof AonyxBuddyConfig !== "undefined"
+      ? AonyxBuddyConfig
+      : DefaultAonyxBuddyConfig
   );
 }
 

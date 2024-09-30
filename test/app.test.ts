@@ -21,12 +21,22 @@ const chatInput = document
   .getElementById("ab_message") as HTMLInputElement;
 const GetChat = () => chatInput.value;
 
+const templatePermissions = {
+  chatter: true,
+  follower: false,
+  subscriber: false,
+  vip: false,
+  moderator: false,
+  streamer: false,
+};
+
 // Send follow event
 document
   .getElementById("ab_follow")
   ?.addEventListener("click", () => SendEvent(SendFollow()));
 const SendFollow = (): TStreamEvent => ({
   tstype: EStreamEventType.TS_TYPE,
+  permissions: templatePermissions,
   type: EStreamEventType.FOLLOW,
   username: GetUsername(),
 });
@@ -39,6 +49,7 @@ const SendSubscriber = (): TStreamEvent => ({
   tstype: EStreamEventType.TS_TYPE,
   type: EStreamEventType.SUBSCRIBER,
   username: GetUsername(),
+  permissions: templatePermissions,
   length: Math.floor(Math.random() * 10),
   message: {
     text: GetChat(),
@@ -53,6 +64,7 @@ document
 const SendGiftSingle = (): TStreamEvent => ({
   tstype: EStreamEventType.TS_TYPE,
   type: EStreamEventType.GIFT_SINGLE,
+  permissions: templatePermissions,
   username: GetUsername(),
   receiver: GetReceiver()
 });
@@ -64,6 +76,7 @@ document
 const SendGiftBulkSent = (): TStreamEvent => ({
   tstype: EStreamEventType.TS_TYPE,
   type: EStreamEventType.GIFT_BULK_SENT,
+  permissions: templatePermissions,
   username: GetUsername(),
   count: Math.floor(Math.random() * 10),
 });
@@ -75,6 +88,7 @@ document
 const SendGiftBulkReceived = (): TStreamEvent => ({
   tstype: EStreamEventType.TS_TYPE,
   type: EStreamEventType.GIFT_BULK_RECEIVED,
+  permissions: templatePermissions,
   username: GetUsername(),
   receiver: GetReceiver(),
 });
@@ -87,6 +101,7 @@ const SendRaid = (): TStreamEvent => ({
   tstype: EStreamEventType.TS_TYPE,
   type: EStreamEventType.RAID,
   username: GetUsername(),
+  permissions: templatePermissions,
   count: Math.floor(Math.random() * 10),
 });
 
@@ -98,6 +113,7 @@ const SendCheer = (): TStreamEvent => ({
   tstype: EStreamEventType.TS_TYPE,
   type: EStreamEventType.CHEER,
   username: GetUsername(),
+  permissions: templatePermissions,
   amount: Math.floor(Math.random() * 100),
   message: {
     text: GetChat(),
@@ -112,6 +128,7 @@ document
 const SendChat = (): TStreamEvent => ({
   tstype: EStreamEventType.TS_TYPE,
   type: EStreamEventType.CHAT,
+  permissions: templatePermissions,
   username: GetUsername(),
   message: {
     text: GetChat(),
@@ -126,6 +143,7 @@ document
 const SendRedeem = (): TStreamEvent => ({
   tstype: EStreamEventType.TS_TYPE,
   type: EStreamEventType.REDEEM,
+  permissions: templatePermissions,
   username: GetUsername(),
   id: "test",
   message: {

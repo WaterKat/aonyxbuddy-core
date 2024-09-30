@@ -54,7 +54,7 @@ export type TStreamEvent = {
     type: Exclude<EStreamEventType, EStreamEventType.TS_TYPE>,
     username: string,
     nickname?: string,
-    permissions?: TPermissions,
+    permissions: TPermissions,
 } & ({
     type: EStreamEventType.FOLLOW
 } | {

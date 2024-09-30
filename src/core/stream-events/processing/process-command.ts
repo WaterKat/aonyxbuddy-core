@@ -100,6 +100,7 @@ export function GetProcessCommandFunction(
             tstype: event.tstype,
             type: EStreamEventType.COMMAND,
             username: event.username,
+            permissions: event.permissions,
             nickname: event.nickname,
             identifier: validIdentifier,
             group: validIdentifier,

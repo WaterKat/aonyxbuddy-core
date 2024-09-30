@@ -2,17 +2,17 @@ import { Logger } from "../logger-monad.js";
 import { TStreamEvent, EStreamEventType } from "../types.js";
 
 /**
- * This type represents the different permission levels a user can have. A 
+ * This type represents the different permission levels a user can have. A
  * user with a higher permission level can perform actions that a user with a
  * lower permission level cannot.
  */
 export enum EPermissionLevel {
-    STREAMER = 100,
-    MODERATOR = 80,
-    VIP = 60,
-    SUBSCRIBER = 40,
-    FOLLOWER = 20,
-    CHATTER = 0
+  STREAMER = 100,
+  MODERATOR = 80,
+  VIP = 60,
+  SUBSCRIBER = 40,
+  FOLLOWER = 20,
+  CHATTER = 0,
 }
 
 /**
@@ -20,8 +20,8 @@ export enum EPermissionLevel {
  * list, they are assumed to have the lowest permission level.
  */
 export interface IUserPermissions {
-    [username: string]: EPermissionLevel
-};
+  [username: string]: EPermissionLevel;
+}
 
 /**
  * This function returns the permission level of a user. If the user is not in
@@ -31,21 +31,22 @@ export interface IUserPermissions {
  * @returns the permission level of the user
  */
 const GetPermissionLevel = (
-    username: string,
-    permissions: IUserPermissions
-): EPermissionLevel => (
-    typeof permissions[username] !== "undefined"
-        ? permissions[username]
-        : EPermissionLevel.CHATTER
-);
+  username: string,
+  permissions: IUserPermissions
+): EPermissionLevel =>
+  typeof permissions[username] !== "undefined"
+    ? permissions[username]
+    : EPermissionLevel.CHATTER;
 
 /**
- * This type represents requirement levels needed for a given stream event 
+ * This type represents requirement levels needed for a given stream event
  * type. If a user does not have the required permission level, the event is
- * ignored. 
+ * ignored.
  */
-export type TProcessorFilterPermissions =
-    Record<EStreamEventType, EPermissionLevel>
+export type TProcessorFilterPermissions = Record<
+  EStreamEventType,
+  EPermissionLevel
+>;
 
 /**
  * This type represents the options for the ProcessorFilterPermissions function
@@ -53,8 +54,8 @@ export type TProcessorFilterPermissions =
  * @param permissions the permissions of the users
  */
 export interface FilterPermissionsOptions {
-    permissionRequirements: TProcessorFilterPermissions,
-    permissions: IUserPermissions
+  permissionRequirements: TProcessorFilterPermissions;
+  permissions: IUserPermissions;
 }
 
 /**
@@ -67,42 +68,53 @@ export interface FilterPermissionsOptions {
  * users
  */
 export function GetFilterPermissionsFunction(
-    options?: FilterPermissionsOptions
+  options?: FilterPermissionsOptions
 ): (event: TStreamEvent) => Logger<TStreamEvent> {
-    if (
-        !options
-        || !options.permissionRequirements
-        || !options.permissions
-    ) {
-        return (event: TStreamEvent) => new Logger(event,
-            ["options not defined"]
-        );
+  if (!options || !options.permissionRequirements || !options.permissions) {
+    return (event: TStreamEvent) => new Logger(event, ["options not defined"]);
+  }
+
+  return function (event: TStreamEvent): Logger<TStreamEvent> {
+    const requiresPermissions = event.type in options.permissionRequirements;
+
+    if (!requiresPermissions)
+      return new Logger(event, ["no permissions required"]);
+
+    //! LEGACY FIX
+    let userPermissionLevel: EPermissionLevel;
+    if (event.permissions) {
+      userPermissionLevel = EPermissionLevel.CHATTER;
+      if (event.permissions.streamer) userPermissionLevel = EPermissionLevel.STREAMER;
+      else if (event.permissions.moderator) userPermissionLevel = EPermissionLevel.MODERATOR;
+      else if (event.permissions.vip) userPermissionLevel = EPermissionLevel.VIP;
+      else if (event.permissions.subscriber) userPermissionLevel = EPermissionLevel.SUBSCRIBER;
+      else if (event.permissions.follower) userPermissionLevel = EPermissionLevel.FOLLOWER;
+      else if (event.permissions.chatter) userPermissionLevel = EPermissionLevel.CHATTER;
+    } else {
+      userPermissionLevel = GetPermissionLevel(
+        event.username,
+        options.permissions
+      );
     }
 
-    return function (event: TStreamEvent): Logger<TStreamEvent> {
-        const requiresPermissions =
-            event.type in options.permissionRequirements;
+    const requiredPermissionLevel = options.permissionRequirements[event.type];
 
-        if (!requiresPermissions)
-            return new Logger(event, ["no permissions required"]);
+    console.log(userPermissionLevel, 'required:', requiredPermissionLevel);
 
-        const userPermissionLevel = GetPermissionLevel(
-            event.username,
-            options.permissions
-        );
 
-        const requiredPermissionLevel =
-            options.permissionRequirements[event.type];
-
-        if (userPermissionLevel < requiredPermissionLevel) {
-            return new Logger({
-                tstype: event.tstype,
-                username: event.username,
-                type: EStreamEventType.IGNORE,
-                reason: 'permissions'
-            }, [`permissions not met by ${event.username} for ${event.type}`]);
-        } else {
-            return new Logger(event, ["permissions met"]);
-        }
+    if (userPermissionLevel < requiredPermissionLevel) {
+      return new Logger(
+        {
+          tstype: event.tstype,
+          username: event.username,
+          type: EStreamEventType.IGNORE,
+          permissions: event.permissions,
+          reason: "permissions",
+        },
+        [`permissions not met by ${event.username} for ${event.type}`]
+      );
+    } else {
+      return new Logger(event, ["permissions met"]);
     }
+  };
 }

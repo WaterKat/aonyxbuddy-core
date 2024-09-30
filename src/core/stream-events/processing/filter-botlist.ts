@@ -43,7 +43,8 @@ export function GetFilterBotlistFunction(
                 tstype: EStreamEventType.TS_TYPE,
                 username: event.username,
                 type: EStreamEventType.IGNORE,
-                reason: "botlist"
+                reason: "botlist",
+                permissions: event.permissions
             }, log);
         } else {
             return new Logger(event, log);

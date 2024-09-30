@@ -34,6 +34,7 @@ export function GetFilterBlacklistFunction(
                 tstype: event.tstype,
                 type: EStreamEventType.IGNORE,
                 username: event.username,
+                permissions: event.permissions,
                 reason: 'blacklist'
             } : event,
             [`blacklist was ${shouldBlacklist}`]
