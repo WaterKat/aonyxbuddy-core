@@ -1,26 +1,24 @@
 {
-  "name": "al-aonyxbuddy",
+  "name": "@aonyxbuddy/core",
+  "version": "0.1.0",
   "private": true,
-  "module": "./src/index.ts",
-  "types": "./src/index.ts",
-  "type": "module",
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  },
-  "devDependencies": {
-    "bun-types": "latest",
-    "jsdoc": "^4.0.2",
-    "standardized-audio-context-mock": "^9.6.34",
-    "tsdoc": "^0.0.4"
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "rollup -c"
   },
   "dependencies": {
-    "al-stream-elements-translator": "git@github.com:WaterKat/al-stream-elements-translator.git",
     "gifuct-js": "^2.1.2"
   },
-  "scripts": {
-    "build:dev": "mkdir -p ./build && cp ./test/* ./build/ && bun build ./test/*.ts --outdir ./build/&& bun build ./src/app.js --outfile ./build/app.js && rm ./build/app.test.ts && echo \"//# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js\" >> ./build/app.js",
-    "build": "bun build ./src/app.ts --minify --outfile ./build/app.js",
-    "serve": "bun ./tools/serve.ts",
-    "serve:docs": "bun ./tools/serve-docs.ts"
+  "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.0",
+    "rollup": "^4.24.0",
+    "rollup-plugin-delete": "^2.1.0",
+    "rollup-plugin-dts": "^6.1.1",
+    "tslib": "^2.7.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.8"
   }
 }

@@ -1,4 +1,4 @@
-export { IClientConfig, DefaultAonyxBuddyConfig } from "./config/index.js";
+export { type IClientConfig, DefaultAonyxBuddyConfig } from "./config/index.js";
 export {
   CreateAudioQueue,
   GetStreamElementsVoiceAudioBuffer,
@@ -6,11 +6,11 @@ export {
 export {
   EStreamEventType,
   GetProcessEventFunction,
-  TStreamEvent,
+  type TStreamEvent,
 } from "./core/stream-events/index.js";
 export {
   ConvertLegacyProcessorConfig,
   IsLegacyEventProcessorConfig,
 } from "./core/stream-events/legacy-support.js";
 export { GetStreamEventResponse } from "./core/index.js";
-export { default as TranslateStreamElementsEventToAonyxEvent } from "./bridge/stream-elements/event-translator.ts";
+export { default as TranslateStreamElementsEventToAonyxEvent } from "./bridge/stream-elements/event-translator.js";

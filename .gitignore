@@ -1,32 +1,26 @@
 # ignore all
 /**/*.*
-/**/old.*
 
 # allow git files
 !.gitignore
-!LICENSE.md
-!README.md
 
-# allow bun
+# allow npm
 !package.json
-!bun.lockb
-!/tsconfig.json
-!/src/**/*.ts
+!package-lock.json
 
-# allow tools
-!/tools/*.*
+# allow vite
+!index.html
+!public/**/*.*
+!index.ts 
 
-# allow testing
-!/test/*.*
+# allow rollup
+!rollup.config.mjs
 
-# allow docs
-!/docs/*.*
+# allow ts
+!tsconfig.*.json
+!src/**/*.ts
 
 # ignore again
-/**/node_modules
-/**/out
-/**/build
-/**/*.env
-/**/*.mp3
-/**/old.*
-/**/example-configs
+dist
+node_modules
+/**/*.ignore

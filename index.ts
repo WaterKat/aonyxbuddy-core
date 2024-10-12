@@ -1,6 +1,6 @@
 import {
   EStreamEventType, TStreamEvent
-} from "../src/core/stream-events/types.js";
+} from "./src/core/stream-events/types.js";
 
 function SendEvent(event: TStreamEvent) {
   const newEvent = new CustomEvent(EStreamEventType.TS_TYPE, {
@@ -155,7 +155,7 @@ const SendRedeem = (): TStreamEvent => ({
 // Link Text
 import {
   GetAonyxBuddyStreamEventListener
-} from "../src/bridge/stream-event-listener/index.js";
+} from "./src/bridge/stream-event-listener/index.js";
 
 const responsesContainer = document
   .getElementById("ab_responses_container") as HTMLDivElement;
@@ -166,10 +166,11 @@ const AddResponse = (response: string) => {
   responsesContainer.insertBefore(p, responsesContainer.firstChild);
 }
 
-import { GetStreamEventResponse } from "../src/core/responses/index.js";
+import { GetStreamEventResponse } from "./src/core/responses/index.js";
 import {
-  ClientConfigExample as config
-} from "../src/config/example-configs/iclient-config-fariaorion.test.js";
+  DefaultAonyxBuddyConfig as config
+} from "./src/config/default-config.js";
+
 import {
   IUserPermissions,
   EPermissionLevel,
@@ -179,7 +180,7 @@ import {
   StatefulProcessIgnoreRaid,
   GetProcessEventFunction,
   ProcessEventOptions
-} from "../src/core/stream-events/index.js";
+} from "./src/core/stream-events/index.js";
 
 let impureProcessedEvent: TStreamEvent = {} as any;
 
