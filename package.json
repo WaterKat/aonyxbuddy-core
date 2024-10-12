@@ -6,19 +6,23 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "dev": "vite",
-    "build": "rollup -c"
+    "build": "npx eslint . && rollup -c"
   },
   "dependencies": {
     "gifuct-js": "^2.1.2"
   },
   "devDependencies": {
+    "@eslint/js": "^9.12.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.0",
+    "@types/eslint__js": "^8.42.3",
+    "eslint": "^9.12.0",
     "rollup": "^4.24.0",
     "rollup-plugin-delete": "^2.1.0",
     "rollup-plugin-dts": "^6.1.1",
     "tslib": "^2.7.0",
     "typescript": "^5.6.3",
+    "typescript-eslint": "^8.8.1",
     "vite": "^5.4.8"
   }
 }

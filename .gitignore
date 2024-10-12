@@ -20,6 +20,9 @@
 !tsconfig.*.json
 !src/**/*.ts
 
+# allow eslint
+!eslint.config.mjs
+
 # ignore again
 dist
 node_modules
