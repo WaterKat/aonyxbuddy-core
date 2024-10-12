@@ -48,10 +48,12 @@ async function CreateAonyxBuddy(config: IClientConfig) {
   const talkingParam = renderer.config.params.find(
     (param) => param.name === "talking"
   );
-
+  
+/*
   const muteParam = renderer.config.params.find(
     (param) => param.name === "mute"
   );
+*/
 
   /**
    * * This is most stateful part of the code

@@ -16,7 +16,7 @@ export class Logger<T> {
         );
     }
 
-    log<R>(log: string) {
+    log(log: string) {
         return new Logger(this.value, [...this.logs, log]);
     }
 

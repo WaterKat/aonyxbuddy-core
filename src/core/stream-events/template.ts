@@ -23,7 +23,7 @@ import {
 } from "./processing/index.js";
 
 import {
-  GetFilterConditionFunction,
+//  GetFilterConditionFunction,
   FilterConditionOptions,
 } from "./custom-processing/filter-condition.js";
 
@@ -51,7 +51,7 @@ export type ProcessEventOptions = {
 export function GetProcessEventFunction(
   options: ProcessEventOptions
 ): (event: TStreamEvent) => Logger<TStreamEvent> {
-  const filterCondition = GetFilterConditionFunction(options.conditionOptions);
+//  const filterCondition = GetFilterConditionFunction(options.conditionOptions);
   const validateEvent = GetValidateFunction(options.validateOptions);
   const filterBlacklist = GetFilterBlacklistFunction(options.blacklistOptions);
   const processCommand = GetProcessCommandFunction(options.commandOptions);

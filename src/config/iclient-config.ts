@@ -1,5 +1,5 @@
 //import * as StreamCharacters from '@aonyxbuddy/stream-characters';
-import * as StreamEvents from '../core/stream-events/index.js';
+//import * as StreamEvents from '../core/stream-events/index.js';
 import * as SpriteRendering from '../ui/sprite-rendering/index.js';
 import { StreamElementsVoiceID } from '../ui/audio/index.js';
 
@@ -27,6 +27,7 @@ export interface IClientConfig {
     commandIdentifier?: string,
 }
 
+/*
 // aonyxbuddy_configs@aonyxbuddy
 interface IAonyxBuddyConfig  {
     aonyxbuddy_id?: number,
@@ -40,3 +41,4 @@ interface IAonyxBuddyResponsesRow {
     tags: string[],
     response: string,
 }
+*/
