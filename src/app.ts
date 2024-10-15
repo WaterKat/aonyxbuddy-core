@@ -13,9 +13,8 @@ import {
   GetStreamElementsVoiceAudioBuffer,
 } from "./ui/audio/index.js";
 
-import { ListenForStreamElementsEvents } from "./bridge/stream-elements/index.js";
-
-import { GetAonyxBuddyStreamEventListener } from "./bridge/stream-event-listener/index.js";
+import { ListenForStreamElementsEvents } from "./events/stream-elements/index.js";
+import { GetAonyxBuddyStreamEventListener } from "./events/stream-event-listener/index.js";
 
 import {
   EStreamEventType,
@@ -48,8 +47,8 @@ async function CreateAonyxBuddy(config: IClientConfig) {
   const talkingParam = renderer.config.params.find(
     (param) => param.name === "talking"
   );
-  
-/*
+
+  /*
   const muteParam = renderer.config.params.find(
     (param) => param.name === "mute"
   );
@@ -162,7 +161,8 @@ async function CreateAonyxBuddy(config: IClientConfig) {
               audioQueue.QueueAudioBuffer(
                 GetStreamElementsVoiceAudioBuffer(
                   audioQueue.context,
-                  event.args
+                  event.args,
+                  config.tts.voice || "Brian"
                 )
               );
               audioQueue.PlayQueue().then(resolve).catch(reject);
@@ -208,7 +208,11 @@ async function CreateAonyxBuddy(config: IClientConfig) {
     const speechFunc = () =>
       new Promise<void>((resolve, reject) => {
         audioQueue.QueueAudioBuffer(
-          GetStreamElementsVoiceAudioBuffer(audioQueue.context, response)
+          GetStreamElementsVoiceAudioBuffer(
+            audioQueue.context,
+            response,
+            config.tts.voice || "Brian"
+          )
         );
         audioQueue.PlayQueue().then(resolve).catch(reject);
       });
@@ -234,7 +238,8 @@ async function CreateAonyxBuddy(config: IClientConfig) {
       audioQueue.QueueAudioBuffer(
         GetStreamElementsVoiceAudioBuffer(
           audioQueue.context,
-          `A-onyx Buddy systems online. ${config.nickname}, is active.`
+          `A-onyx Buddy systems online. ${config.nickname}, is active.`,
+          config.tts.voice || "Brian"
         )
       );
       audioQueue.PlayQueue().then(resolve).catch(reject);
@@ -257,6 +262,7 @@ declare const AonyxBuddyConfig: IClientConfig;
 
 if (typeof window !== "undefined") {
   console.log("AonyxBuddy created, refer to window.aonyxbuddy for access.");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (window as any)["aonyxbuddy"] = CreateAonyxBuddy(
     typeof AonyxBuddyConfig !== "undefined"
       ? AonyxBuddyConfig

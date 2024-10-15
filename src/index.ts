@@ -1,3 +1,7 @@
+export * from "./types.js";
+
+
+// original file
 export { type IClientConfig, DefaultAonyxBuddyConfig } from "./config/index.js";
 export {
   CreateAudioQueue,
@@ -13,4 +17,4 @@ export {
   IsLegacyEventProcessorConfig,
 } from "./core/stream-events/legacy-support.js";
 export { GetStreamEventResponse } from "./core/index.js";
-export { default as TranslateStreamElementsEventToAonyxEvent } from "./bridge/stream-elements/event-translator.js";
+export { default as TranslateStreamElementsEventToAonyxEvent } from "./events/stream-elements/event-translator.js";
