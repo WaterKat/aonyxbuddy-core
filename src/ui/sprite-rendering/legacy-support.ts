@@ -28,12 +28,12 @@ export interface ILegacyConfig {
  * @param value the value to check if it is a object
  */
 export function IsLegacyConfig(
-  value: any | ILegacyConfig
+  value: unknown
 ): value is ILegacyConfig {
   if (typeof value !== "object") return false;
-  if (typeof value.canvas !== "object") return false;
-  if (typeof value.defaultFPS !== "number") return false;
-  if (typeof value.sprites !== "object") return false;
+  if (typeof (value as ILegacyConfig).canvas !== "object") return false;
+  if (typeof (value as ILegacyConfig).defaultFPS !== "number") return false;
+  if (typeof (value as ILegacyConfig).sprites !== "object") return false;
   return true;
 }
 
