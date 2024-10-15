@@ -1,7 +1,7 @@
 import { TStreamEvent } from "../../core/index.js";
 import { ObjectContainsKey, ObjectMatchesTemplate } from "../../lib.js";
 import { ILogger, IService } from "../../types.js";
-import { SERawEvent, SERawEventTemplate } from "./types";
+import { SERawEvent, SERawEventTemplate } from "./types.js";
 import EventTranslator from "./event-translator.js";
 
 export type TStreamElementsServiceOptions = {
