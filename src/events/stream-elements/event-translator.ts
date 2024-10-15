@@ -1,11 +1,14 @@
 import * as Types from "../../core/stream-events/index.js";
 import { EStreamEventType } from "../../core/stream-events/types.js";
+import { ObjectMatchesTemplate } from "../../lib.js";
 
 import * as SETypes from "./types.js";
 
 export default function TranslateStreamElementsEventToAonyxEvent(
-  _event: any
+  _event: unknown
 ): Types.TStreamEvent | undefined {
+  if (!ObjectMatchesTemplate(_event, { type: "" })) return undefined;
+
   function messageFromString(_message: string): Types.TChat {
     return {
       text: _message ?? "",
@@ -13,8 +16,9 @@ export default function TranslateStreamElementsEventToAonyxEvent(
     };
   }
 
-  function translateMessage(_event: any): Types.TStreamEvent {
-    const seMessage: SETypes.SEMessageEvent = _event;
+  function translateMessage(seMessage: unknown): Types.TStreamEvent | undefined {
+    if (SETypes.isSEMessageEvent(seMessage) === false) return undefined;
+
     const aonyxMessage: Types.TStreamEvent = {
       tstype: EStreamEventType.TS_TYPE,
       type: EStreamEventType.CHAT,
@@ -39,7 +43,9 @@ export default function TranslateStreamElementsEventToAonyxEvent(
     return aonyxMessage;
   }
 
-  function translateOther(_event: any): Types.TStreamEvent | undefined {
+  function translateOther(_event: unknown): Types.TStreamEvent | undefined {
+    if (SETypes.isSEBasicEvent(_event) === false) return undefined;
+    
     //Gift Parsing
     if (_event.type === "subscriber") {
       if (_event.bulkGifted || _event.isCommunityGift || _event.gifted) {
