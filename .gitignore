@@ -23,6 +23,9 @@
 # allow eslint
 !eslint.config.mjs
 
+# allow testing
+!jest.config.js
+
 # ignore again
 dist
 node_modules
