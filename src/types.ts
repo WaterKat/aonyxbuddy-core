@@ -12,7 +12,4 @@ export interface ILogger {
   debug: (...data: unknown[]) => void;
 }
 
-export type TAonyxBuddyClientState = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-};
+

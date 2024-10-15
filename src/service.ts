@@ -1,9 +1,12 @@
 import {
-  IClientConfig,
+  //IClientConfig,
   ILogger,
   IService,
-  TAonyxBuddyClientState,
 } from "./index.js";
+
+export type TAonyxBuddyClientState = {
+  [key: string]: unknown;
+};
 
 export type TAonyxBuddyWebClientOptions = {
   logger: ILogger;
