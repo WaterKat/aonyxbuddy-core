@@ -155,7 +155,7 @@ const SendRedeem = (): TStreamEvent => ({
 // Link Text
 import {
   GetAonyxBuddyStreamEventListener
-} from "./src/bridge/stream-event-listener/index.js";
+} from "./src/events/stream-event-listener/index.js";
 
 const responsesContainer = document
   .getElementById("ab_responses_container") as HTMLDivElement;
@@ -170,9 +170,8 @@ import { GetStreamEventResponse } from "./src/core/responses/index.js";
 import {
   DefaultAonyxBuddyConfig as config
 } from "./src/config/default-config.js";
-
 import {
-  IUserPermissions,
+//  IUserPermissions,
   EPermissionLevel,
   IStatefulFirstEventArgs,
   StatefulProcessFirstChat,
@@ -182,9 +181,11 @@ import {
   ProcessEventOptions
 } from "./src/core/stream-events/index.js";
 
+// eslint-disable-next-line
 let impureProcessedEvent: TStreamEvent = {} as any;
 
 let firstChatOptions: IStatefulFirstEventArgs = {
+// eslint-disable-next-line
   event: {} as any,
   options: {},
   state: {
@@ -193,6 +194,7 @@ let firstChatOptions: IStatefulFirstEventArgs = {
 }
 
 let raidOptions: IStatefulIgnoreRaidArgs = {
+// eslint-disable-next-line
   event: {} as any,
   options: {
     ignoreTimeInSeconds: 30,
@@ -274,6 +276,7 @@ const processEventOptions : ProcessEventOptions = {
 const ProcessEvent = GetProcessEventFunction(processEventOptions);
 
 GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
+  /*
   const permissions: IUserPermissions = {
     [rawEvent.username]: rawEvent.permissions ?
       rawEvent.permissions.streamer ? EPermissionLevel.STREAMER :
@@ -284,6 +287,7 @@ GetAonyxBuddyStreamEventListener((rawEvent: TStreamEvent) => {
                 EPermissionLevel.CHATTER
       : EPermissionLevel.CHATTER
   };
+  */
 
   const loggedEvent = ProcessEvent(rawEvent);
   const processedEvent: TStreamEvent = loggedEvent.getValue();
