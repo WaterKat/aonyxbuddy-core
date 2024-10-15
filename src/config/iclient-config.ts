@@ -1,7 +1,7 @@
 //import * as StreamCharacters from '@aonyxbuddy/stream-characters';
 //import * as StreamEvents from '../core/stream-events/index.js';
 import * as SpriteRendering from '../ui/sprite-rendering/index.js';
-import { StreamElementsVoiceID } from '../ui/audio/index.js';
+import { TStreamElementsVoiceID } from '../ui/audio/index.js';
 
 export interface IClientConfig {
     owner_id: string,
@@ -9,7 +9,7 @@ export interface IClientConfig {
     nicknames: { [key: string]: string[] },
     spriteRendering: SpriteRendering.ILegacyConfig,
     tts: {
-        voice?: StreamElementsVoiceID
+        voice?: TStreamElementsVoiceID
         context?: AudioContext,
         normalize?: boolean,
         downmix_to_mono?: boolean
