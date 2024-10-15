@@ -90,7 +90,7 @@ export type TStreamEvent =
     }
     | TBaseStreamEvent & {
         type: EStreamEventType.OTHER,
-        other: any
+        other: unknown
     }
 
 export const IsTMessageStreamEvent = (

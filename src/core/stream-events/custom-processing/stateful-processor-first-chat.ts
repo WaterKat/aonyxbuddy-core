@@ -8,7 +8,7 @@ import { EStreamEventType, TStreamEvent } from "../types.js";
  */
 export interface IStatefulFirstEventArgs {
   event: TStreamEvent;
-  options: {};
+  options: { [key: string]: unknown };
   state: {
     chatters: string[];
   };

@@ -13,7 +13,7 @@ type LogTag = 'log' | 'error' | 'info' | 'warn';
  * @param args the values to be outputted
  * @returns void
  */
-export default function Log(tag: LogTag, ...args: any): void {
+export default function Log(tag: LogTag, ...args: unknown[]): void {
     console[tag](`[${NAME_TAG}:${tag === 'log' ? '' : `/${tag}`}]`, ...args);
     return;
 }

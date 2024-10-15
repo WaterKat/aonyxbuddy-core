@@ -12,7 +12,7 @@ export interface IRandomResponseOptions {
  * @param array an array to get a random index from
  * @returns a random index from the array
  */
-export function GetRandomIndex(array: Array<any>) {
+export function GetRandomIndex(array: Array<unknown>) {
     return Math.floor(Math.random() * array.length);
 }
 
