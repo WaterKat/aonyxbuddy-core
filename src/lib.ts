@@ -79,6 +79,27 @@ export function ObjectContainsKey<T extends object, K extends string>(
   return key in value;
 }
 
+export function ObjectContainsKeys<T extends object, K extends string>(
+  value: T,
+  ...keys: K[]
+): value is Flatten<T & { [P in K]: unknown }> {
+  keys.forEach((key) => {
+    if (!(key in value)) return false;
+  });
+  return true;
+}
+
+export function ObjectKeysNotUndefined<T extends object, K extends string>(
+  value: T,
+  ...keys: K[]
+): value is Flatten<T & { [P in K]: unknown }> {
+  keys.forEach((key) => {
+    if (!ObjectContainsKey(value, key)) return false;
+    if (typeof value[key] === undefined) return false;
+  });
+  return true;
+}
+
 export function ObjectMatchesTemplate<T extends object>(
   value: unknown,
   template: T,

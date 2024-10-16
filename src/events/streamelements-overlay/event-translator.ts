@@ -1,6 +1,6 @@
 import * as Types from "../../core/stream-events/index.js";
 import { EStreamEventType } from "../../core/stream-events/types.js";
-import { ObjectMatchesTemplate } from "../../lib.js";
+import { ObjectContainsKeys, ObjectMatchesTemplate } from "../../lib.js";
 import { ILogger } from "../../types.js";
 
 import * as SETypes from "./types.js";
@@ -83,6 +83,7 @@ export default function TranslateStreamElementsEventToAonyxEvent(
         };
         break;
       case "subscriber":
+        if (!ObjectContainsKeys(seEvent, "amount", "message")) return;
         aonyxEvent = {
           ...base,
           type: EStreamEventType.SUBSCRIBER,
@@ -91,6 +92,9 @@ export default function TranslateStreamElementsEventToAonyxEvent(
         };
         break;
       case "gift":
+        if (typeof seEvent.bulkGifted === "undefined") return;
+        if (typeof seEvent.sender === "undefined") return;
+        if (typeof seEvent.amount === "undefined") return;
         if (+seEvent.bulkGifted > 0) {
           //bulk-sent
           aonyxEvent = {
