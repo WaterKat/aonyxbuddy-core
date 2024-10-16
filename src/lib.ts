@@ -79,7 +79,7 @@ export function ObjectContainsKey<T extends object, K extends string>(
   return key in value;
 }
 
-export function ObjectMatchesTemplate<T>(
+export function ObjectMatchesTemplate<T extends object>(
   value: unknown,
   template: T,
   logger?: ILogger
@@ -90,14 +90,14 @@ export function ObjectMatchesTemplate<T>(
   }
 
   for (const key in template) {
+    if (typeof template[key] === "undefined") {
+      logger?.info(`Property '${key}' is optional`);
+      continue;
+    }
+
     if (!ObjectContainsKey(value, key)) {
-      if (typeof template[key] !== "undefined") {
-        logger?.warn(`Property '${key}' is not optional`);
-        return false;
-      } else {
-        logger?.info(`Property '${key}' is optional`);
-        continue;
-      }
+      logger?.warn(`Property '${key}' is not optional, but missing in ${value}`);
+      return false;
     }
 
     if (typeof value[key] !== typeof template[key]) {
