@@ -95,7 +95,8 @@ export function ObjectKeysNotUndefined<T extends object, K extends string>(
 ): value is Flatten<T & { [P in K]: unknown }> {
   keys.forEach((key) => {
     if (!ObjectContainsKey(value, key)) return false;
-    if (typeof value[key] === undefined) return false;
+    if (value[key] === undefined) return false;
+    return true;
   });
   return true;
 }
