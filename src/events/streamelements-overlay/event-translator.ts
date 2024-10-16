@@ -84,6 +84,8 @@ export default function TranslateStreamElementsEventToAonyxEvent(
         break;
       case "subscriber":
         if (!ObjectContainsKeys(seEvent, "amount", "message")) return;
+        if (seEvent.amount == undefined) return;
+        if (seEvent.message == undefined) return;
         aonyxEvent = {
           ...base,
           type: EStreamEventType.SUBSCRIBER,
@@ -92,9 +94,12 @@ export default function TranslateStreamElementsEventToAonyxEvent(
         };
         break;
       case "gift":
-        if (typeof seEvent.bulkGifted === "undefined") return;
-        if (typeof seEvent.sender === "undefined") return;
-        if (typeof seEvent.amount === "undefined") return;
+        if (!ObjectContainsKeys(seEvent, "bulkGifted", "sender", "amount"))
+          return;
+        if (seEvent.bulkGifted == undefined) return;
+        if (seEvent.sender == undefined) return;
+        if (seEvent.amount == undefined) return;
+
         if (+seEvent.bulkGifted > 0) {
           //bulk-sent
           aonyxEvent = {
@@ -103,7 +108,7 @@ export default function TranslateStreamElementsEventToAonyxEvent(
             type: EStreamEventType.GIFT_BULK_SENT,
             count: +seEvent.amount || 1,
           };
-        } else if (+seEvent.isCommunityGift > 0) {
+        } else if (+(seEvent.isCommunityGift ?? 0) > 0) {
           //bulk-received
           aonyxEvent = {
             ...base,
@@ -122,13 +127,17 @@ export default function TranslateStreamElementsEventToAonyxEvent(
         }
         break;
       case "raid":
+        if (!ObjectContainsKeys(seEvent, "amount")) return;
+
         aonyxEvent = {
           ...base,
           type: EStreamEventType.RAID,
-          count: +seEvent.amount || 0,
+          count: +(seEvent.amount ?? 0) || 0,
         };
         break;
       case "cheer":
+        if (!ObjectContainsKeys(seEvent, "amount", "message")) return;
+        if (seEvent.message == undefined) return;
         aonyxEvent = {
           ...base,
           type: EStreamEventType.CHEER,
