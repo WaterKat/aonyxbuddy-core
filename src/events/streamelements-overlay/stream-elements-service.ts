@@ -15,6 +15,7 @@ export class StreamElementsService
 {
   options?: TStreamElementsServiceOptions = undefined;
   bind: (...args: unknown[]) => void = () => {};
+  eventListener: string = "onEventReceived";
 
   onEvent(data: unknown) {
     if (!ObjectMatchesTemplate<SERawEvent>(data, SERawEventTemplate))
@@ -63,7 +64,7 @@ export class StreamElementsService
     this.bind = this.onEvent.bind(this);
 
     (this.options?.emitter ?? window).addEventListener(
-      "onEventReceived",
+      this.eventListener,
       this.bind
     );
   }
@@ -72,7 +73,7 @@ export class StreamElementsService
     this.options?.logger?.info("Stopping StreamElementsService");
 
     (this.options?.emitter ?? window).removeEventListener(
-      "onEventReceived",
+      this.eventListener,
       this.bind
     );
   }
