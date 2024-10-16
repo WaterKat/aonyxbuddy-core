@@ -7,6 +7,7 @@ function SendEvent(event: TStreamEvent) {
     detail: event,
   });
   window.dispatchEvent(newEvent);
+  console.log("Event sent: ", event);
 }
 
 const usernameInput = document
@@ -155,7 +156,7 @@ const SendRedeem = (): TStreamEvent => ({
 // Link Text
 import {
   GetAonyxBuddyStreamEventListener
-} from "./src/events/stream-event-listener/index.js";
+} from "./src/events/stream-event-listener/stream-event-listener.js";
 
 const responsesContainer = document
   .getElementById("ab_responses_container") as HTMLDivElement;

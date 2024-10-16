@@ -1,3 +1,25 @@
+import { ILogger } from "./types";
+
+export const Template = {
+  Undefined: undefined,
+  Null: null,
+  Boolean: false,
+  BooleanOptional: true,
+  Number: 0,
+  NumberOptional: 1,
+  String: "string",
+  StringOptional: "undefined",
+  BigInt: BigInt(0),
+  BigIntOptional: BigInt(1),
+  Symbol: Symbol("symbol"),
+  SymbolOptional: Symbol("undefined"),
+  //TODO
+  Function: () => {},
+  FunctionOptional: () => {},
+  Object: {},
+  ObjectOptional: {},
+};
+
 type Flatten<T> = { [K in keyof T]: T[K] } & {};
 
 // #region Standard Types
@@ -54,21 +76,39 @@ export function ObjectContainsKey<T extends object, K extends string>(
   value: T,
   key: K
 ): value is Flatten<T & { [P in K]: unknown }> {
-  return Object.prototype.hasOwnProperty.call(value, key);
+  return key in value;
 }
 
 export function ObjectMatchesTemplate<T>(
   value: unknown,
-  template: T
+  template: T,
+  logger?: ILogger
 ): value is T {
-  if (!IsObject(value)) return false;
+  if (!IsObject(value)) {
+    logger?.warn("Value is not an object", value);
+    return false;
+  }
+
   for (const key in template) {
     if (!ObjectContainsKey(value, key)) {
-      if (typeof template[key] !== "undefined") return false;
-      else continue;
+      if (typeof template[key] !== "undefined") {
+        logger?.warn(`Property '${key}' is not optional`);
+        return false;
+      } else {
+        logger?.info(`Property '${key}' is optional`);
+        continue;
+      }
     }
 
-    if (typeof value[key] !== typeof template[key]) return false;
+    if (typeof value[key] !== typeof template[key]) {
+      logger?.warn(
+        `Property '${key}' of type ${typeof value[
+          key
+        ]} does not match template of type ${typeof template[key]} in `,
+        value
+      );
+      return false;
+    }
 
     if (IsObject(template[key])) {
       if (!ObjectMatchesTemplate(value[key], template[key])) return false;

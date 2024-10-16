@@ -10,7 +10,8 @@
     "test": "npx jest"
   },
   "dependencies": {
-    "gifuct-js": "^2.1.2"
+    "gifuct-js": "^2.1.2",
+    "socket.io-client": "^4.8.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.12.0",

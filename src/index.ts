@@ -1,5 +1,5 @@
+export { AonyxBuddyWebClient } from "./service.js";
 export * from "./types.js";
-
 
 // original file
 export { type IClientConfig, DefaultAonyxBuddyConfig } from "./config/index.js";
@@ -17,4 +17,4 @@ export {
   IsLegacyEventProcessorConfig,
 } from "./core/stream-events/legacy-support.js";
 export { GetStreamEventResponse } from "./core/index.js";
-export { default as TranslateStreamElementsEventToAonyxEvent } from "./events/stream-elements/event-translator.js";
+export { default as TranslateStreamElementsEventToAonyxEvent } from "./events/streamelements-overlay/event-translator.js";

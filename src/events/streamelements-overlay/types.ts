@@ -1,4 +1,5 @@
 import { ObjectMatchesTemplate } from "../../lib.js";
+import { ILogger } from "../../types.js";
 
 // #region Raw Event
 export type SERawEvent = {
@@ -24,29 +25,29 @@ export const SERawEventTemplate: SERawEvent = {
 export interface SEBasicEvent {
   type: string;
   name: string;
-  amount: number;
-  message: string;
-  gifted: boolean;
-  sender: string;
-  bulkGifted: boolean;
-  isCommunityGift: boolean;
-  playedAsCommunityGift: boolean;
+  amount?: number;
+  message?: string;
+  gifted?: boolean;
+  sender?: string;
+  bulkGifted?: boolean;
+  isCommunityGift?: boolean;
+  playedAsCommunityGift?: boolean;
 }
 
 export const SEBasicEventTemplate: SEBasicEvent = {
   type: "string",
   name: "string",
-  amount: 0,
-  message: "string",
-  gifted: false,
-  sender: "string",
-  bulkGifted: false,
-  isCommunityGift: false,
-  playedAsCommunityGift: false,
+  amount: undefined,
+  message: undefined,
+  gifted: undefined,
+  sender: undefined,
+  bulkGifted: undefined,
+  isCommunityGift: undefined,
+  playedAsCommunityGift: undefined,
 } as const;
 
-export function isSEBasicEvent(event: unknown): event is SEBasicEvent {
-  if (!ObjectMatchesTemplate(event, SEBasicEventTemplate)) return false;
+export function isSEBasicEvent(event: unknown, logger?: ILogger): event is SEBasicEvent {
+  if (!ObjectMatchesTemplate(event, SEBasicEventTemplate, logger)) return false;
   return true;
 }
 
@@ -103,8 +104,8 @@ const SEMessageEventTemplate: SEMessageEvent = {
   },
 } as const;
 
-export function isSEMessageEvent(event: unknown): event is SEMessageEvent {
-  if (!ObjectMatchesTemplate(event, SEMessageEventTemplate)) return false;
+export function isSEMessageEvent(event: unknown, logger?: ILogger): event is SEMessageEvent {
+  if (!ObjectMatchesTemplate(event, SEMessageEventTemplate, logger)) return false;
   return true;
 }
 

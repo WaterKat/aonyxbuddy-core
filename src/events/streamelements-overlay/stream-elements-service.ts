@@ -6,7 +6,7 @@ import EventTranslator from "./event-translator.js";
 
 export type TStreamElementsServiceOptions = {
   callback: (event: TStreamEvent) => void;
-  emitter?: EventTarget;
+  inputEmitter: EventTarget | Window;
   logger?: ILogger;
 };
 
@@ -18,8 +18,7 @@ export class StreamElementsService
   eventListener: string = "onEventReceived";
 
   onEvent(data: unknown) {
-    if (!ObjectMatchesTemplate<SERawEvent>(data, SERawEventTemplate))
-    {
+    if (!ObjectMatchesTemplate<SERawEvent>(data, SERawEventTemplate)) {
       this.options?.logger?.warn("Invalid event received", data);
       return;
     }
@@ -47,32 +46,15 @@ export class StreamElementsService
 
     this.options.logger?.info("Starting StreamElementsService");
 
-    //? Check if emitter is provided
-    if (!this.options.emitter) {
-      if (typeof window === "undefined") {
-        this.options.logger?.error(
-          "No emitter provided and window is not available"
-        );
-        return;
-      }else {
-        this.options?.logger?.warn("No emitter provided, using window");
-      }
-    } else {
-      this.options?.logger?.info("Using provided emitter");
-    }
-
     this.bind = this.onEvent.bind(this);
 
-    (this.options?.emitter ?? window).addEventListener(
-      this.eventListener,
-      this.bind
-    );
+    this.options?.inputEmitter.addEventListener(this.eventListener, this.bind);
   }
 
   Stop(): void {
     this.options?.logger?.info("Stopping StreamElementsService");
 
-    (this.options?.emitter ?? window).removeEventListener(
+    (this.options?.inputEmitter ?? window).removeEventListener(
       this.eventListener,
       this.bind
     );
