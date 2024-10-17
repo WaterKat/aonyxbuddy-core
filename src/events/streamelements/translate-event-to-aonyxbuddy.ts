@@ -83,36 +83,27 @@ export default function TranslateStreamElementsEventToAonyxEvent(
         };
         break;
       case "subscriber":
-        if (!ObjectContainsKeys(seEvent, "amount", "message")) return;
-        if (seEvent.amount == undefined) return;
-        if (seEvent.message == undefined) return;
         aonyxEvent = {
           ...base,
           type: EStreamEventType.SUBSCRIBER,
-          length: seEvent.amount,
-          message: messageFromString(seEvent.message),
+          length: seEvent.amount ?? 1,
+          message: messageFromString(seEvent.message ?? ""),
         };
         break;
       case "gift":
-        if (!ObjectContainsKeys(seEvent, "bulkGifted", "sender", "amount"))
-          return;
-        if (seEvent.bulkGifted == undefined) return;
-        if (seEvent.sender == undefined) return;
-        if (seEvent.amount == undefined) return;
-
-        if (+seEvent.bulkGifted > 0) {
+        if (+(seEvent.bulkGifted ?? 0) > 0) {
           //bulk-sent
           aonyxEvent = {
             ...base,
-            username: seEvent.sender,
+            username: seEvent.sender ?? "",
             type: EStreamEventType.GIFT_BULK_SENT,
-            count: +seEvent.amount || 1,
+            count: +(seEvent.amount ?? 1) || 1,
           };
         } else if (+(seEvent.isCommunityGift ?? 0) > 0) {
           //bulk-received
           aonyxEvent = {
             ...base,
-            username: seEvent.sender,
+            username: seEvent.sender ?? "",
             type: EStreamEventType.GIFT_BULK_RECEIVED,
             receiver: seEvent.name,
           };
@@ -120,7 +111,7 @@ export default function TranslateStreamElementsEventToAonyxEvent(
           //single
           aonyxEvent = {
             ...base,
-            username: seEvent.sender,
+            username: seEvent.sender ?? "",
             type: EStreamEventType.GIFT_SINGLE,
             receiver: seEvent.name,
           };
@@ -128,11 +119,10 @@ export default function TranslateStreamElementsEventToAonyxEvent(
         break;
       case "raid":
         if (!ObjectContainsKeys(seEvent, "amount")) return;
-
         aonyxEvent = {
           ...base,
           type: EStreamEventType.RAID,
-          count: +(seEvent.amount ?? 0) || 0,
+          count: +(seEvent.amount ?? 1) || 1,
         };
         break;
       case "cheer":
@@ -141,7 +131,7 @@ export default function TranslateStreamElementsEventToAonyxEvent(
         aonyxEvent = {
           ...base,
           type: EStreamEventType.CHEER,
-          amount: seEvent.amount || 0,
+          amount: seEvent.amount || 1,
           message: messageFromString(seEvent.message),
         };
         break;
