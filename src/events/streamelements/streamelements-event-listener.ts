@@ -1,7 +1,7 @@
 import * as Types from "../../core/stream-events/index.js";
 import { ObjectContainsKey, ObjectMatchesTemplate } from "../../lib.js";
 
-import EventTranslator from "./event-translator.js";
+import EventTranslator from "./translate-event-to-aonyxbuddy.js";
 import { SERawEvent, SERawEventTemplate } from "./types.js";
 //^?
 

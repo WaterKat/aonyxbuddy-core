@@ -2,7 +2,7 @@ import { TStreamEvent } from "../../core/index.js";
 import { IsObject, ObjectContainsKey } from "../../lib.js";
 import { ILogger, IService } from "../../types.js";
 import { io, type Socket } from "socket.io-client";
-import EventTranslator from "../streamelements/event-translator.js";
+import EventTranslator from "./translate-event-to-aonyxbuddy.js";
 
 export type TStreamElementsSocketServiceOptions = {
   getJWT: () => Promise<string>;

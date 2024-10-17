@@ -13,7 +13,7 @@ import {
   GetStreamElementsVoiceAudioBuffer,
 } from "./ui/audio/index.js";
 
-import { ListenForStreamElementsEvents } from "./events/streamelements/listener.js";
+import { ListenForStreamElementsEvents } from "./events/streamelements/streamelements-event-listener.js";
 import { GetAonyxBuddyStreamEventListener } from "./events/aonyxbuddy-events/aonyxbuddy-event-listener.js";
 
 import {
