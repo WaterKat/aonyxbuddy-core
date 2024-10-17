@@ -156,7 +156,7 @@ const SendRedeem = (): TStreamEvent => ({
 // Link Text
 import {
   GetAonyxBuddyStreamEventListener
-} from "./src/events/aonyxlimited/stream-event-listener.js";
+} from "./src/events/aonyxbuddy-events/aonyxbuddy-event-listener.js";
 
 const responsesContainer = document
   .getElementById("ab_responses_container") as HTMLDivElement;
