@@ -2,16 +2,16 @@ import { TStreamEvent, EStreamEventType } from "../../core/index.js";
 import { ILogger, IService } from "../../types.js";
 import { IsObject, IsString, ObjectContainsKey } from "../../lib.js";
 
-export type TStreamEventServiceOptions = {
+export type TAonyxBuddyEventServiceOptions = {
   callback: (event: TStreamEvent) => void;
   inputEmitter: EventTarget | Window;
   logger?: ILogger;
 };
 
-export class StreamEventService
-  implements IService<TStreamEventServiceOptions>
+export class AonyxBuddyEventService
+  implements IService<TAonyxBuddyEventServiceOptions>
 {
-  options?: TStreamEventServiceOptions = undefined;
+  options?: TAonyxBuddyEventServiceOptions = undefined;
   bind: (...args: unknown[]) => void = () => {};
   eventListener: string = EStreamEventType.TS_TYPE;
 
@@ -31,7 +31,7 @@ export class StreamEventService
     this.options?.callback(data.detail as TStreamEvent);
   }
 
-  Start(options: TStreamEventServiceOptions): void {
+  Start(options: TAonyxBuddyEventServiceOptions): void {
     this.options = options;
 
     this.options.logger?.info("Starting StreamEvent Service");

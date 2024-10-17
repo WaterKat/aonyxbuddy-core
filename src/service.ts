@@ -1,10 +1,10 @@
 import {
-  StreamEventService,
-  TStreamEventServiceOptions,
+  AonyxBuddyEventService,
+  TAonyxBuddyEventServiceOptions,
 } from "./events/stream-event-listener/stream-event-listener-service.js";
 import {
-  StreamElementsService,
-  TStreamElementsServiceOptions,
+  StreamElementsEventsService,
+  TStreamElementsEventsServiceOptions,
 } from "./events/streamelements-overlay/stream-elements-service.js";
 import {
   StreamElementsSocketService,
@@ -23,9 +23,9 @@ export type TAonyxBuddyClientState = {
 
 export type TAonyxBuddyWebClientOptions = {
   logger: ILogger;
-  streamEventService?: TStreamEventServiceOptions;
+  streamEventService?: TAonyxBuddyEventServiceOptions;
   streamElementsSocketOptions?: TStreamElementsSocketServiceOptions;
-  streamElementsOptions?: TStreamElementsServiceOptions;
+  streamElementsOptions?: TStreamElementsEventsServiceOptions;
 };
 
 export class AonyxBuddyWebClient
@@ -33,13 +33,13 @@ export class AonyxBuddyWebClient
 {
   options?: TAonyxBuddyWebClientOptions = undefined;
 
-  streamElementsEventService?: StreamElementsService = undefined;
-  streamEventService?: StreamEventService = undefined;
+  streamElementsEventService?: StreamElementsEventsService = undefined;
+  streamEventService?: AonyxBuddyEventService = undefined;
   streamElementsSocketService?: StreamElementsSocketService = undefined;
 
   constructor() {
-    this.streamElementsEventService = new StreamElementsService();
-    this.streamEventService = new StreamEventService();
+    this.streamElementsEventService = new StreamElementsEventsService();
+    this.streamEventService = new AonyxBuddyEventService();
     this.streamElementsSocketService = new StreamElementsSocketService();
   }
 

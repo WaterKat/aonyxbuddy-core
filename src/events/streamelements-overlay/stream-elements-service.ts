@@ -4,16 +4,16 @@ import { ILogger, IService } from "../../types.js";
 import { SERawEvent, SERawEventTemplate } from "./types.js";
 import EventTranslator from "./event-translator.js";
 
-export type TStreamElementsServiceOptions = {
+export type TStreamElementsEventsServiceOptions = {
   callback: (event: TStreamEvent) => void;
   inputEmitter: EventTarget | Window;
   logger?: ILogger;
 };
 
-export class StreamElementsService
-  implements IService<TStreamElementsServiceOptions>
+export class StreamElementsEventsService
+  implements IService<TStreamElementsEventsServiceOptions>
 {
-  options?: TStreamElementsServiceOptions = undefined;
+  options?: TStreamElementsEventsServiceOptions = undefined;
   bind: (...args: unknown[]) => void = () => {};
   eventListener: string = "onEventReceived";
 
@@ -41,7 +41,7 @@ export class StreamElementsService
     }
   }
 
-  Start(options: TStreamElementsServiceOptions): void {
+  Start(options: TStreamElementsEventsServiceOptions): void {
     this.options = options;
 
     this.options.logger?.info("Starting StreamElementsService");
