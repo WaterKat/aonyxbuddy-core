@@ -2,7 +2,7 @@ import { TStreamEvent } from "../../core/index.js";
 import { IsObject, ObjectContainsKey } from "../../lib.js";
 import { ILogger, IService } from "../../types.js";
 import { io, type Socket } from "socket.io-client";
-import EventTranslator from "../streamelements-overlay/event-translator.js";
+import EventTranslator from "../streamelements/event-translator.js";
 
 export type TStreamElementsSocketServiceOptions = {
   getJWT: () => Promise<string>;
