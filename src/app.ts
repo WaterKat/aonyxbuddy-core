@@ -14,7 +14,7 @@ import {
 } from "./ui/audio/index.js";
 
 import { ListenForStreamElementsEvents } from "./events/streamelements/listener.js";
-import { GetAonyxBuddyStreamEventListener } from "./events/stream-event-listener/stream-event-listener.js";
+import { GetAonyxBuddyStreamEventListener } from "./events/aonyxlimited/stream-event-listener.js";
 
 import {
   EStreamEventType,

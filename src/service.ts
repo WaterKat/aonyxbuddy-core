@@ -1,7 +1,7 @@
 import {
   AonyxBuddyEventService,
   TAonyxBuddyEventServiceOptions,
-} from "./events/stream-event-listener/stream-event-listener-service.js";
+} from "./events/aonyxlimited/stream-event-listener-service.js";
 import {
   StreamElementsEventsService,
   TStreamElementsEventsServiceOptions,
