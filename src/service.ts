@@ -9,7 +9,7 @@ import {
 import {
   StreamElementsSocketService,
   TStreamElementsSocketServiceOptions,
-} from "./events/streamelements-ws-listener/streamelements-ws-listener-service.js";
+} from "./events/streamelements-ws-listener/streamelements-socket-service.js";
 
 import {
   //IClientConfig,
