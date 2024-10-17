@@ -5,7 +5,7 @@ import {
 import {
   StreamElementsEventsService,
   TStreamElementsEventsServiceOptions,
-} from "./events/streamelements-overlay/stream-elements-service.js";
+} from "./events/streamelements-overlay/streamelements-event-service.js";
 import {
   StreamElementsSocketService,
   TStreamElementsSocketServiceOptions,
