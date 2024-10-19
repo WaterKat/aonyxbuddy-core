@@ -24,7 +24,7 @@
 !eslint.config.mjs
 
 # allow testing
-!jest.config.js
+!jest.config.[jt]s
 
 # ignore again
 dist
