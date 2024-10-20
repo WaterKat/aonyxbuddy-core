@@ -11,16 +11,16 @@ import {
 } from "./stream-events";
 import { Logger } from "./stream-events/logger-monad";
 
-export type TStreamEventOptions = {
+export type TProcessStreamEventOptions = {
   logger: ILogger;
   config: ILegacyConfig | ProcessEventOptions;
 };
 
-export class StreamEventService implements IService {
-  options: TStreamEventOptions;
+export class ProcessStreamEventService implements IService {
+  options: TProcessStreamEventOptions;
   processEventFunction: (event: TStreamEvent) => Logger<TStreamEvent>;
 
-  constructor(options: TStreamEventOptions) {
+  constructor(options: TProcessStreamEventOptions) {
     this.options = options;
     this.processEventFunction = GetProcessEventFunction(
       IsLegacyEventProcessorConfig(options.config)
