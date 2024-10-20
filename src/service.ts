@@ -33,7 +33,7 @@ export type TAonyxBuddyWebClientOptions = {
 };
 
 export class AonyxBuddyWebClient
-  implements IService<TAonyxBuddyWebClientOptions>
+  implements IService
 {
   options?: TAonyxBuddyWebClientOptions = undefined;
 

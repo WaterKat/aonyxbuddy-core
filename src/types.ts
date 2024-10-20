@@ -1,5 +1,5 @@
-export interface IService<TOptions> {
-  Start(options: TOptions): void;
+export interface IService {
+  Start(...options: unknown[]): void;
   Stop(): void;
   Restart(): void;
 }

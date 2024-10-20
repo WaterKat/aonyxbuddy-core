@@ -9,7 +9,7 @@ export type TAonyxBuddyEventServiceOptions = {
 };
 
 export class AonyxBuddyEventService
-  implements IService<TAonyxBuddyEventServiceOptions>
+  implements IService
 {
   options?: TAonyxBuddyEventServiceOptions = undefined;
   bind: (...args: unknown[]) => void = () => {};

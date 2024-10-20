@@ -6,7 +6,7 @@ export interface TSpeakerServiceOptions {
   logger?: ILogger;
 }
 
-export class SpeakerService implements IService<TSpeakerServiceOptions> {
+export class SpeakerService implements IService {
   options?: TSpeakerServiceOptions = undefined;
   speaker: Speaker;
 

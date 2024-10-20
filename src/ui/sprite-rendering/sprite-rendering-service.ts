@@ -5,7 +5,7 @@ export type TSpriteRenderingServiceOptions = {
 };
 
 export class SpriteRenderingService
-  implements IService<TSpriteRenderingServiceOptions>
+  implements IService
 {
   options: TSpriteRenderingServiceOptions | undefined = undefined;
   Start(options: TSpriteRenderingServiceOptions): void {

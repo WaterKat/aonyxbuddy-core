@@ -13,7 +13,7 @@ export type TStreamElementsSocketServiceOptions = {
 };
 
 export class StreamElementsSocketService
-  implements IService<TStreamElementsSocketServiceOptions>
+  implements IService
 {
   options?: TStreamElementsSocketServiceOptions = undefined;
   bind: (...args: unknown[]) => void = () => {};

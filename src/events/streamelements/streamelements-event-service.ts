@@ -11,7 +11,7 @@ export type TStreamElementsEventsServiceOptions = {
 };
 
 export class StreamElementsEventsService
-  implements IService<TStreamElementsEventsServiceOptions>
+  implements IService
 {
   options?: TStreamElementsEventsServiceOptions = undefined;
   bind: (...args: unknown[]) => void = () => {};
