@@ -16,6 +16,7 @@ import {
   ILogger,
   IService,
 } from "./index.js";
+import { AudioService, TAudioServiceOptions } from "./ui/audio/audio-service.js";
 
 export type TAonyxBuddyClientState = {
   [key: string]: unknown;
@@ -26,6 +27,7 @@ export type TAonyxBuddyWebClientOptions = {
   streamEventService?: TAonyxBuddyEventServiceOptions;
   streamElementsSocketOptions?: TStreamElementsSocketServiceOptions;
   streamElementsOptions?: TStreamElementsEventsServiceOptions;
+  audioQueueOptions?: TAudioServiceOptions;
 };
 
 export class AonyxBuddyWebClient
@@ -36,6 +38,7 @@ export class AonyxBuddyWebClient
   streamElementsEventService?: StreamElementsEventsService = undefined;
   streamEventService?: AonyxBuddyEventService = undefined;
   streamElementsSocketService?: StreamElementsSocketService = undefined;
+  audioService?: AudioService = undefined;
 
   constructor() {
     this.streamElementsEventService = new StreamElementsEventsService();
@@ -45,6 +48,8 @@ export class AonyxBuddyWebClient
 
   Start(options: TAonyxBuddyWebClientOptions): void {
     this.options = options;
+
+    if (options.audioQueueOptions) this.audioService = new AudioService(options.audioQueueOptions);
 
     this.options?.logger?.info("Starting AonyxBuddyWebClient");
 
@@ -67,6 +72,7 @@ export class AonyxBuddyWebClient
     this.options?.logger?.info("Stopping AonyxBuddyWebClient");
     this.streamElementsEventService?.Stop();
     this.streamEventService?.Stop();
+    this.audioService?.StopAndClearQueue();
   }
   Restart(): void {
     this.options?.logger?.info("Restarting AonyxBuddyWebClient");
