@@ -1,4 +1,4 @@
-import { ILogger } from "../types";
+import { ILogger, IService } from "../types";
 import { GetStreamEventResponse } from "./responses/get-stream-event-response.js";
 import { TStreamEvent } from "./stream-events";
 
@@ -7,7 +7,7 @@ export type TReponseServiceOptions = {
   responses: Record<string, string[]>
 }
 
-export class ResponseService {
+export class ResponseService implements IService {
   options: TReponseServiceOptions;
 
   constructor(options: TReponseServiceOptions) {
@@ -21,4 +21,8 @@ export class ResponseService {
       randomBetween01Func: Math.random
     })
   }
+
+  Start(): void {}
+  Stop(): void {}
+  Restart(): void {}
 }
