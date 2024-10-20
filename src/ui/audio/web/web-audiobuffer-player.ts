@@ -4,7 +4,10 @@ import {
   TAudioMutableState,
 } from "../audio-types";
 
-export type TWebAudioBufferPlayerOptions = TAudioBufferPlayerOptions;
+export type TWebAudioBufferPlayerOptions = TAudioBufferPlayerOptions & {
+  ctx?: AudioContext;
+  analyser?: AnalyserNode;
+};
 
 export class WebAudioBufferPlayer implements IAudioBufferPlayer {
   options: TWebAudioBufferPlayerOptions;
@@ -14,10 +17,12 @@ export class WebAudioBufferPlayer implements IAudioBufferPlayer {
   sourceNode?: AudioBufferSourceNode = undefined;
 
   constructor(options: TWebAudioBufferPlayerOptions) {
+    if (typeof window === "undefined") throw new Error("WebAudioBufferPlayer requires window");
     this.options = options;
-    this.ctx = new AudioContext();
-    this.analyser = this.ctx.createAnalyser();
+    this.ctx = this.options.ctx ?? new AudioContext();
+    this.analyser = this.options.analyser ?? this.ctx.createAnalyser();
     this.audioBuffer = this.ctx.decodeAudioData(options.arrayBuffer);
+    this.options.logger?.info("WebAudioBufferPlayer: Created");
   }
 
   play(): void {
@@ -30,6 +35,17 @@ export class WebAudioBufferPlayer implements IAudioBufferPlayer {
         this.sourceNode.onended = () => {
           this.options.onend?.();
         };
+
+        /** attempt to resume if suspended */
+        let interval : ReturnType<typeof setInterval> | undefined = undefined;
+        interval = setInterval(() => {
+          this.ctx.resume();
+          if (this.ctx.state !== "suspended") {
+            clearInterval(interval);
+          } else {
+            if (this.options.logger) this.options.logger.info("Attempting to resume audio context");
+          }
+        }, 1000 / 24);
       })
       .catch((error) => {
         if (this.options.logger) this.options.logger.error(error);
