@@ -225,7 +225,10 @@ type TSoundEffectID = "SoundEffect";
 export type TBufferRequestData = {
   speaker: TStreamElementsVoiceID | TSoundEffectID;
   url: string;
-  buffer?: AudioBuffer;
+};
+
+export type TPopulatedAudioBufferData = TBufferRequestData & {
+  arrayBuffer: ArrayBuffer;
 };
 
 /**
@@ -384,38 +387,25 @@ export function FilterAudioBuffer(
 }
 
 /**
- * 
- * @param audioContext 
- * @param datas 
- * @param options 
- * @returns 
+ *
+ * @param audioContext
+ * @param datas
+ * @param options
+ * @returns
  */
 export function FetchAndPopulateBuffers(
-//  audioContext: AudioContext,
-  datas: TBufferRequestData[],
-  options?: TFilterAudioBufferOptions
-): Promise<void[]> {
-  const ctx : OfflineAudioContext = new OfflineAudioContext({
-    numberOfChannels: options?.channel_count ?? 2,
-    length: 44100 * 5,
-    sampleRate: options?.sample_rate ?? 44100
-  });
-
-  const promises: Promise<void>[] =     datas.map(async (data) => {
-    const response: Response = await fetch(data.url);
-    const arrayBuffer: ArrayBuffer = await response.arrayBuffer();
-    const audioBuffer: AudioBuffer = await ctx.decodeAudioData(
-      arrayBuffer
-    );
-
-    if (options) {
-      data.buffer = FilterAudioBuffer(ctx, audioBuffer, options);
-    } else {
-      data.buffer = audioBuffer;
+  datas: TBufferRequestData[]
+): Promise<TPopulatedAudioBufferData[]> {
+  const promises = datas.map(
+    async (data): Promise<TPopulatedAudioBufferData> => {
+      const response: Response = await fetch(data.url);
+      const arrayBuffer: ArrayBuffer = await response.arrayBuffer();
+      return {
+        ...data,
+        arrayBuffer: arrayBuffer,
+      };
     }
-
-    return;
-  })
+  );
 
   return Promise.all(promises);
 }
