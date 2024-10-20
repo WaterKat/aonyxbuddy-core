@@ -8,131 +8,6 @@ import {
   TAudioMutableState,
 } from "../audio-types";
 
-/*
-export type TPlayAudioBufferOptions = {
-  amplitude: number;
-  interval: number;
-};
-
-export function NodePlayAudioBuffer(
-  buffer: ArrayBuffer,
-  options?: TPlayAudioBufferOptions
-): Promise<void> {
-  let startTime = Date.now();
-
-  return new Promise<void>((resolve, reject) => {
-    const decoder = Decoder({
-      decoder: "mp3",
-      autoDestroy: true,
-    });
-    decoder.on("error", reject);
-    decoder.on(
-      "format",
-      (format: {
-        raw_encoding: number; // unkown
-        sampleRate: number; // 44100
-        channels: number; // 2
-        signed: boolean; // true
-        float: boolean; // false
-        ulaw: boolean; // false
-        alaw: boolean; // false
-        bitDepth: number; // 16
-      }) => {
-        console.log("format", format);
-
-        const speaker = new Speaker({
-          channels: format.channels,
-          bitDepth: format.bitDepth,
-          sampleRate: format.sampleRate,
-        });
-
-        speaker.on("error", reject);
-
-        //      decoder.pipe(speaker, { end: true });
-
-        //? ANALYZE AMPLITUDE
-        let buff = Buffer.alloc(0);
-        const bufferStream = new stream.PassThrough().on("data", (chunk) => {
-          buff = Buffer.concat([buff, chunk]);
-        });
-
-        decoder.pipe(bufferStream, { end: true }).pipe(speaker, { end: true });
-
-        console.log("options", options);
-
-        let i = 0;
-        const interval = setInterval(() => {
-          console.log("i", i, Date.now() - startTime);
-          i += 1;
-          /*
-          if (i >= buff.length) {
-            if (options) options.amplitude = 0;
-            console.log("i >= buff.length");
-            return;
-          } else {
-            console.log("i < buff.length");
-          }
-          const increment =
-            format.sampleRate * (options?.interval ?? 1000 / 10000);
-          const chunk = buffer.slice(i, i + increment);
-          const amp =
-            new Uint8Array(chunk).reduce((acc, val) => acc + val, 0) /
-            chunk.byteLength;
-          if (options) options.amplitude = amp;
-          i += increment;
-          console.log("amplitude", amp);
-          */ /*
-        }, options?.interval ?? 1000);
-        // END ANALYZE AMPLITUDE
-
-        speaker.on("close", () => {
-          if (options) options.amplitude = 0;
-          if (interval) clearInterval(interval);
-          console.info("speaker close");
-          resolve();
-        });
-      }
-    );
-    decoder.end(Buffer.from(buffer));
-    */ /*
-    const speaker = new Speaker({
-      channels: 2,
-      bitDepth: 16,
-      sampleRate: sampleRate,
-    });
-    speaker.on("error", reject);
-
-    const buff = Buffer.alloc(0);
-    
-    const bufferStream = new stream.PassThrough().on("data", (chunk) => {
-      buff.join(chunk);
-    });
-
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i >= buff.length) return;
-      const increment = sampleRate / (options?.interval ?? 1000);
-      const chunk = buff.subarray(i, i + increment);
-      const amp = chunk.reduce((acc, val) => acc + val, 0) / chunk.length;
-      if (options) options.amplitude = amp;
-      i += increment;
-    }, options?.interval ?? 1000).unref();
-
-    decoder.pipe(speaker, { end: true })
-    decoder.pipe(bufferStream, { end: true });
-
-    decoder.end(Buffer.from(buffer));
-
-    speaker.on("close", () => {
-      if (interval) clearInterval(interval);
-      if (options) options.amplitude = 0;
-      resolve();
-    });
-    */ /*
-  });
-}
-*/
-
 type TFormat = {
   raw_encoding: number; // unkown
   sampleRate: number; // 44100
@@ -144,14 +19,6 @@ type TFormat = {
   bitDepth: number; // 16
 };
 
-/*
-export type TNodeAudioBufferPlayerOptions = {
-  audioBuffer: ArrayBuffer;
-  onend?: () => void;
-  logger?: ILogger;
-  autoClose?: boolean;
-};
-*/
 export type TNodeAudioBufferPlayerOptions = TAudioBufferPlayerOptions;
 
 export class NodeAudioBufferPlayer implements IAudioBufferPlayer {
@@ -227,8 +94,11 @@ export class NodeAudioBufferPlayer implements IAudioBufferPlayer {
   }
 
   stop() {
-    this.decoder.close();
-    this.decoder.destroy();
+    //! Typescript says these functions exist, but they don't. I'm not sure why.
+    if (this.decoder.close) this.decoder.close();
+    if (this.decoder.destroy) this.decoder.destroy();
+    //!
+    
     if (this.speaker) {
       this.speaker.close(false);
       this.speaker.destroy();
