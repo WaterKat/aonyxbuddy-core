@@ -1,3 +1,4 @@
+import { ResponseService, TReponseServiceOptions } from "./core/response-service.js";
 import {
   AonyxBuddyEventService,
   TAonyxBuddyEventServiceOptions,
@@ -28,6 +29,7 @@ export type TAonyxBuddyWebClientOptions = {
   streamElementsSocketOptions?: TStreamElementsSocketServiceOptions;
   streamElementsOptions?: TStreamElementsEventsServiceOptions;
   audioQueueOptions?: TAudioServiceOptions;
+  responseServiceOptions?: TReponseServiceOptions;
 };
 
 export class AonyxBuddyWebClient
@@ -39,6 +41,7 @@ export class AonyxBuddyWebClient
   streamEventService?: AonyxBuddyEventService = undefined;
   streamElementsSocketService?: StreamElementsSocketService = undefined;
   audioService?: AudioService = undefined;
+  responseService?: ResponseService = undefined;
 
   constructor() {
     this.streamElementsEventService = new StreamElementsEventsService();
@@ -50,6 +53,7 @@ export class AonyxBuddyWebClient
     this.options = options;
 
     if (options.audioQueueOptions) this.audioService = new AudioService(options.audioQueueOptions);
+    if (options.responseServiceOptions) this.responseService = new ResponseService(options.responseServiceOptions);
 
     this.options?.logger?.info("Starting AonyxBuddyWebClient");
 
