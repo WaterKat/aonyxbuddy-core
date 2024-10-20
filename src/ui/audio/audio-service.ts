@@ -1,54 +1,55 @@
-import { IService, ILogger } from "../../types.js";
+import { ILogger } from "../../types.js";
+
+import {
+  IAudioBufferPlayer,
+  TAudioBufferPlayerOptions,
+} from "./audio-types.js";
+
+import { TPopulatedAudioBufferData } from "./text-to-speech.js";
 
 export type TAudioServiceOptions = {
-  logger: ILogger;
-  fftSize?: number;
+  playerConstructor: (options: TAudioBufferPlayerOptions) => IAudioBufferPlayer;
+  logger?: ILogger;
 };
 
-export class AudioService implements IService<TAudioServiceOptions> {
+export class AudioService {
   options: TAudioServiceOptions;
-  context: AudioContext;
-  analyzer: AnalyserNode;
-  emptyBuffer: AudioBuffer;
-  state: "running" | "suspended" = "suspended";
-
-  constructor() {
-    this.options = { logger: console };
-    this.context = new AudioContext();
-    this.analyzer = this.context.createAnalyser();
-    this.analyzer.fftSize = 2048;
-    this.analyzer.connect(this.context.destination);
-    this.emptyBuffer = this.context.createBuffer(1, 1, this.context.sampleRate);
-  }
-
-  Start(options: TAudioServiceOptions): void {
-    if (this.context.state == "suspended") this.context.resume();
-
-    //? Assign the options to the service
+  queue: TPopulatedAudioBufferData[] = [];
+  currentPlayer?: IAudioBufferPlayer = undefined;
+  constructor(options: TAudioServiceOptions) {
     this.options = options;
-    this.analyzer.fftSize = options.fftSize ?? this.analyzer.fftSize;
-
-    //? Create empty audio to trigger audio suspension
-    const emptySourceNode = this.context.createBufferSource();
-    emptySourceNode.buffer = this.emptyBuffer;
-    emptySourceNode.connect(this.analyzer);
-
-    //? Wait for audio context to be running
-    const suspendedCheckInterval = setInterval(() => {
-      this.context.resume();
-      if (this.context.state !== "suspended") {
-        this.state = "running";
-        clearInterval(suspendedCheckInterval);
-      }
-    }, 100).unref();
   }
-  Stop(): void {
-    if (this.context.state == "running") this.context.suspend();
-    this.state = "suspended";
+
+  Queue(...data: TPopulatedAudioBufferData[]) {
+    this.queue.push(...data);
   }
-  Restart(): void {
-    this.Stop();
-    if (!this.options) return;
-    this.Start(this.options);
+
+  async PlayQueue(): Promise<void> {
+    const buffer = this.queue.shift();
+
+    if (!buffer) {
+      this.options.logger?.info("AudioService: Queue is empty");
+      return;
+    }
+
+    await new Promise<void>((resolve) => {
+      const playerOptions: TAudioBufferPlayerOptions = {
+        arrayBuffer: buffer.arrayBuffer,
+        logger: this.options.logger,
+        onend: () => resolve(),
+      };
+      this.currentPlayer = this.options.playerConstructor(playerOptions);
+    });
+
+    return this.PlayQueue();
+  }
+
+  GetAmplitude(intervalMS?: number): number {
+    return this.currentPlayer?.getAmplitude(intervalMS ?? 1000 / 24) ?? 0;
+  }
+
+  StopAndClearQueue(): void {
+    this.queue = [];
+    this.currentPlayer?.stop();
   }
 }
