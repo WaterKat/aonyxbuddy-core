@@ -21,13 +21,14 @@ export class AudioService {
   }
 
   Queue(...data: TPopulatedAudioBufferData[]) {
+    this.options.logger?.info("AudioService: Queuing data", data.length);
     this.queue.push(...data);
   }
 
   async PlayQueue(): Promise<void> {
     const buffer = this.queue.shift();
 
-    if (!buffer) {
+    if (!buffer || !buffer.arrayBuffer) {
       this.options.logger?.info("AudioService: Queue is empty");
       return;
     }
@@ -36,9 +37,14 @@ export class AudioService {
       const playerOptions: TAudioBufferPlayerOptions = {
         arrayBuffer: buffer.arrayBuffer,
         logger: this.options.logger,
-        onend: () => resolve(),
+        onend: () => { 
+          this.options.logger?.info("AudioService: Audio playback ended");
+          resolve();
+        },
+        autoClose: true,
       };
       this.currentPlayer = this.options.playerConstructor(playerOptions);
+      this.currentPlayer.play();
     });
 
     return this.PlayQueue();
