@@ -1,4 +1,7 @@
-import { ResponseService, TReponseServiceOptions } from "./core/response-service.js";
+import {
+  ResponseService,
+  TReponseServiceOptions,
+} from "./core/response-service.js";
 import {
   AonyxBuddyEventService,
   TAonyxBuddyEventServiceOptions,
@@ -13,11 +16,16 @@ import {
 } from "./events/streamelements/streamelements-socket-service.js";
 
 import {
-  //IClientConfig,
-  ILogger,
-  IService,
-} from "./index.js";
-import { AudioService, TAudioServiceOptions } from "./ui/audio/audio-service.js";
+  ProcessStreamEventService,
+  TProcessStreamEventOptions,
+} from "./core/process-streamevent-service.js";
+
+import { ILogger, IService } from "./index.js";
+
+import {
+  AudioService,
+  TAudioServiceOptions,
+} from "./ui/audio/audio-service.js";
 
 export type TAonyxBuddyClientState = {
   [key: string]: unknown;
@@ -30,11 +38,10 @@ export type TAonyxBuddyWebClientOptions = {
   streamElementsOptions?: TStreamElementsEventsServiceOptions;
   audioQueueOptions?: TAudioServiceOptions;
   responseServiceOptions?: TReponseServiceOptions;
+  processStreamEventOptions?: TProcessStreamEventOptions;
 };
 
-export class AonyxBuddyWebClient
-  implements IService
-{
+export class AonyxBuddyWebClient implements IService {
   options?: TAonyxBuddyWebClientOptions = undefined;
 
   streamElementsEventService?: StreamElementsEventsService = undefined;
@@ -42,6 +49,7 @@ export class AonyxBuddyWebClient
   streamElementsSocketService?: StreamElementsSocketService = undefined;
   audioService?: AudioService = undefined;
   responseService?: ResponseService = undefined;
+  processStreamEventService?: ProcessStreamEventService = undefined;
 
   constructor() {
     this.streamElementsEventService = new StreamElementsEventsService();
@@ -52,8 +60,18 @@ export class AonyxBuddyWebClient
   Start(options: TAonyxBuddyWebClientOptions): void {
     this.options = options;
 
-    if (options.audioQueueOptions) this.audioService = new AudioService(options.audioQueueOptions);
-    if (options.responseServiceOptions) this.responseService = new ResponseService(options.responseServiceOptions);
+    if (options.audioQueueOptions)
+      this.audioService = new AudioService(options.audioQueueOptions);
+
+    if (options.responseServiceOptions)
+      this.responseService = new ResponseService(
+        options.responseServiceOptions
+      );
+
+    if (this.options?.processStreamEventOptions)
+      this.processStreamEventService = new ProcessStreamEventService(
+        this.options.processStreamEventOptions
+      );
 
     this.options?.logger?.info("Starting AonyxBuddyWebClient");
 
@@ -64,14 +82,16 @@ export class AonyxBuddyWebClient
     }
 
     if (this.options.streamElementsSocketOptions) {
-      this.streamElementsSocketService?.Start(this.options.streamElementsSocketOptions);
+      this.streamElementsSocketService?.Start(
+        this.options.streamElementsSocketOptions
+      );
     }
 
     if (this.options.streamEventService) {
       this.streamEventService?.Start(this.options.streamEventService);
     }
   }
-  
+
   Stop(): void {
     this.options?.logger?.info("Stopping AonyxBuddyWebClient");
     this.streamElementsEventService?.Stop();
