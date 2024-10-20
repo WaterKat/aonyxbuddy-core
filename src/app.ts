@@ -1,3 +1,4 @@
+//#region Imports
 /// <reference lib="dom" />
 
 /** Your main configuration file type */
@@ -29,6 +30,9 @@ import {
 
 import { GetStreamEventResponse } from "./core/index.js";
 
+//#endregion
+
+//#region Function
 async function CreateAonyxBuddy(config: IClientConfig) {
   /**
    * AudioQueue initialization
@@ -54,6 +58,7 @@ async function CreateAonyxBuddy(config: IClientConfig) {
   );
 */
 
+  //#region Audio
   /**
    * * This is most stateful part of the code
    * The rendering loops for aonyxbuddy
@@ -92,7 +97,9 @@ async function CreateAonyxBuddy(config: IClientConfig) {
     /** assign param */
     talkingParam.value = amplitude / mouthMax;
   }, 1000 / config.spriteRendering.defaultFPS);
+  //#endregion
 
+  //#region Graphics
   function RenderLoop() {
     if (!renderer || !active) {
       return;
@@ -125,6 +132,7 @@ async function CreateAonyxBuddy(config: IClientConfig) {
       }
     }
   }
+  //#endregion
 
   /**
    * * These are the callbacks for event behaviour
@@ -142,6 +150,7 @@ async function CreateAonyxBuddy(config: IClientConfig) {
     IsLegacyEventProcessorConfig(config)
   );
 
+  //#region Commands
   function HandleCommand(event: TStreamEvent) {
     console.log("Command:", event);
     if (event.type !== EStreamEventType.COMMAND) {
@@ -185,7 +194,9 @@ async function CreateAonyxBuddy(config: IClientConfig) {
       // TODO add mute feature
     }
   }
+  //#endregion
 
+  //#region Events
   function HandleEvent(raw: TStreamEvent) {
     if (!active) return;
 
@@ -230,6 +241,7 @@ async function CreateAonyxBuddy(config: IClientConfig) {
     console.error("Failed to initialize event listener. Exiting.");
     return;
   }
+  //#endregion
 
   /** first messages go here */
 
@@ -257,7 +269,9 @@ async function CreateAonyxBuddy(config: IClientConfig) {
     },
   };
 }
+//#endregion
 
+//#region Initialization
 declare const AonyxBuddyConfig: IClientConfig;
 
 if (typeof window !== "undefined") {
@@ -276,5 +290,6 @@ if (typeof window !== "undefined") {
       : DefaultAonyxBuddyConfig
   );
 }
+//#endregion
 
 //# sourceURL=browsertools://aonyxbuddy/aonyxbuddy.js
