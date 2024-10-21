@@ -1,6 +1,6 @@
 import DefaultAonyxBuddyConfig from "./config/default-config.js";
 import { ObjectContainsKey } from "./lib.js";
-import { AonyxBuddyWebClient, TAonyxBuddyWebClientOptions } from "./service.js";
+import { AonyxBuddyClient, TAonyxBuddyClientOptions } from "./service.js";
 import { NodeAudioBufferPlayer } from "./ui/audio/node-cli/node-audiobuffer-player.js";
 import {
   FetchAndPopulateBuffers,
@@ -43,7 +43,7 @@ if (typeof window !== "undefined") {
   };
 }
 
-const options: TAonyxBuddyWebClientOptions = {
+const options: TAonyxBuddyClientOptions = {
   logger: console,
   streamEventService: {
     logger: console,
@@ -78,7 +78,7 @@ const options: TAonyxBuddyWebClientOptions = {
   },
 };
 
-const client = new AonyxBuddyWebClient();
+const client = new AonyxBuddyClient();
 client.Start(options);
 
 const ttsOptions: TTextToSpeechOptions = {
@@ -112,3 +112,18 @@ FetchAndPopulateBuffers(bufferRequests).then((bufferDatas) => {
 AonyxBuddyState.inputEmitter.addEventListener("beforeunload", () => {
   client.Stop();
 });
+
+
+/**
+ * OUTLINE
+ * AonyxBuddy should contain the following in this order
+ * 1. Shared State, a global object that contains shared state between the different parts of the application
+ * 
+ * 2. Connect to Raw Event Source where the application listens for events 
+ * 3. Process Raw Events into Stream Events
+ * 4. Process Stream Events into Responses
+ * 5. Initiate Audio Playback
+ * 6. Per Event, Process Responses and Initiate Audio Playback
+ * 
+ * 
+ */

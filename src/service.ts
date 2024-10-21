@@ -31,7 +31,7 @@ export type TAonyxBuddyClientState = {
   [key: string]: unknown;
 };
 
-export type TAonyxBuddyWebClientOptions = {
+export type TAonyxBuddyClientOptions = {
   logger: ILogger;
   streamEventService?: TAonyxBuddyEventServiceOptions;
   streamElementsSocketOptions?: TStreamElementsSocketServiceOptions;
@@ -41,8 +41,10 @@ export type TAonyxBuddyWebClientOptions = {
   processStreamEventOptions?: TProcessStreamEventOptions;
 };
 
-export class AonyxBuddyWebClient implements IService {
-  options?: TAonyxBuddyWebClientOptions = undefined;
+export class AonyxBuddyClient implements IService {
+  options: TAonyxBuddyClientOptions;
+  eventTarget: EventTarget;
+
 
   streamElementsEventService?: StreamElementsEventsService = undefined;
   streamEventService?: AonyxBuddyEventService = undefined;
@@ -51,13 +53,16 @@ export class AonyxBuddyWebClient implements IService {
   responseService?: ResponseService = undefined;
   processStreamEventService?: ProcessStreamEventService = undefined;
 
-  constructor() {
+  constructor(options: TAonyxBuddyClientOptions) {
+    this.options = options;
+    this.eventTarget = new EventTarget();
+
     this.streamElementsEventService = new StreamElementsEventsService();
     this.streamEventService = new AonyxBuddyEventService();
     this.streamElementsSocketService = new StreamElementsSocketService();
   }
 
-  Start(options: TAonyxBuddyWebClientOptions): void {
+  Start(options: TAonyxBuddyClientOptions): void {
     this.options = options;
 
     if (options.audioQueueOptions)

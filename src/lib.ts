@@ -23,6 +23,8 @@ export const Template = {
 type Flatten<T> = { [K in keyof T]: T[K] } & {};
 
 // #region Standard Types
+export type UnknownFunction = (...args: unknown[]) => unknown;
+
 export function IsUndefined(value: unknown): value is undefined {
   return value === undefined;
 }
@@ -118,7 +120,9 @@ export function ObjectMatchesTemplate<T extends object>(
     }
 
     if (!ObjectContainsKey(value, key)) {
-      logger?.warn(`Property '${key}' is not optional, but missing in ${value}`);
+      logger?.warn(
+        `Property '${key}' is not optional, but missing in ${value}`
+      );
       return false;
     }
 
@@ -140,6 +144,49 @@ export function ObjectMatchesTemplate<T extends object>(
 }
 
 // #endregion
+
+// #region Callbacks
+type TCallbackWrapperOptions = {
+  logger?: ILogger;
+};
+export class CallbackWrapper {
+  options: TCallbackWrapperOptions;
+  callbacks: Map<string, UnknownFunction[]>;
+
+  constructor(options?: TCallbackWrapperOptions) {
+    this.options = options ?? {};
+    this.callbacks = new Map<string, UnknownFunction[]>();
+  }
+
+  add(name: string, callback: UnknownFunction) {
+    if (!this.callbacks.has(name)) this.callbacks.set(name, []);
+    if (!this.callbacks.get(name)?.includes(callback))
+      this.options.logger?.warn("Callback already exists", name, callback);
+    this.callbacks.get(name)?.push(callback);
+  }
+
+  remove(name: string, callback: UnknownFunction) {
+    if (!this.callbacks.has(name)) {
+      this.options.logger?.warn("Callback name does not exist", name, callback);
+      return;
+    }
+    const index = this.callbacks.get(name)?.indexOf(callback);
+    if (index === -1 || index === undefined) {
+      this.options.logger?.warn("Callback does not exist", name, callback);
+      return;
+    }
+    this.callbacks.get(name)?.splice(index, 1);
+  }
+
+  call(name: string, ...args: unknown[]) {
+    if (!this.callbacks.has(name)) {
+      this.options.logger?.warn("Callback name does not exist", name, args);
+      return;
+    }
+    this.callbacks.get(name)?.forEach((callback) => callback(...args));
+  }
+}
+//#endregion
 
 //Test
 /*

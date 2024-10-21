@@ -1,4 +1,4 @@
-export { AonyxBuddyWebClient } from "./service.js";
+export { AonyxBuddyClient as AonyxBuddyWebClient } from "./service.js";
 export * from "./types.js";
 
 // original file
