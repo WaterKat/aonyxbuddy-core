@@ -1,3 +1,4 @@
+import DefaultAonyxBuddyConfig from "./config/default-config.js";
 import { ObjectContainsKey } from "./lib.js";
 import { AonyxBuddyWebClient, TAonyxBuddyWebClientOptions } from "./service.js";
 import { NodeAudioBufferPlayer } from "./ui/audio/node-cli/node-audiobuffer-player.js";
@@ -70,6 +71,10 @@ const options: TAonyxBuddyWebClientOptions = {
         analyser: AonyxBuddyState.analyser,
       });
     },
+  },
+  processStreamEventOptions: {
+    logger: console,
+    config: DefaultAonyxBuddyConfig,
   },
 };
 
