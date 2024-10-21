@@ -53,7 +53,7 @@ const options: TAonyxBuddyClientOptions = {
   streamElementsOptions: {
     logger: console,
     callback: AonyxBuddyState.eventCallback,
-    inputEmitter: AonyxBuddyState.inputEmitter,
+    inputEventEmitter: AonyxBuddyState.inputEmitter,
   },
   streamElementsSocketOptions: {
     logger: console,

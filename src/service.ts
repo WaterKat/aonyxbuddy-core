@@ -7,8 +7,8 @@ import {
   TAonyxBuddyEventServiceOptions,
 } from "./events/aonyxbuddy-events/aonyxbuddy-event-service.js";
 import {
-  StreamElementsEventsService,
-  TStreamElementsEventsServiceOptions,
+  StreamElementsOverlayEventsService,
+  TStreamElementsOverlayEventsServiceOptions,
 } from "./events/streamelements/streamelements-event-service.js";
 import {
   StreamElementsSocketService,
@@ -26,6 +26,7 @@ import {
   AudioService,
   TAudioServiceOptions,
 } from "./ui/audio/audio-service.js";
+import { CallbackWrapper } from "./lib.js";
 
 export type TAonyxBuddyClientState = {
   [key: string]: unknown;
@@ -35,7 +36,7 @@ export type TAonyxBuddyClientOptions = {
   logger: ILogger;
   streamEventService?: TAonyxBuddyEventServiceOptions;
   streamElementsSocketOptions?: TStreamElementsSocketServiceOptions;
-  streamElementsOptions?: TStreamElementsEventsServiceOptions;
+  streamElementsOptions?: TStreamElementsOverlayEventsServiceOptions;
   audioQueueOptions?: TAudioServiceOptions;
   responseServiceOptions?: TReponseServiceOptions;
   processStreamEventOptions?: TProcessStreamEventOptions;
@@ -43,10 +44,10 @@ export type TAonyxBuddyClientOptions = {
 
 export class AonyxBuddyClient implements IService {
   options: TAonyxBuddyClientOptions;
-  eventTarget: EventTarget;
+  callbacks: CallbackWrapper;
 
 
-  streamElementsEventService?: StreamElementsEventsService = undefined;
+  streamElementsEventService?: StreamElementsOverlayEventsService = undefined;
   streamEventService?: AonyxBuddyEventService = undefined;
   streamElementsSocketService?: StreamElementsSocketService = undefined;
   audioService?: AudioService = undefined;
@@ -55,9 +56,15 @@ export class AonyxBuddyClient implements IService {
 
   constructor(options: TAonyxBuddyClientOptions) {
     this.options = options;
-    this.eventTarget = new EventTarget();
+    this.callbacks = new CallbackWrapper({ logger: options.logger });
 
-    this.streamElementsEventService = new StreamElementsEventsService();
+    if (this.options.streamElementsOptions) {
+      this.streamElementsEventService = new StreamElementsOverlayEventsService(this.options.streamElementsOptions);
+    }
+
+
+
+    this.streamElementsEventService = new StreamElementsOverlayEventsService();
     this.streamEventService = new AonyxBuddyEventService();
     this.streamElementsSocketService = new StreamElementsSocketService();
   }
@@ -65,6 +72,7 @@ export class AonyxBuddyClient implements IService {
   Start(options: TAonyxBuddyClientOptions): void {
     this.options = options;
 
+  
     if (options.audioQueueOptions)
       this.audioService = new AudioService(options.audioQueueOptions);
 

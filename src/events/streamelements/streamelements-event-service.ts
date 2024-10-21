@@ -4,18 +4,22 @@ import { ILogger, IService } from "../../types.js";
 import { SERawEvent, SERawEventTemplate } from "./types.js";
 import EventTranslator from "./translate-event-to-aonyxbuddy.js";
 
-export type TStreamElementsEventsServiceOptions = {
+export type TStreamElementsOverlayEventsServiceOptions = {
   callback: (event: TStreamEvent) => void;
-  inputEmitter: EventTarget | Window;
+  inputEventEmitter: EventTarget;
+  eventType?: string;
   logger?: ILogger;
 };
 
-export class StreamElementsEventsService
-  implements IService
-{
-  options?: TStreamElementsEventsServiceOptions = undefined;
-  bind: (...args: unknown[]) => void = () => {};
-  eventListener: string = "onEventReceived";
+export class StreamElementsOverlayEventsService implements IService {
+  options: TStreamElementsOverlayEventsServiceOptions;
+  defaultEventListener: string = "onEventReceived" as const;
+
+  boundCallback: (...args: unknown[]) => void = () => {};
+
+  constructor(options: TStreamElementsOverlayEventsServiceOptions) {
+    this.options = options;
+  }
 
   onEvent(data: unknown) {
     if (!ObjectMatchesTemplate<SERawEvent>(data, SERawEventTemplate)) {
@@ -41,29 +45,29 @@ export class StreamElementsEventsService
     }
   }
 
-  Start(options: TStreamElementsEventsServiceOptions): void {
-    this.options = options;
-
+  Start(): void {
     this.options.logger?.info("Starting StreamElementsService");
 
-    this.bind = this.onEvent.bind(this);
+    this.boundCallback = this.onEvent.bind(this);
 
-    this.options?.inputEmitter.addEventListener(this.eventListener, this.bind);
+    this.options?.inputEventEmitter.addEventListener(
+      this.options.eventType ?? this.defaultEventListener,
+      this.boundCallback
+    );
   }
 
   Stop(): void {
     this.options?.logger?.info("Stopping StreamElementsService");
 
-    (this.options?.inputEmitter ?? window).removeEventListener(
-      this.eventListener,
-      this.bind
+    this.options.inputEventEmitter.removeEventListener(
+      this.options.eventType ?? this.defaultEventListener,
+      this.boundCallback
     );
   }
 
   Restart(): void {
     this.options?.logger?.info("Restarting StreamElementsService");
     this.Stop();
-    if (!this.options) return;
-    this.Start(this.options);
+    this.Start();
   }
 }
