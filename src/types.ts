@@ -4,6 +4,8 @@ export interface IService {
   Restart(): void | Promise<void>;
 }
 
+
+//MARK: Loggers
 export interface ILogger {
   log: (...data: unknown[]) => void;
   warn: (...data: unknown[]) => void;
