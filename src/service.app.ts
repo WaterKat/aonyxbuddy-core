@@ -2,13 +2,12 @@ import DefaultAonyxBuddyConfig from "./config/default-config.js";
 import { ObjectContainsKey } from "./lib.js";
 import { AonyxBuddyClient, TAonyxBuddyClientOptions } from "./service.js";
 import { NodeAudioBufferPlayer } from "./ui/audio/node-cli/node-audiobuffer-player.js";
-import {
-  FetchAndPopulateBuffers,
-  ParseTextToSpeechText,
-  TTextToSpeechOptions,
-} from "./ui/audio/text-to-speech.js";
 import { WaitUntilInteracted } from "./ui/audio/web/wait-until-interacted.js";
 import { WebAudioBufferPlayer } from "./ui/audio/web/web-audiobuffer-player.js";
+import { TaggedLogger } from "./types.js";
+
+import dotenv from "dotenv";
+dotenv.config();
 
 await WaitUntilInteracted();
 
@@ -44,26 +43,55 @@ if (typeof window !== "undefined") {
 }
 
 const options: TAonyxBuddyClientOptions = {
-  logger: console,
-  streamEventService: {
+  logger: new TaggedLogger({
     logger: console,
+    tag: "AonyxBuddyService",
+    brackets: true,
+    timestamp: true,
+    logType: true,
+  }),
+  streamEventServiceOptions: {
+    logger: new TaggedLogger({
+      logger: console,
+      tag: "AonyxBuddy_Events",
+      brackets: true,
+      timestamp: true,
+      logType: true,
+    }),
     callback: AonyxBuddyState.eventCallback,
     inputEmitter: AonyxBuddyState.inputEmitter,
   },
   streamElementsOptions: {
-    logger: console,
+    logger: new TaggedLogger({
+      logger: console,
+      tag: "SE_OverlayEvents",
+      brackets: true,
+      timestamp: true,
+      logType: true,
+    }),
     callback: AonyxBuddyState.eventCallback,
     inputEventEmitter: AonyxBuddyState.inputEmitter,
   },
   streamElementsSocketOptions: {
-    logger: console,
+    logger: new TaggedLogger({
+      logger: console,
+      tag: "SE_SocketEvents",
+      brackets: true,
+      timestamp: true,
+      logType: true,
+    }),
     listenToTestEvents: true,
     getJWT: AonyxBuddyState.getJWT,
     callback: AonyxBuddyState.eventCallback,
-    outputEmitter: undefined,
   },
   audioQueueOptions: {
-    logger: console,
+    logger: new TaggedLogger({
+      logger: console,
+      tag: "AudioQueue",
+      brackets: true,
+      timestamp: true,
+      logType: true,
+    }),
     playerConstructor: (options) => {
       return new AonyxBuddyState.soundPlayer({
         ...options,
@@ -73,57 +101,65 @@ const options: TAonyxBuddyClientOptions = {
     },
   },
   processStreamEventOptions: {
-    logger: console,
+    logger: new TaggedLogger({
+      logger: console,
+      tag: "ProcessStreamEvent",
+      brackets: true,
+      timestamp: true,
+      logType: true,
+    }),
     config: DefaultAonyxBuddyConfig,
   },
-};
-
-const client = new AonyxBuddyClient();
-client.Start(options);
-
-const ttsOptions: TTextToSpeechOptions = {
-  voiceID: "Brian",
-  commandIdentifier: "$",
-  availableVoices: ["Brian", "Amy"],
-  soundClipURLs: {
-    DISCORDJOIN:
-      "https://www.aonyxlimited.com/resources/audio/discord-join.mp3",
-    DISCORDLEAVE:
-      "https://www.aonyxlimited.com/resources/audio/discord-leave.mp3",
-    KNOCK: "https://www.aonyxlimited.com/resources/audio/knock.mp3",
-    HUH: "https://www.aonyxlimited.com/resources/audio/huh.mp3",
-    VINEBOOM: "https://www.aonyxlimited.com/resources/audio/vine-boom.mp3",
+  responseServiceOptions: {
+    logger: new TaggedLogger({
+      logger: console,
+      tag: "ResponseService",
+      brackets: true,
+      timestamp: true,
+      logType: true,
+    }),
+    responses: DefaultAonyxBuddyConfig.responses["voice"],
+  },
+  textToSpeechOptions: {
+    logger: new TaggedLogger({
+      logger: console,
+      tag: "TextToSpeech",
+      brackets: true,
+      timestamp: true,
+      logType: true,
+    }),
+    voiceID: DefaultAonyxBuddyConfig.tts.voice,
+    commandIdentifier: "$",
+    availableVoices: ["Brian", "Amy"],
+    soundClipURLs: {
+      DISCORDJOIN:
+        "https://www.aonyxlimited.com/resources/audio/discord-join.mp3",
+      DISCORDLEAVE:
+        "https://www.aonyxlimited.com/resources/audio/discord-leave.mp3",
+      KNOCK: "https://www.aonyxlimited.com/resources/audio/knock.mp3",
+      HUH: "https://www.aonyxlimited.com/resources/audio/huh.mp3",
+      VINEBOOM: "https://www.aonyxlimited.com/resources/audio/vine-boom.mp3",
+    },
   },
 };
 
-const message =
-  "$DISCORDJOIN Hey why does it smell so bad in here? $DISCORDJOIN $Amy I don't know, maybe it's because you're here. $DISCORDLEAVE $Brian That's not very nice. $KNOCK$HUH$VINEBOOM$DISCORDLEAVE";
-
-const bufferRequests = ParseTextToSpeechText(message, ttsOptions);
-
-if (typeof bufferRequests[0] === "undefined")
-  throw new Error("bufferRequests[0] is undefined");
-
-FetchAndPopulateBuffers(bufferRequests).then((bufferDatas) => {
-  client.audioService?.Queue(...bufferDatas);
-  client.audioService?.PlayQueue();
-});
+const client = new AonyxBuddyClient(options);
+client.Start();
 
 AonyxBuddyState.inputEmitter.addEventListener("beforeunload", () => {
   client.Stop();
 });
 
-
 /**
  * OUTLINE
  * AonyxBuddy should contain the following in this order
  * 1. Shared State, a global object that contains shared state between the different parts of the application
- * 
- * 2. Connect to Raw Event Source where the application listens for events 
+ *
+ * 2. Connect to Raw Event Source where the application listens for events
  * 3. Process Raw Events into Stream Events
  * 4. Process Stream Events into Responses
  * 5. Initiate Audio Playback
  * 6. Per Event, Process Responses and Initiate Audio Playback
- * 
- * 
+ *
+ *
  */
