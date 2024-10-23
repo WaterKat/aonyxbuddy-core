@@ -22,6 +22,14 @@ export const Template = {
 
 type Flatten<T> = { [K in keyof T]: T[K] } & {};
 
+export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
+  T,
+  Exclude<keyof T, Keys>
+> &
+  {
+    [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
+  }[Keys];
+
 // #region Standard Types
 export type UnknownFunction = (...args: unknown[]) => unknown;
 
