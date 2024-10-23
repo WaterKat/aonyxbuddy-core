@@ -4,16 +4,20 @@ import { IsObject, IsString, ObjectContainsKey } from "../../lib.js";
 
 export type TAonyxBuddyEventServiceOptions = {
   callback: (event: TStreamEvent) => void;
+  eventType?: string;
   inputEmitter: EventTarget | Window;
   logger?: ILogger;
 };
 
-export class AonyxBuddyEventService
-  implements IService
-{
-  options?: TAonyxBuddyEventServiceOptions = undefined;
+export class AonyxBuddyEventService implements IService {
+  options: TAonyxBuddyEventServiceOptions;
+
   bind: (...args: unknown[]) => void = () => {};
   eventListener: string = EStreamEventType.TS_TYPE;
+
+  constructor(options: TAonyxBuddyEventServiceOptions) {
+    this.options = options;
+  }
 
   onEvent(data: unknown) {
     if (!IsObject(data)) return;
@@ -31,21 +35,22 @@ export class AonyxBuddyEventService
     this.options?.callback(data.detail as TStreamEvent);
   }
 
-  Start(options: TAonyxBuddyEventServiceOptions): void {
-    this.options = options;
-
+  Start(): void {
     this.options.logger?.info("Starting StreamEvent Service");
 
     this.bind = this.onEvent.bind(this);
 
-    this.options?.inputEmitter.addEventListener(this.eventListener, this.bind);
+    this.options?.inputEmitter.addEventListener(
+      this.options.eventType ?? this.eventListener,
+      this.bind
+    );
   }
 
   Stop(): void {
     this.options?.logger?.info("Stopping StreamEvent Service");
 
     (this.options?.inputEmitter ?? window).removeEventListener(
-      this.eventListener,
+      this.options.eventType ?? this.eventListener,
       this.bind
     );
   }
@@ -53,7 +58,6 @@ export class AonyxBuddyEventService
   Restart(): void {
     this.options?.logger?.info("Restarting StreamEvent Service");
     this.Stop();
-    if (!this.options) return;
-    this.Start(this.options);
+    this.Start();
   }
 }
