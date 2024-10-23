@@ -2,7 +2,7 @@ import { TStreamEvent } from "../../core/index.js";
 import { ObjectContainsKey, ObjectMatchesTemplate } from "../../lib.js";
 import { ILogger, IService } from "../../types.js";
 import { SERawEvent, SERawEventTemplate } from "./types.js";
-import EventTranslator from "./translate-event-to-aonyxbuddy.js";
+import { TranslateStreamElementsEventToAonyxEvent as EventTranslator } from "./translate-event-to-aonyxbuddy.js";
 
 export type TStreamElementsOverlayEventsServiceOptions = {
   callback: (event: TStreamEvent) => void;

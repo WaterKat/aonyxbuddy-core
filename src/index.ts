@@ -17,4 +17,4 @@ export {
   IsLegacyEventProcessorConfig,
 } from "./core/stream-events/legacy-support.js";
 export { GetStreamEventResponse } from "./core/index.js";
-export { default as TranslateStreamElementsEventToAonyxEvent } from "./events/streamelements/translate-event-to-aonyxbuddy.js";
+export { TranslateStreamElementsEventToAonyxEvent } from "./events/streamelements/translate-event-to-aonyxbuddy.js";

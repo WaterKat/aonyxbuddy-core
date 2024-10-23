@@ -5,7 +5,7 @@ import { ILogger } from "../../types.js";
 
 import * as SETypes from "./types.js";
 
-export default function TranslateStreamElementsEventToAonyxEvent(
+export function TranslateStreamElementsEventToAonyxEvent(
   _event: unknown,
   logger?: ILogger
 ): Types.TStreamEvent | undefined {
