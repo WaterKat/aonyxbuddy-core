@@ -5,21 +5,21 @@ import { io, type Socket } from "socket.io-client";
 import { TranslateStreamElementsEventToAonyxEvent as TranslateToStreamEvent } from "./translate-event-to-aonyxbuddy.js";
 
 export type TStreamElementsSocketServiceOptions = {
+  logger?: ILogger;
   getJWT: () => Promise<string>;
   callback?: (event: TStreamEvent) => void;
-  outputEmitter?: EventTarget;
   listenToTestEvents?: boolean;
-  logger?: ILogger;
 };
 
-export class StreamElementsSocketService
-  implements IService
-{
-  options?: TStreamElementsSocketServiceOptions = undefined;
+export class StreamElementsSocketService implements IService {
+  options: TStreamElementsSocketServiceOptions;
   bind: (...args: unknown[]) => void = () => {};
-  eventListener: string = "onEventReceived";
   socket?: Socket;
   shouldRestart: boolean = false;
+
+  constructor(options: TStreamElementsSocketServiceOptions) {
+    this.options = options;
+  }
 
   onEvent(_event: unknown) {
     console.log("onEvent", _event);
@@ -49,17 +49,9 @@ export class StreamElementsSocketService
     if (this.options?.callback) {
       this.options?.callback(streamEvent);
     }
-
-    if (this.options?.outputEmitter) {
-      this.options.outputEmitter.dispatchEvent(
-        new CustomEvent(this.eventListener, { detail: rawEvent })
-      );
-    }
   }
 
-  Start(options: TStreamElementsSocketServiceOptions): void {
-    this.options = options;
-
+  Start(): void {
     this.options.logger?.info("Starting StreamElementsWebsocket Service");
 
     this.shouldRestart = true;
@@ -117,6 +109,6 @@ export class StreamElementsSocketService
     this.options?.logger?.info("Restarting StreamEvent Service");
     this.Stop();
     if (!this.options) return;
-    this.Start(this.options);
+    this.Start();
   }
 }
