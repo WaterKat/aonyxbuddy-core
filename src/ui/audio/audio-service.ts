@@ -16,6 +16,8 @@ export class AudioService {
   options: TAudioServiceOptions;
   queue: TPopulatedAudioBufferData[] = [];
   currentPlayer?: IAudioBufferPlayer = undefined;
+  state: "playing" | "idle" = "idle";
+
   constructor(options: TAudioServiceOptions) {
     this.options = options;
   }
@@ -26,9 +28,13 @@ export class AudioService {
   }
 
   async PlayQueue(): Promise<void> {
+    if (this.state !== "idle") return;
+    this.state = "playing";
+
     const buffer = this.queue.shift();
 
     if (!buffer || !buffer.arrayBuffer) {
+      this.state = "idle";
       this.options.logger?.info("AudioService: Queue is empty");
       return;
     }
@@ -37,7 +43,7 @@ export class AudioService {
       const playerOptions: TAudioBufferPlayerOptions = {
         arrayBuffer: buffer.arrayBuffer,
         logger: this.options.logger,
-        onend: () => { 
+        onend: () => {
           this.options.logger?.info("AudioService: Audio playback ended");
           resolve();
         },
@@ -45,6 +51,8 @@ export class AudioService {
       };
       this.currentPlayer = this.options.playerConstructor(playerOptions);
       this.currentPlayer.play();
+    }).finally(() => {
+      this.state = "idle";
     });
 
     return this.PlayQueue();
@@ -56,6 +64,7 @@ export class AudioService {
 
   StopAndClearQueue(): void {
     this.queue = [];
+    this.state = "idle";
     this.currentPlayer?.stop();
   }
 }
