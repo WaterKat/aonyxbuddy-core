@@ -5,7 +5,7 @@ import rollupDelete from 'rollup-plugin-delete';
 
 // rollup.config.mjs
 export default [
-  //? Library Build
+  //? MARK: LIB
   {
     input: 'src/index.ts',
     output: {
@@ -26,11 +26,24 @@ export default [
       rollupDelete({ hook: "buildEnd", targets: 'dist/dts', verbose: true })
     ],
   },
-  //? Minified Web Build
+  //? MARK: WEB
   {
-    input: 'src/app.ts',
+    input: 'src/app.web.ts',
     output: [{
       file: 'dist/app.js',
+      format: 'es',
+    }, {
+      file: 'dist/app.min.js',
+      format: 'es',
+      plugins: [terser()]
+    }],
+    plugins: [typescript()]
+  },
+  //? MARK: CLI
+  {
+    input: 'src/app.cli.ts',
+    output: [{
+      file: 'dist/app.cli.js',
       format: 'es',
     }, {
       file: 'dist/app.min.js',
