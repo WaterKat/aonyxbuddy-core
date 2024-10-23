@@ -194,6 +194,49 @@ export class CallbackWrapper {
     this.callbacks.get(name)?.forEach((callback) => callback(...args));
   }
 }
+
+//eslint-disable-next-line
+export type TGenericCallback = (...args: any[]) => void;
+
+export type TGenericCallbackWrapperOptions<T_M> = {
+  logger?: ILogger;
+  callbacks: T_M;
+};
+
+export class GenericCallbackWrapper<
+  T_CallbackMap extends Record<string, Array<TGenericCallback>>
+> {
+  options: TGenericCallbackWrapperOptions<T_CallbackMap>;
+
+  constructor(options: TGenericCallbackWrapperOptions<T_CallbackMap>) {
+    this.options = options;
+  }
+
+  add<K extends keyof T_CallbackMap>(name: K, callback: T_CallbackMap[K][number]) {
+    if (this.options.callbacks[name].includes(callback)) {
+      this.options.logger?.warn(
+        "Callback already exists, adding duplicate",
+        name,
+        callback
+      );
+    }
+    this.options.callbacks[name].push(callback);
+  }
+
+  remove<K extends keyof T_CallbackMap>(name: K, callback: T_CallbackMap[K][number]) {
+    const index = this.options.callbacks[name].indexOf(callback);
+    if (index === -1) {
+      this.options.logger?.warn("Callback does not exist", name, callback);
+      return;
+    }
+    this.options.callbacks[name].splice(index, 1);
+  }
+
+  call<K extends keyof T_CallbackMap>(name: K, ...args: Parameters<T_CallbackMap[K][number]>) {
+    this.options.callbacks[name].forEach((callback) => callback(...args));
+  }
+}
+
 //#endregion
 
 //Test
