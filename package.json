@@ -9,7 +9,8 @@
     "dev": "vite",
     "build": "npx eslint . && rollup -c",
     "test": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest",
-    "cli": "npx tsx ./src/service.app.ts"
+    "start:cli": "npm run build && node dist/app.cli.js",
+    "dev:cli": "npx tsx src/app.cli.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
