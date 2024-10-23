@@ -8,13 +8,16 @@
   "scripts": {
     "dev": "vite",
     "build": "npx eslint . && rollup -c",
-    "test": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest"
+    "test": "cross-env NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" npx jest",
+    "cli": "npx tsx ./src/service.app.ts"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
     "gifuct-js": "^2.1.2",
     "lame": "github:FlatIO/node-lame#ff6643b17e1a829247189d5e99783d456d0ff4b6",
     "socket.io-client": "^4.8.0",
-    "speaker": "^0.5.5"
+    "speaker": "^0.5.5",
+    "tmi.js": "^1.8.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.12.0",
@@ -23,6 +26,7 @@
     "@rollup/plugin-typescript": "^12.1.0",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.13",
+    "@types/tmi.js": "^1.8.6",
     "cross-env": "^7.0.3",
     "eslint": "^9.12.0",
     "jest": "^29.7.0",
