@@ -1,7 +1,7 @@
 export interface IService {
-  Start(...options: unknown[]): void;
-  Stop(): void;
-  Restart(): void;
+  Start(...options: unknown[]): void | Promise<void>;
+  Stop(): void | Promise<void>;
+  Restart(): void | Promise<void>;
 }
 
 export interface ILogger {
