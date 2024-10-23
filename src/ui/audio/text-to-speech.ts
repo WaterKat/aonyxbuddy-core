@@ -1,4 +1,7 @@
 //#region TStreamElementsVoiceID
+
+import { ILogger } from "../../types";
+
 /**
  * A string type that is a tested valid voice id for use with stream elements
  * text to speech
@@ -265,6 +268,8 @@ export function ParseTextToSpeechText(
     options?.voiceID ?? DefaultStreamElementsVoiceID;
   const commandIdentifier: string =
     options?.commandIdentifier ?? DefaultTTSCommandIdentifier;
+  const availableVoices = [...(options?.availableVoices ?? []), voiceID];
+
 
   const segments: string[] = text.split(commandIdentifier);
   const bufferRequests: TBufferRequestData[] = [];
@@ -272,7 +277,7 @@ export function ParseTextToSpeechText(
   segments.forEach((segment, index) => {
     if (index !== 0) {
       if (segment.length < 1) return;
-      for (const voice of options?.availableVoices ?? []) {
+      for (const voice of availableVoices) {
         if (segment.startsWith(voice)) {
           voiceID = voice;
           segment = segment.substring(voice.length);
@@ -299,6 +304,24 @@ export function ParseTextToSpeechText(
   });
 
   return bufferRequests;
+}
+
+export type TTextToSpeechServiceOptions = TTextToSpeechOptions & {
+  logger?: ILogger;
+};
+
+export class TextToSpeechService {
+  options: TTextToSpeechServiceOptions;
+
+  constructor(options: TTextToSpeechServiceOptions) {
+    this.options = options;
+  }
+
+  GetPopulatedBufferDataPromises(text: string) {
+    const bufferRequests = ParseTextToSpeechText(text, this.options);
+    const populatedBuffers = FetchAndPopulateBuffers(bufferRequests);
+    return populatedBuffers;
+  }
 }
 //#endregion
 
